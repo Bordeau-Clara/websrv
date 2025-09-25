@@ -4,10 +4,11 @@
 !_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
 !_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
 !_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
-!_TAG_PROC_CWD	/home/cuistobal/Code/webserv/	//
+!_TAG_PROC_CWD	/home/chrleroy/Desktop/repos/Github/42_Webserv/	//
 !_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	//
 USAGE	includes/webserv.hpp	/^#define USAGE /;"	d
+buffer_flusher	sources/utilities/memory_utils.cpp	/^void	buffer_flusher(char buffer[], size_t len) {$/;"	f	typeref:typename:void
 main	sources/main.cpp	/^int main(int argc, char **argv) {$/;"	f	typeref:typename:int
