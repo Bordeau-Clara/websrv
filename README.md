@@ -1,3 +1,6 @@
+
+Here is a design example:
+
 ```mermaid
 classDiagram
     %% Classes Core
@@ -85,6 +88,8 @@ classDiagram
     CGIHandler --> IOMultiplexer : utilise
     CGIHandler --> FileDescriptor : contient
 ```
+
+Find below the event loop
 
 ```mermaid
 sequenceDiagram
