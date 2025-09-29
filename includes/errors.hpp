@@ -9,3 +9,12 @@ static const char USAGE[] = "Usage: ./webserv <configuration file>";
 
 static const char OPEN_ERROR[] = ": unable to open file.";
 static const int OPEN_ERROR_CODE = 3;
+
+static const char INVALID_CONFIG_EXTENSION[] = ": invalid config file extension (must be .conf).";
+static const int INVALID_CONFIG_EXTENSION_CODE = 4;
+ 
+static const char READ_ERROR[] = ": error while reading file.";
+static const int READ_ERROR_CODE = 5;
+
+// Prototype for error reporting function implemented in sources/utilities/errors.cpp
+int errorMessage(const char *message, int ecode);

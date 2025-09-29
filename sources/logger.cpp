@@ -1,7 +1,4 @@
-#include "logger.hpp"
-#include <iostream>
-#include <ctime>
-#include <cstring>
+#include "Logger.hpp"
 
 Logger::Logger(const std::string& filename)
     : file_(filename.empty() ? nullptr : new std::ofstream(filename.c_str()))
@@ -50,9 +47,10 @@ std::string Logger::getCurrentTime() const
     return buf;
 }
 
-void Logger::log(LogLevel level, const std::string& message)
+void Logger::logMsg(LogLevel level, const std::string& message)
 {
     const char* levelStr = "";
+    
     switch (level) {
         case LOG_DEBUG:    levelStr = "DEBUG"; break;
         case LOG_INFO:     levelStr = "INFO";  break;

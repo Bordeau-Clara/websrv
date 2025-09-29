@@ -1,9 +1,12 @@
 #pragma once
 
 #include <map>
+#include <ctime>
 #include <string>
+#include <cstring>
 #include <fstream>
 #include <iostream>
+
 #include "defines.hpp"
 
 enum LogPrio{

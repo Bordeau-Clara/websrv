@@ -3,18 +3,18 @@
 #include <string>
 
 // Constructeur de base
-ConfigException::ConfigException(const std::string& msg, int c, const std::string& cause_msg)
+CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg)
     : code(c), message(msg), cause(cause_msg) {}
 
 // Constructeur avec message imbriqué
-ConfigException::ConfigException(const std::string& msg, int c, const std::string& cause_msg, const std::string& nested_msg)
+CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg, const std::string& nested_msg)
     : code(c), message(msg), cause(cause_msg), nested_message(nested_msg) {}
 
 // Destructeur
-ConfigException::~ConfigException() throw() {}
+CustomException::~CustomException() throw() {}
 
-// what() compatible C++98
-const char* ConfigException::what() const throw() {
+// Redéfinition de what() pour inclure les messages imbriqués
+const char* CustomException::what() const throw() {
     static std::string full_msg;
     full_msg = message;
     if (!cause.empty()) {
@@ -27,14 +27,14 @@ const char* ConfigException::what() const throw() {
 }
 
 // Getters
-int ConfigException::get_code() const {
+int CustomException::get_code() const {
     return code;
 }
 
-const std::string& ConfigException::get_cause() const {
+const std::string& CustomException::get_cause() const {
     return cause;
 }
 
-const std::string& ConfigException::get_nested_message() const {
+const std::string& CustomException::get_nested_message() const {
     return nested_message;
 }
