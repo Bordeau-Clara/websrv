@@ -9,26 +9,94 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	//
-DEFAULT_CONFIG	includes/defines.hpp	/^#define DEFAULT_CONFIG /;"	d
-INVALID_FILE_CODE	includes/errors.hpp	/^#define INVALID_FILE_CODE /;"	d
-INVALID_FILE_MESSAGE	includes/errors.hpp	/^#define INVALID_FILE_MESSAGE /;"	d
+$(NAME)	Makefile	/^$(NAME): $(OBJS)$/;"	t
+%.o	Makefile	/^%.o: %.cpp$/;"	t
+BLINK	includes/defines.hpp	/^static const char BLINK[] = "\\x1b[5m";$/;"	v	typeref:typename:const char[]
+CC	Makefile	/^CC = g++$/;"	m
+CONSOLE_OUTPUT	includes/Logger.hpp	/^    CONSOLE_OUTPUT,$/;"	e	enum:Mode
+CYAN	includes/defines.hpp	/^static const char CYAN[] = "\\x1B[36m";$/;"	v	typeref:typename:const char[]
+CustomException	includes/customException.hpp	/^class CustomException : public std::exception {$/;"	c
+CustomException	sources/configException.cpp	/^CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg)$/;"	f	class:CustomException
+CustomException	sources/configException.cpp	/^CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg, co/;"	f	class:CustomException
+DARK_GREY	includes/defines.hpp	/^static const char DARK_GREY[] = "\\x1B[90m";$/;"	v	typeref:typename:const char[]
+DEBUG	includes/Logger.hpp	/^    DEBUG,$/;"	e	enum:LogPrio
+DEFAULT_CONFIG	includes/defines.hpp	/^static const char DEFAULT_CONFIG[] = "configs\/default.conf";$/;"	v	typeref:typename:const char[]
+ERROR	includes/Logger.hpp	/^    ERROR$/;"	e	enum:LogPrio
+FILE_OUTPUT	includes/Logger.hpp	/^    FILE_OUTPUT$/;"	e	enum:Mode
+GST	includes/defines.hpp	/^static const int GST = 4;/;"	v	typeref:typename:const int
+INCLUDES	Makefile	/^INCLUDES = -Iincludes$/;"	m
+INFO	includes/Logger.hpp	/^    INFO,$/;"	e	enum:LogPrio
+INVALID_CONFIG_EXTENSION	includes/errors.hpp	/^static const char INVALID_CONFIG_EXTENSION[] = ": invalid config file extension (must be .conf)./;"	v	typeref:typename:const char[]
+INVALID_CONFIG_EXTENSION_CODE	includes/errors.hpp	/^static const int INVALID_CONFIG_EXTENSION_CODE = 4;$/;"	v	typeref:typename:const int
+INVALID_FILE_CODE	includes/errors.hpp	/^static const int INVALID_FILE_CODE = 2;$/;"	v	typeref:typename:const int
+INVALID_FILE_MESSAGE	includes/errors.hpp	/^static const char INVALID_FILE_MESSAGE[] = ": invalid file.";$/;"	v	typeref:typename:const char[]
+LIGHTMAGENTA	includes/defines.hpp	/^static const char LIGHTMAGENTA[] = "\\x1B[95m";$/;"	v	typeref:typename:const char[]
+LIGHT_BLUE	includes/defines.hpp	/^static const char LIGHT_BLUE[] = "\\x1B[94m";$/;"	v	typeref:typename:const char[]
+LIGHT_RED	includes/defines.hpp	/^static const char LIGHT_RED[] = "\\x1B[91m";$/;"	v	typeref:typename:const char[]
+L_State	includes/Logger.hpp	/^enum L_State{$/;"	g
+LogPrio	includes/Logger.hpp	/^enum LogPrio{$/;"	g
+Logger	includes/Logger.hpp	/^class Logger{$/;"	c
+Logger	sources/logger.cpp	/^Logger::Logger(const Logger& other)$/;"	f	class:Logger
+Logger	sources/logger.cpp	/^Logger::Logger(const std::string& filename)$/;"	f	class:Logger
 MAX_EVENTS	tests/epoll.cpp	/^           #define MAX_EVENTS /;"	d	file:
 Messages en temps réel	tests/client.html	/^    <h1>Messages en temps réel<\/h1>$/;"	h
-OPEN_ERROR	includes/errors.hpp	/^#define OPEN_ERROR /;"	d
-OPEN_ERROR_CODE	includes/errors.hpp	/^#define OPEN_ERROR_CODE /;"	d
-USAGE	includes/errors.hpp	/^#define USAGE /;"	d
+Mode	includes/Logger.hpp	/^enum Mode{$/;"	g
+NAME	Makefile	/^NAME = webserv$/;"	m
+OBJS	Makefile	/^OBJS = $(SRCS:.cpp=.o)$/;"	m
+OFF	includes/Logger.hpp	/^    OFF$/;"	e	enum:L_State
+ON	includes/Logger.hpp	/^    ON,$/;"	e	enum:L_State
+OPEN_ERROR	includes/errors.hpp	/^static const char OPEN_ERROR[] = ": unable to open file.";$/;"	v	typeref:typename:const char[]
+OPEN_ERROR_CODE	includes/errors.hpp	/^static const int OPEN_ERROR_CODE = 3;$/;"	v	typeref:typename:const int
+READ_ERROR	includes/errors.hpp	/^static const char READ_ERROR[] = ": error while reading file.";$/;"	v	typeref:typename:const char[]
+READ_ERROR_CODE	includes/errors.hpp	/^static const int READ_ERROR_CODE = 5;$/;"	v	typeref:typename:const int
+RED	includes/defines.hpp	/^static const char RED[] = "\\x1B[31m";$/;"	v	typeref:typename:const char[]
+RESET	includes/defines.hpp	/^static const char RESET[] = "\\x1B[0m";$/;"	v	typeref:typename:const char[]
+SRCS	Makefile	/^SRCS = $(filter-out sources\/logger.cpp,$(SRCS_ALL))$/;"	m
+SRCS_ALL	Makefile	/^SRCS_ALL = $(shell find sources -name "*.cpp")$/;"	m
+SUCCESS	includes/defines.hpp	/^static const int SUCCESS = 0;$/;"	v	typeref:typename:const int
+USAGE	includes/errors.hpp	/^static const char USAGE[] = "Usage: .\/webserv <configuration file>";$/;"	v	typeref:typename:const char[]
+WARN	includes/Logger.hpp	/^	WARN,$/;"	e	enum:LogPrio
+WHITE	includes/defines.hpp	/^static const char WHITE[] = "\\x1B[37m";$/;"	v	typeref:typename:const char[]
+YELLOW	includes/defines.hpp	/^static const char YELLOW[] = "\\x1B[33m";$/;"	v	typeref:typename:const char[]
+all	Makefile	/^all: $(NAME)$/;"	t
 buffer_flusher	sources/utilities/memory_utils.cpp	/^void	buffer_flusher(char buffer[], size_t len) {$/;"	f	typeref:typename:void
+cause	includes/customException.hpp	/^    std::string cause;$/;"	m	class:CustomException	typeref:typename:std::string
+clean	Makefile	/^clean:$/;"	t
+code	includes/customException.hpp	/^    int code;$/;"	m	class:CustomException	typeref:typename:int
 errorMessage	sources/utilities/errors.cpp	/^int	errorMessage(const char *message, int ecode) {$/;"	f	typeref:typename:int
+fclean	Makefile	/^fclean: clean$/;"	t
+file_name	includes/Logger.hpp	/^	static std::string file_name;$/;"	m	class:Logger	typeref:typename:std::string
+files.associations	.vscode/settings.json	/^	"files.associations": {$/;"	o
+getCurrentTime	sources/logger.cpp	/^std::string Logger::getCurrentTime() const$/;"	f	class:Logger	typeref:typename:std::string
+get_cause	sources/configException.cpp	/^const std::string& CustomException::get_cause() const {$/;"	f	class:CustomException	typeref:typename:const std::string &
+get_code	sources/configException.cpp	/^int CustomException::get_code() const {$/;"	f	class:CustomException	typeref:typename:int
+get_nested_message	sources/configException.cpp	/^const std::string& CustomException::get_nested_message() const {$/;"	f	class:CustomException	typeref:typename:const std::string &
 handle_http_request	tests/serv.cpp	/^void handle_http_request(int client_fd) {$/;"	f	typeref:typename:void
 handle_sse_request	tests/serv.cpp	/^void handle_sse_request(int client_fd) {$/;"	f	typeref:typename:void
 http_clients	tests/serv.cpp	/^std::vector<int> http_clients;$/;"	v	typeref:typename:std::vector<int>
+iostream	.vscode/settings.json	/^		"iostream": "cpp"$/;"	s	object:files.associations
 last_message	tests/serv.cpp	/^std::string last_message;$/;"	v	typeref:typename:std::string
+logMsg	sources/logger.cpp	/^void Logger::logMsg(LogLevel level, const std::string& message)$/;"	f	class:Logger	typeref:typename:void
 main	sources/main.cpp	/^int main(int argc, char **argv) {$/;"	f	typeref:typename:int
 main	tests/epoll.cpp	/^int main() {$/;"	f	typeref:typename:int
 main	tests/miniserver/miniserver.c	/^int main () {$/;"	f	typeref:typename:int
 main	tests/serv.cpp	/^int main() {$/;"	f	typeref:typename:int
+make_nested	sources/parsing/parseConfig.cpp	/^static inline CustomException make_nested(const CustomException& outer, const CustomException& i/;"	f	typeref:typename:CustomException	file:
+message	includes/customException.hpp	/^    std::string message;$/;"	m	class:CustomException	typeref:typename:std::string
 messages	tests/client.html	/^    <ul id="messages"><\/ul>$/;"	I
-parseConfig	sources/parsing/parseConfig.cpp	/^int	parseConfig(std::strign confiFilePath) {$/;"	f	typeref:typename:int
+nested_message	includes/customException.hpp	/^    std::string nested_message;$/;"	m	class:CustomException	typeref:typename:std::string
+openWithOptionalFallback	sources/parsing/parseConfig.cpp	/^static void openWithOptionalFallback(const std::string& primary,$/;"	f	typeref:typename:void	file:
+operator =	sources/logger.cpp	/^Logger& Logger::operator=(const Logger& other)$/;"	f	class:Logger	typeref:typename:Logger &
+parseConfig	sources/parsing/parseConfig.cpp	/^int parseConfig(const std::string& configFilePath, bool allowFallback)$/;"	f	typeref:typename:int
+parseStream	sources/parsing/parseConfig.cpp	/^static void parseStream(std::ifstream& configFile)$/;"	f	typeref:typename:void	file:
 poll_fds	tests/serv.cpp	/^std::vector<pollfd> poll_fds;$/;"	v	typeref:typename:std::vector<pollfd>
+prio	includes/Logger.hpp	/^    static LogPrio prio;$/;"	m	class:Logger	typeref:typename:LogPrio
+prio_str	includes/Logger.hpp	/^    static std::map<LogPrio, std::string> prio_str;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::string>
+re	Makefile	/^re: fclean all$/;"	t
 run_server	tests/serv.cpp	/^void run_server() {$/;"	f	typeref:typename:void
 send_to_all_http_clients	tests/serv.cpp	/^void send_to_all_http_clients(const std::string& message) {$/;"	f	typeref:typename:void
+state	includes/Logger.hpp	/^    static L_State state;$/;"	m	class:Logger	typeref:typename:L_State
+tryOpenOrThrow	sources/parsing/parseConfig.cpp	/^static void tryOpenOrThrow(const std::string& path, std::ifstream& out)$/;"	f	typeref:typename:void	file:
+what	sources/configException.cpp	/^const char* CustomException::what() const throw() {$/;"	f	class:CustomException	typeref:typename:const char *
+~CustomException	sources/configException.cpp	/^CustomException::~CustomException() throw() {}$/;"	f	class:CustomException
+~Logger	sources/logger.cpp	/^Logger::~Logger()$/;"	f	class:Logger
