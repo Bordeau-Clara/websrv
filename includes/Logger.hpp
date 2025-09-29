@@ -12,8 +12,9 @@
 enum LogPrio{
     DEBUG,
     INFO,
-	WARN,
-    ERROR
+	WARNING,
+    ERROR,
+    FATAL
 };
 
 enum L_State{
@@ -29,21 +30,28 @@ enum Mode{
 
 class Logger{
 
-    static std::map<LogPrio, std::string> initMap();
-
-	static std::string file_name;
     static LogPrio prio;
-    static std::map<LogPrio, std::string> prio_str;
     static L_State state;
+    static std::ofstream file_;
+	static std::string file_name;
+    static std::map<LogPrio, std::string> initMap();
+    static std::map<LogPrio, std::string> prio_str;
 	
 	public:
+
+        Logger(const std::string& filename = "");
+        Logger(const Logger& other);
+
+        ~Logger();
+
+        Logger& operator=(const Logger& other);
 
         static void         setFileName(std::string);
         static void         setState(L_State);
 
-        static void         logMsg(const char *, Mode, const char*, ...);
-        static void         setPrio(LogPrio);
+        static std::string  getCurrentTime();
         static void         enableFileLog();
-        static std::string  getCurrTime();
+        static void         setPrio(LogPrio);
+        static void         logMsg(LogPrio level, const std::string& message);
 };
 

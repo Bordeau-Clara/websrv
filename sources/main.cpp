@@ -23,8 +23,9 @@ int main(int argc, char **argv) {
 	} catch (const std::exception& e) {
 		return errorMessage(e.what(), OPEN_ERROR_CODE);
 	}
-/*
+	
 	startServer();
+/*
 	runServer();
 	exitServer();
 */

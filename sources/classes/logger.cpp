@@ -1,75 +1,56 @@
 #include "Logger.hpp"
 
-// Do we really want to create a log file for each server run?
-Logger::Logger(const std::string& filename)
-    : file_(filename.empty() ? nullptr : new std::ofstream(filename.c_str()))
-{
-    if (file_ && !file_->is_open()) {
-        delete file_;
-        file_ = nullptr;
-    }
-}
+// Logger implementation matches includes/Logger.hpp where file_ is static std::ofstream
+// The static members are defined elsewhere in the implementation unit that provides them.
 
-// Do we really want to delete the log file ?
-Logger::~Logger()
-{
-    if (file_) {
-        file_->close();
-        delete file_;
-    }
-}
-
-Logger::Logger(const Logger& other)
-    : file_(other.file_ ? new std::ofstream(other.file_->is_open() ? "copy_log.txt" : "") : nullptr)
-{
-    // Note: On ne copie pas le flux, mais on en crée un nouveau pour éviter les conflits.
-    // En pratique, la copie d'un logger n'est pas toujours utile.
-    // Ici, on ouvre un nouveau fichier "copy_log.txt" si l'original est ouvert.
-}
-
-Logger& Logger::operator=(const Logger& other)
-{
-    if (this != &other) {
-        if (file_) {
-            file_->close();
-            delete file_;
+Logger::Logger(const std::string& filename) {
+    if (!filename.empty()) {
+        file_name = filename;
+        // open the static file_ stream if not already open
+        if (!file_.is_open()) {
+            file_.open(file_name.c_str(), std::ios::app);
         }
-        file_ = other.file_ ? new std::ofstream(other.file_->is_open() ? "copy_log.txt" : "") : nullptr;
     }
+}
+
+Logger::~Logger() {
+    // Do not close static file_ here; leave it open for program lifetime.
+}
+
+Logger::Logger(const Logger& other) {
+    // No per-instance state to copy; file_ is static
+    (void)other;
+}
+
+Logger& Logger::operator=(const Logger& other) {
+    (void)other;
     return *this;
 }
 
-std::string Logger::getCurrentTime() const
-{
-    time_t now = time(nullptr);
+std::string Logger::getCurrentTime() {
+    time_t now = time(NULL);
     struct tm tstruct;
     char buf[80];
     tstruct = *localtime(&now);
     strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
-    return buf;
+    return std::string(buf);
 }
 
-void Logger::logMsg(LogLevel level, const std::string& message)
-{
+void Logger::logMsg(LogPrio level, const std::string& message) {
     const char* levelStr = "";
-    
     switch (level) {
-        case LOG_DEBUG:    levelStr = "DEBUG"; break;
-        case LOG_INFO:     levelStr = "INFO";  break;
-        case LOG_WARNING:  levelStr = "WARN";  break;
-        case LOG_ERROR:    levelStr = "ERROR"; break;
-        case LOG_FATAL:    levelStr = "FATAL"; break;
-        default:           levelStr = "UNKNOWN";
+        case DEBUG:    levelStr = "DEBUG"; break;
+        case INFO:     levelStr = "INFO";  break;
+        case WARNING:  levelStr = "WARN";  break;
+        case ERROR:    levelStr = "ERROR"; break;
+        case FATAL:    levelStr = "FATAL"; break;
+        default:       levelStr = "UNKNOWN";
     }
 
-    std::string logEntry = getCurrentTime() + " [" + levelStr + "] " + message + "\n";
-
-    // Sortie sur la console
-    std::cout << logEntry;
-
-    // Sortie dans le fichier si ouvert
-    if (file_ && file_->is_open()) {
-        *file_ << logEntry;
-        file_->flush();
+    std::string logEntry = getCurrentTime() + " [" + levelStr + "] " + message;
+    std::cout << logEntry << std::endl;
+    if (file_.is_open()) {
+        file_ << logEntry << std::endl;
+        file_.flush();
     }
 }
