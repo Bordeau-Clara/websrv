@@ -6,10 +6,6 @@
 #include <iostream>
 #include "defines.hpp"
 
-
-
-
-/* Not used currently */
 enum LogPrio{
     DEBUG,
     INFO,
@@ -39,7 +35,7 @@ class Logger{
 	
 	public:
 
-        static void         setFilenName(std::string);
+        static void         setFileName(std::string);
         static void         setState(L_State);
 
         static void         logMsg(const char *, Mode, const char*, ...);
@@ -47,3 +43,4 @@ class Logger{
         static void         enableFileLog();
         static std::string  getCurrTime();
 };
+
