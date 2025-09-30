@@ -30,11 +30,13 @@ enum Mode{
 
 class Logger{
 
-    static LogPrio prio;
-    static L_State state;
-    static std::ofstream file_;
-	static std::string file_name;
-    static std::map<LogPrio, std::pair<std::string, std::ostream*> > levels;
+    static LogPrio _prio;
+    static L_State _state;
+    static std::ofstream _file_;
+	static std::string _file_name;
+    static std::map<LogPrio, std::pair<std::string, std::ostream*> > _levels;
+    
+    static bool _initialized;
 	
 	public:
 
