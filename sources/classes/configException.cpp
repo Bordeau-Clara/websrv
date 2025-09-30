@@ -2,11 +2,11 @@
 
 // Constructeur de base
 CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg)
-    : code(c), message(msg), cause(cause_msg) {}
+    : code(c), cause(cause_msg), message(msg) {}
 
 // Constructeur avec message imbriqué
 CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg, const std::string& nested_msg)
-    : code(c), message(msg), cause(cause_msg), nested_message(nested_msg) {}
+    : code(c), cause(cause_msg), message(msg), nested_message(nested_msg) {}
 
 // Destructeur
 CustomException::~CustomException() throw() {}

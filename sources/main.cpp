@@ -13,6 +13,14 @@ int main(int argc, char **argv) {
 	try {
 		// parseConfig throws CustomException on fatal errors
 		parseConfig(configFile, allowFallback);
+
+		startServer();
+/*
+		runServer();
+	
+		exitServer();
+*/
+
 	} catch (const CustomException& e) {
 		// Build a single-line message using e.what() and nested message if any
 		std::string msg = std::string(e.what());
@@ -26,10 +34,5 @@ int main(int argc, char **argv) {
 		return errorMessage(e.what(), OPEN_ERROR_CODE);
 	}
 	
-	startServer();
-/*
-	runServer();
-	exitServer();
-*/
-	return 0;
+	return SUCCESS;
 }

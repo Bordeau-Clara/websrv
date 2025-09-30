@@ -7,25 +7,31 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98
 
 INCLUDES = -Iincludes
 
-SRCS_ALL = $(shell find sources -name "*.cpp")
-# Exclude logger.cpp which contains a different Logger implementation
-SRCS = $(filter-out sources/logger.cpp,$(SRCS_ALL))
+SRCS = $(shell find sources -name "*.cpp")
 OBJS = $(SRCS:.cpp=.o)
 
-.PHONY: all re clean fclean
+ARGS ?=
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(OBJS)
+	@ echo "L3t'5 pl@y w3b53rv (:"
+	@ $(CC) $(CFLAGS) $(INCLUDES) -o $@ $(OBJS)
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@ $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	@ echo "L3t'5 cl34n up (:"
+	@ rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	@ rm -f $(NAME)
 
 re: fclean all
+
+run: re 
+	./$(NAME) $(ARGS)
+	@ $(MAKE) fclean
+
+.PHONY: clean, fclean, re, run

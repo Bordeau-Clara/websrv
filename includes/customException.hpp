@@ -7,8 +7,8 @@
 class CustomException : public std::exception {
 private:
     int code;
-    std::string message;
     std::string cause;
+    std::string message;
     std::string nested_message;
     CustomException& operator=(const CustomException&);
 
