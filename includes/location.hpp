@@ -3,13 +3,13 @@
 #include <vector>
 #include <string>
 
-class location {
+class Location {
     std::vector<std::string> paths;
 
     public:
 
-        location();
-        ~location();
+        Location();
+        ~Location();
 
-        operator=(const Location& src);
+        Location operator=(const Location& src);
 };
