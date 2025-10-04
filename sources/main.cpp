@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/04 16:43:59 by cuistobal         #+#    #+#             */
+/*   Updated: 2025/10/04 16:45:01 by cuistobal        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "webserv.hpp"
 
 int main(int argc, char **argv) {
@@ -10,15 +22,18 @@ int main(int argc, char **argv) {
 	}
 
 	// If no parameter was passed, we apply the default config && disable the fallback strategy
-	std::string configFile = argc == 2 ? argv[1] : DEFAULT_CONFIG;
-	
+	std::string configFile = argc == 2 ? argv[1] : DEFAULT_CONFIG;	
 	bool allowFallback = (argc == 2);
 
 //	std::vector<Server> servers;
 
+    std::string configFileContent;
+
 	try {
 		// parseConfig throws CustomException on fatal errors
-		parseConfig(configFile, allowFallback);
+		configFileContent = parseConfig(configFile, allowFallback);
+
+        std::cout << configFileContent << std::endl;
 
 		startServer();
 /*

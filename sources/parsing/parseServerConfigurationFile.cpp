@@ -50,6 +50,32 @@ static void openWithOptionalFallback(
     }
 }
 
+static std::string normalizeWhitespaces(std::string& line) {
+    bool space = false;
+    std::string processed;
+    std::string::iterator it = line.begin();
+    std::string::iterator end = line.end();
+    
+    while (it != line.end() && isspace(static_cast<unsigned char>(*it))) {
+        ++it;
+    }
+    for ( ; it != end; ++it) {
+        if (isspace(static_cast<unsigned char>(*it))) {
+            if (!space) {
+                processed += ' ';
+                space = true;
+            }
+        } else {
+            processed += *it;
+            space = false;
+        }
+    }
+    if (!processed.empty() && *processed.end() == ' ') {
+        processed.erase(processed.size() - 1);
+    }
+    return processed;
+}
+
 static std::string parseStream(std::ifstream& configFile)
 {
     Server server;
@@ -58,9 +84,9 @@ static std::string parseStream(std::ifstream& configFile)
         while (std::getline(configFile, line)) {
             if (*line.begin() == '#')
                 continue ;
+            line = normalizeWhitespaces(line);
             serverConfig.append(line);
         }
-        std::cout << serverConfig << std::endl;
 /*
         server = parseServer(serverConfig);
         if (configFile.bad()) {
@@ -82,20 +108,18 @@ static std::string parseStream(std::ifstream& configFile)
  * Signature: int parseConfig(const std::string& configFilePath, bool allowFallback)
  * Note: erreurs graves sont propagées via exceptions pour être traitées dans main.
  */
-int parseConfig(const std::string& configFilePath, bool allowFallback)
+std::string parseConfig(const std::string& configFilePath, bool allowFallback)
 {
     std::ifstream configFile;
-    // Try to open primary or fallback (may throw CustomException)
+    std::string configFileContent;
 	try {	
     	openWithOptionalFallback(configFilePath, DEFAULT_CONFIG, configFile, allowFallback);
-        parseStream(configFile);
+        configFileContent = parseStream(configFile);
 	} catch (const CustomException& e) {
 		//Logger::logMsg("Failed to open config file: %s", CONSOLE_OUTPUT, e.what());
 		throw;
 	}
-    // Parse the open stream (may throw CustomException)
-//    parseStream(configFile);
-    return SUCCESS;
+    return configFileContent;
 }
 
 /* INTUITION:
