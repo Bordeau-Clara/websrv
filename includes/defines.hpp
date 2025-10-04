@@ -17,3 +17,5 @@ static const char CYAN[] = "\x1B[36m";
 static const char DARK_GREY[] = "\x1B[90m";
 static const char LIGHTMAGENTA[] = "\x1B[95m";
 static const int GST = 4;
+
+static const char LOADING_DEFAULT[] = "Loading default config file";

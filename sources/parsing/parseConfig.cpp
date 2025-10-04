@@ -57,8 +57,9 @@ static void openWithOptionalFallback(const std::string& primary,
         if (!allowFallback) {
             throw;
         }
-        
+		Logger::logMsg(WARNING, INVALID_CONFIG_FILE); 
 		try {
+			Logger::logMsg(INFO, LOADING_DEFAULT);
             tryOpenOrThrow(fallback, out);
             std::ostringstream oss;
             oss << DEFAULT_CONFIG_MESSAGE << fallback;

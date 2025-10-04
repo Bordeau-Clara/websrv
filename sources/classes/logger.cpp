@@ -5,23 +5,20 @@
 
 LogPrio Logger::_prio = DEBUG;
 L_State Logger::_state = ON;
-std::ofstream Logger::_file_;
-std::string Logger::_file_name;
+std::ofstream Logger::_file;
+std::string Logger::_fileName;
 std::map<LogPrio, std::pair<std::string, std::ostream*> > Logger::_levels;
+std::map<LogPrio, std::string> Logger::_colors;
 bool Logger::_initialized = false;
 
 Logger::Logger(const std::string& filename) {
 
-    if (!_initialized) {
-        Logger::initLevels();
+    if (_initialized) {
+		return ;
     }
-
-    if (!filename.empty()) {
-        _file_name = filename;
-        if (!_file_.is_open()) {
-            _file_.open(_file_name.c_str(), std::ios::app);
-        }
-    }
+    Logger::initLevels();
+	Logger::initFile(filename);
+    _initialized = true;
 }
 
 Logger::~Logger() {
@@ -38,14 +35,30 @@ Logger& Logger::operator=(const Logger& other) {
     return *this;
 }
 
+void Logger::initFile(const std::string& filename) {
+    if (!_file.is_open() && !filename.empty()) {
+        _fileName = filename;
+        _file.open(_fileName.c_str(), std::ios::app);
+        if (!_file.good()) {
+			std::string error("Failed to open log file: " + _fileName);
+			logMsg(ERROR, error);
+            _file.clear();
+        }
+    }
+}
+
 void Logger::initLevels() {
-    _levels.clear();
-    _levels.insert(std::make_pair(DEBUG,   std::make_pair(std::string("DEBUG"), &std::cout)));
-    _levels.insert(std::make_pair(INFO,    std::make_pair(std::string("INFO"),  &std::cout)));
-    _levels.insert(std::make_pair(WARNING, std::make_pair(std::string("WARN"),  &std::cout)));
-    _levels.insert(std::make_pair(ERROR,   std::make_pair(std::string("ERROR"), &std::cerr)));
-    _levels.insert(std::make_pair(FATAL,   std::make_pair(std::string("FATAL"), &std::cerr)));
-    _initialized = true;
+    _levels[DEBUG]   = std::make_pair("DEBUG", &std::cout);
+    _levels[INFO]    = std::make_pair("INFO",  &std::cout);
+    _levels[WARNING] = std::make_pair("WARN",  &std::cout);
+    _levels[ERROR]   = std::make_pair("ERROR", &std::cerr);
+    _levels[FATAL]   = std::make_pair("FATAL", &std::cerr);
+
+    _colors[DEBUG]   = WHITE;
+    _colors[INFO]    = LIGHT_BLUE;
+	_colors[WARNING] = YELLOW;
+	_colors[ERROR]   = LIGHT_RED;
+	_colors[FATAL]   = RED;
 }
 
 std::string Logger::getCurrentTime() {
@@ -57,22 +70,29 @@ std::string Logger::getCurrentTime() {
     return std::string(buf);
 }
 
+std::string Logger::getColorCode(LogPrio level) {
+	return _colors[level];
+}
+
 void Logger::logMsg(LogPrio level, const std::string& message) {
 
-    if (level < DEBUG || level > FATAL || _state == OFF || level < _prio) {
+/*    if (level < DEBUG || level > FATAL || _state == OFF || level < _prio) {
         return;
     }
+	*/
 
     std::string levelStr = _levels[level].first;
+	std::string colorCode = getColorCode(level);
     std::ostream* levelStream = _levels[level].second;
 
-    std::string logEntry = getCurrentTime() + " [" + levelStr + "] " + message + "\n";
+    std::string logEntry = colorCode + getCurrentTime() + " [" + levelStr + "] " + message + RESET + "\n";
+
     if (levelStream) {
         (*levelStream) << logEntry;
     }
     
-    if (_file_.is_open()) {
-        _file_ << logEntry;
-        _file_.flush();
+    if (_file.is_open() && _file.good()) {
+        _file << logEntry;
+        _file.flush();
     }
 }

@@ -2,8 +2,11 @@
 
 int main(int argc, char **argv) {
 
+	Logger	logger;
+
 	if (argc > 2) {
-		return errorMessage(USAGE, USAGE_CODE);
+		logger.logMsg(ERROR, USAGE);
+		return USAGE_CODE;
 	}
 
 	// If no parameter was passed, we apply the default config && disable the fallback strategy
