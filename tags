@@ -17,7 +17,6 @@ BLINK	includes/defines.hpp	/^static const char BLINK[] = "\\x1b[5m";$/;"	v	typer
 CC	Makefile	/^CC = g++$/;"	m
 CONSOLE_OUTPUT	includes/Logger.hpp	/^    CONSOLE_OUTPUT,$/;"	e	enum:Mode
 CYAN	includes/defines.hpp	/^static const char CYAN[] = "\\x1B[36m";$/;"	v	typeref:typename:const char[]
-Colors	includes/Logger.hpp	/^enum Colors{$/;"	g
 CustomException	includes/customException.hpp	/^class CustomException : public std::exception {$/;"	c
 CustomException	sources/classes/configException.cpp	/^CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg)$/;"	f	class:CustomException
 CustomException	sources/classes/configException.cpp	/^CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg, co/;"	f	class:CustomException
@@ -38,9 +37,7 @@ INVALID_FILE_CODE	includes/errors.hpp	/^static const int INVALID_FILE_CODE = 2;$
 INVALID_FILE_MESSAGE	includes/errors.hpp	/^static const char INVALID_FILE_MESSAGE[] = ": invalid file.";$/;"	v	typeref:typename:const char[]
 IO_CONFIG_ERROR	includes/errors.hpp	/^static const char IO_CONFIG_ERROR[] = "I\/O error while reading config";$/;"	v	typeref:typename:const char[]
 LIGHTMAGENTA	includes/defines.hpp	/^static const char LIGHTMAGENTA[] = "\\x1B[95m";$/;"	v	typeref:typename:const char[]
-LIGHT_BLUE	includes/Logger.hpp	/^	LIGHT_BLUE,$/;"	e	enum:Colors
 LIGHT_BLUE	includes/defines.hpp	/^static const char LIGHT_BLUE[] = "\\x1B[94m";$/;"	v	typeref:typename:const char[]
-LIGHT_RED	includes/Logger.hpp	/^	LIGHT_RED,$/;"	e	enum:Colors
 LIGHT_RED	includes/defines.hpp	/^static const char LIGHT_RED[] = "\\x1B[91m";$/;"	v	typeref:typename:const char[]
 LOADING_DEFAULT	includes/defines.hpp	/^static const char LOADING_DEFAULT[] = "Loading default config file";$/;"	v	typeref:typename:const char[]
 L_State	includes/Logger.hpp	/^enum L_State{$/;"	g
@@ -59,7 +56,6 @@ OPEN_ERROR	includes/errors.hpp	/^static const char OPEN_ERROR[] = ": unable to o
 OPEN_ERROR_CODE	includes/errors.hpp	/^static const int OPEN_ERROR_CODE = 3;$/;"	v	typeref:typename:const int
 READ_ERROR	includes/errors.hpp	/^static const char READ_ERROR[] = ": error while reading file.";$/;"	v	typeref:typename:const char[]
 READ_ERROR_CODE	includes/errors.hpp	/^static const int READ_ERROR_CODE = 5;$/;"	v	typeref:typename:const int
-RED	includes/Logger.hpp	/^	RED,$/;"	e	enum:Colors
 RED	includes/defines.hpp	/^static const char RED[] = "\\x1B[31m";$/;"	v	typeref:typename:const char[]
 RESET	includes/defines.hpp	/^static const char RESET[] = "\\x1B[0m";$/;"	v	typeref:typename:const char[]
 SRCS	Makefile	/^SRCS = $(shell find sources -name "*.cpp")$/;"	m
@@ -70,12 +66,10 @@ Server	sources/classes/server.cpp	/^Server::Server(const Server& src) {$/;"	f	cl
 USAGE	includes/errors.hpp	/^static const char USAGE[] = "Usage: .\/webserv <configuration file>";$/;"	v	typeref:typename:const char[]
 USAGE_CODE	includes/errors.hpp	/^static const int USAGE_CODE = 64;$/;"	v	typeref:typename:const int
 WARNING	includes/Logger.hpp	/^	WARNING,$/;"	e	enum:LogPrio
-WHITE	includes/Logger.hpp	/^	WHITE,$/;"	e	enum:Colors
 WHITE	includes/defines.hpp	/^static const char WHITE[] = "\\x1B[37m";$/;"	v	typeref:typename:const char[]
-YELLOW	includes/Logger.hpp	/^	YELLOW,$/;"	e	enum:Colors
 YELLOW	includes/defines.hpp	/^static const char YELLOW[] = "\\x1B[33m";$/;"	v	typeref:typename:const char[]
-_colors	includes/Logger.hpp	/^	static Colors _colors;$/;"	m	class:Logger	typeref:typename:Colors
-_colors	includes/Logger.hpp	/^	static std::map<LogPrio, Colors> _colors;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,Colors>
+_colors	includes/Logger.hpp	/^    static std::map<LogPrio, std::string> _colors;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::string>
+_colors	sources/classes/logger.cpp	/^std::map<LogPrio, std::string> Logger::_colors;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::string>
 _contents	includes/server.hpp	/^	std::vector<std::string> _contents;	$/;"	m	class:Server	typeref:typename:std::vector<std::string>
 _file	includes/Logger.hpp	/^    static std::ofstream _file;$/;"	m	class:Logger	typeref:typename:std::ofstream
 _file	sources/classes/logger.cpp	/^std::ofstream Logger::_file;$/;"	m	class:Logger	typeref:typename:std::ofstream
@@ -103,7 +97,7 @@ code	includes/customException.hpp	/^    int code;$/;"	m	class:CustomException	ty
 endConnection	sources/classes/server.cpp	/^void	endConnection() {$/;"	f	typeref:typename:void
 errorMessage	sources/utilities/errors.cpp	/^int	errorMessage(const char *message, int ecode) {$/;"	f	typeref:typename:int
 fclean	Makefile	/^fclean: clean$/;"	t
-getColorCode	sources/classes/logger.cpp	/^void Logger::getColorCode(LogPrio level) {$/;"	f	class:Logger	typeref:typename:void
+getColorCode	sources/classes/logger.cpp	/^std::string Logger::getColorCode(LogPrio level) {$/;"	f	class:Logger	typeref:typename:std::string
 getCurrentTime	sources/classes/logger.cpp	/^std::string Logger::getCurrentTime() {$/;"	f	class:Logger	typeref:typename:std::string
 get_cause	sources/classes/configException.cpp	/^const std::string& CustomException::get_cause() const {$/;"	f	class:CustomException	typeref:typename:const std::string &
 get_code	sources/classes/configException.cpp	/^int CustomException::get_code() const {$/;"	f	class:CustomException	typeref:typename:int
