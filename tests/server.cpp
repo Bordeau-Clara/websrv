@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 #include <netdb.h>
 #include <string.h>
 #include <iostream>
@@ -43,6 +44,8 @@ int main() {
 		std::cerr << "I'm deaf" << std::endl;
 		exit(1);
 	}
+
+	std::vector<int> clients;
 
 	while (1) {
 
