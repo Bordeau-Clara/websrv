@@ -17,5 +17,7 @@ static const int INVALID_CONFIG_EXTENSION_CODE = 4;
 static const char READ_ERROR[] = ": error while reading file.";
 static const int READ_ERROR_CODE = 5;
 
+static const char IO_CONFIG_ERROR[] = "I/O error while reading config";
+
 // Prototype for error reporting function implemented in sources/utilities/errors.cpp
 int errorMessage(const char *message, int ecode);

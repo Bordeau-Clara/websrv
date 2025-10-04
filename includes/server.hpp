@@ -7,9 +7,10 @@ class Server {
 
 	Server();
 	~Server();
+	Server(const Server& src);
 
-	Server& operator=();
+	Server& operator=(const Server& server);
 
-	addConnection();
-	endConnection();
-}
+	void addConnection();
+	void endConnection();
+};

@@ -34,6 +34,7 @@ INVALID_CONFIG_EXTENSION	includes/errors.hpp	/^static const char INVALID_CONFIG_
 INVALID_CONFIG_EXTENSION_CODE	includes/errors.hpp	/^static const int INVALID_CONFIG_EXTENSION_CODE = 4;$/;"	v	typeref:typename:const int
 INVALID_FILE_CODE	includes/errors.hpp	/^static const int INVALID_FILE_CODE = 2;$/;"	v	typeref:typename:const int
 INVALID_FILE_MESSAGE	includes/errors.hpp	/^static const char INVALID_FILE_MESSAGE[] = ": invalid file.";$/;"	v	typeref:typename:const char[]
+IO_CONFIG_ERROR	includes/errors.hpp	/^static const char IO_CONFIG_ERROR[] = "I\/O error while reading config";$/;"	v	typeref:typename:const char[]
 LIGHTMAGENTA	includes/defines.hpp	/^static const char LIGHTMAGENTA[] = "\\x1B[95m";$/;"	v	typeref:typename:const char[]
 LIGHT_BLUE	includes/defines.hpp	/^static const char LIGHT_BLUE[] = "\\x1B[94m";$/;"	v	typeref:typename:const char[]
 LIGHT_RED	includes/defines.hpp	/^static const char LIGHT_RED[] = "\\x1B[91m";$/;"	v	typeref:typename:const char[]
@@ -58,6 +59,7 @@ RESET	includes/defines.hpp	/^static const char RESET[] = "\\x1B[0m";$/;"	v	typer
 SRCS	Makefile	/^SRCS = $(shell find sources -name "*.cpp")$/;"	m
 SUCCESS	includes/defines.hpp	/^static const int SUCCESS = 0;$/;"	v	typeref:typename:const int
 Server	includes/server.hpp	/^class Server {$/;"	c
+Server	sources/classes/server.cpp	/^Server::Server() {$/;"	f	class:Server
 USAGE	includes/errors.hpp	/^static const char USAGE[] = "Usage: .\/webserv <configuration file>";$/;"	v	typeref:typename:const char[]
 USAGE_CODE	includes/errors.hpp	/^static const int USAGE_CODE = 64;$/;"	v	typeref:typename:const int
 WARNING	includes/Logger.hpp	/^	WARNING,$/;"	e	enum:LogPrio
@@ -75,12 +77,14 @@ _prio	includes/Logger.hpp	/^    static LogPrio _prio;$/;"	m	class:Logger	typeref
 _prio	sources/classes/logger.cpp	/^LogPrio Logger::_prio = DEBUG;$/;"	m	class:Logger	typeref:typename:LogPrio
 _state	includes/Logger.hpp	/^    static L_State _state;$/;"	m	class:Logger	typeref:typename:L_State
 _state	sources/classes/logger.cpp	/^L_State Logger::_state = ON;$/;"	m	class:Logger	typeref:typename:L_State
+addConnection	sources/classes/server.cpp	/^void	addConnection() {$/;"	f	typeref:typename:void
 all	Makefile	/^all: $(NAME)$/;"	t
 buffer_flusher	sources/utilities/memory_utils.cpp	/^void	buffer_flusher(char buffer[], size_t len) {$/;"	f	typeref:typename:void
 cause	includes/customException.hpp	/^    std::string cause;$/;"	m	class:CustomException	typeref:typename:std::string
 clean	Makefile	/^clean:$/;"	t
 clientSocket	tests/client.cpp	/^int clientSocket(t_server *server) {$/;"	f	typeref:typename:int
 code	includes/customException.hpp	/^    int code;$/;"	m	class:CustomException	typeref:typename:int
+endConnection	sources/classes/server.cpp	/^void	endConnection() {$/;"	f	typeref:typename:void
 errorMessage	sources/utilities/errors.cpp	/^int	errorMessage(const char *message, int ecode) {$/;"	f	typeref:typename:int
 fclean	Makefile	/^fclean: clean$/;"	t
 getCurrentTime	sources/classes/logger.cpp	/^std::string Logger::getCurrentTime() {$/;"	f	class:Logger	typeref:typename:std::string
@@ -96,12 +100,13 @@ main	tests/epoll.cpp	/^int main() {$/;"	f	typeref:typename:int
 main	tests/miniserver/miniserver.c	/^int main () {$/;"	f	typeref:typename:int
 main	tests/server.cpp	/^int main() {$/;"	f	typeref:typename:int
 main	tests/sockets/sockets.c	/^int main(void) {$/;"	f	typeref:typename:int
-make_nested	sources/parsing/parseConfig.cpp	/^static inline CustomException make_nested(const CustomException& outer, const CustomException& i/;"	f	typeref:typename:CustomException	file:
+make_nested	sources/classes/configException.cpp	/^CustomException make_nested(const CustomException& outer, const CustomException& inner)$/;"	f	typeref:typename:CustomException
 message	includes/customException.hpp	/^    std::string message;$/;"	m	class:CustomException	typeref:typename:std::string
 messages	tests/client.html	/^    <ul id="messages"><\/ul>$/;"	I
 nested_message	includes/customException.hpp	/^    std::string nested_message;$/;"	m	class:CustomException	typeref:typename:std::string
 openWithOptionalFallback	sources/parsing/parseConfig.cpp	/^static void openWithOptionalFallback(const std::string& primary,$/;"	f	typeref:typename:void	file:
 operator =	sources/classes/logger.cpp	/^Logger& Logger::operator=(const Logger& other) {$/;"	f	class:Logger	typeref:typename:Logger &
+operator =	sources/classes/server.cpp	/^Server& operator=() {$/;"	f	typeref:typename:Server &
 parseConfig	sources/parsing/parseConfig.cpp	/^int parseConfig(const std::string& configFilePath, bool allowFallback)$/;"	f	typeref:typename:int
 parseStream	sources/parsing/parseConfig.cpp	/^static void parseStream(std::ifstream& configFile)$/;"	f	typeref:typename:void	file:
 portNumber	tests/client.cpp	/^	const char *portNumber;$/;"	m	struct:server	typeref:typename:const char *	file:
@@ -114,3 +119,4 @@ tryOpenOrThrow	sources/parsing/parseConfig.cpp	/^static void tryOpenOrThrow(cons
 what	sources/classes/configException.cpp	/^const char* CustomException::what() const throw() {$/;"	f	class:CustomException	typeref:typename:const char *
 ~CustomException	sources/classes/configException.cpp	/^CustomException::~CustomException() throw() {}$/;"	f	class:CustomException
 ~Logger	sources/classes/logger.cpp	/^Logger::~Logger() {$/;"	f	class:Logger
+~Server	sources/classes/server.cpp	/^Server::~Server() {$/;"	f	class:Server

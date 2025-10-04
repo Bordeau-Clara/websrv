@@ -36,3 +36,17 @@ const std::string& CustomException::get_cause() const {
 const std::string& CustomException::get_nested_message() const {
     return nested_message;
 }
+
+CustomException CustomException::make_nested(
+		const CustomException& outer, 
+		const CustomException& inner)
+{
+    std::string nested = outer.what();
+
+    if (!outer.get_nested_message().empty()) {
+        nested += " ";
+        nested += outer.get_nested_message();
+    }
+
+    return CustomException(std::string(inner.what()), inner.get_code(), std::string(), nested);
+}

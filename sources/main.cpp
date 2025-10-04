@@ -8,7 +8,10 @@ int main(int argc, char **argv) {
 
 	// If no parameter was passed, we apply the default config && disable the fallback strategy
 	std::string configFile = argc == 2 ? argv[1] : DEFAULT_CONFIG;
+	
 	bool allowFallback = (argc == 2);
+
+//	std::vector<Server> servers;
 
 	try {
 		// parseConfig throws CustomException on fatal errors

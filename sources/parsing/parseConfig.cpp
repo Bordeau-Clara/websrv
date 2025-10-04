@@ -27,6 +27,7 @@ static void tryOpenOrThrow(const std::string& path, std::ifstream& out) {
     out.exceptions(std::ios::goodbit);
 }
 
+/*
 // Build a nested CustomException whose message is 'inner' and whose nested_message
 // contains the outer failure context (possibly already containing a nested_message).
 static inline CustomException make_nested(const CustomException& outer, const CustomException& inner)
@@ -40,6 +41,7 @@ static inline CustomException make_nested(const CustomException& outer, const Cu
 
     return CustomException(std::string(inner.what()), inner.get_code(), std::string(), nested);
 }
+*/
 
 // Try opening primary; if it fails and allowFallback is true, try fallback.
 // If both fail, throw a CustomException that contains both messages (nested).
@@ -63,7 +65,7 @@ static void openWithOptionalFallback(const std::string& primary,
             Logger::logMsg(INFO, oss.str());
             return;
         } catch (const CustomException& fallbackEx) {
-            throw make_nested(primaryEx, fallbackEx);
+            throw CustomException::make_nested(primaryEx, fallbackEx);
         }
     }
 }
@@ -80,7 +82,7 @@ static void parseStream(std::ifstream& configFile)
 			// (void)line;
         }
         if (configFile.bad()) {
-            throw CustomException(std::string("I/O error while reading config"), READ_ERROR_CODE);
+            throw CustomException(std::string(IO_CONFIG_ERROR), READ_ERROR_CODE);
         }
     } catch (const std::ios::failure& e) {
         throw CustomException(std::string(e.what()), READ_ERROR_CODE);
