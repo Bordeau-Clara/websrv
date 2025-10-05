@@ -15,12 +15,27 @@ ConfigParser::tokenize() {
 }
 */
 
+// LOCATION -> path -> GRAMMAR_OPEN -> METHODS -> * -> GRAMMAR_CLOSE
+void parseLocation() {
+
+}
+
+
+void parseDirectives() {
+
+}
+
+// SERVER -> GRAMMAR_OPEN -> * {DIRECTIVE | LOCATION} -> GRAMMAR_CLOSE
+void parseServer() {
+
+}
+
 std::vector<Server> ConfigParser::parse() {
 	size_t serverCount = 0;
     std::vector<Server> servers;
 	std::queue<std::string> tokens;
-//	std::string::iterator it = _content.begin();
-	//std::cout << _content << std::endl;
+
+	std::cout << _content << std::endl;
 	std::stringstream ss(_content);
 	std::string tmp;
 

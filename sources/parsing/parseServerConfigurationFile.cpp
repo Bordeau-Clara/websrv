@@ -51,7 +51,7 @@ static void openWithOptionalFallback(
 }
 
 static inline bool isGrammarToken(const char c) {
-	return (c == '{' || c == '}' || c == ';');
+	return (c == GRAMMAR_OPEN || c == GRAMMAR_CLOSE || c == GRAMMAR_STOP);
 	//	|| c == ':');
 }
 

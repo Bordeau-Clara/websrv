@@ -1,8 +1,6 @@
 #pragma once
 
-static const char DEFAULT_CONFIG[] = "configs/default.conf";
-static const char DEFAULT_CONFIG_MESSAGE[] = "Using default config: ";
-
+// Return codes
 static const int SUCCESS = 0;
 
 // Color flags
@@ -18,12 +16,18 @@ static const char DARK_GREY[] = "\x1B[90m";
 static const char LIGHTMAGENTA[] = "\x1B[95m";
 static const int GST = 4;
 
-static const char LOADING_DEFAULT[] = "Loading default config file";
-
+// Configuration file
 static const char CONF_EXTENSION[] = "conf";
+static const char DEFAULT_CONFIG[] = "configs/default.conf";
+static const char LOADING_DEFAULT[] = "Loading default config file";
+static const char DEFAULT_CONFIG_MESSAGE[] = "Using default config: ";
 
 // Parsing keywords
-
 static const char SERVER_KEYWORD[] = "server";
 static const char PORT_KEYWORD[] = "port";
 static const char METHODS_KEYWORD[] = "methods";
+
+// Grammar tokens
+static const char GRAMMAR_OPEN = '{';
+static const char GRAMMAR_CLOSE = '}';
+static const char GRAMMAR_STOP = ';';
