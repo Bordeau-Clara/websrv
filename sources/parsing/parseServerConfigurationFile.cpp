@@ -50,6 +50,12 @@ static void openWithOptionalFallback(
     }
 }
 
+static inline bool isGrammarToken(const char c) {
+	return (c == '{' || c == '}' || c == ';');
+	//	|| c == ':');
+}
+
+// Supress excessive whitespaces and add some (pretty clear comment right xd)
 static std::string normalizeWhitespaces(std::string& line) {
     bool space = false;
     std::string processed;
@@ -61,7 +67,13 @@ static std::string normalizeWhitespaces(std::string& line) {
     }
     for (; it != end; ++it) {
         bool is_space = isspace(static_cast<unsigned char>(*it));
-        if (!is_space) {
+		if (isGrammarToken(*it)) {
+			if (!space)
+				processed += ' ';
+			processed += *it;
+			processed += ' ';
+			space = true;
+		} else if (!is_space) {
             processed += *it;
             space = false;
         } else if (!space) {

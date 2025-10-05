@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 16:43:59 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/10/04 17:22:22 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/10/05 07:30:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ int main(int argc, char **argv) {
     std::vector<Server> servers;
 	try {
 		configFileContent = parseConfig(configFile, allowFallback);
-
-        std::cout << configFileContent << std::endl;
-
         ConfigParser configParser(configFileContent);
         servers = configParser.parse();
         
