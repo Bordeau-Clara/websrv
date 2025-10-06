@@ -115,13 +115,13 @@ static std::vector<std::string> extractLocationBlock(
 
 
 static std::pair<int, std::string> parseErrorPage(
-		std::vector<std::string>::const_iterator& it) {
-	int	errorCode;
+		std::vector<std::string>::const_iterator it,
+		const std::vector<std::string>::const_iterator end) {
+	if (it == end)	
+		throw CustomException("Missing error code && path after 'error_page'", 1);
 	std::pair<int, std::string> pair;
-
-	errorCode = atoi((*it++).c_str());
-	pair = make_pair(errorCode, *it);
-	it++;
+	int errorCode = atoi((*it++).c_str());
+	pair = std::make_pair(errorCode, *it++);
 	return pair;
 }
 
@@ -131,10 +131,11 @@ static int parsePort(
     	const std::vector<std::string>::const_iterator end) {}
 
 
+*/
+/*
 static int parsePort(
 		std::vector<std::string>::const_iterator it,
     	const std::vector<std::string>::const_iterator end) {}
-
 
 */
 static std::string parseName(
@@ -194,7 +195,7 @@ Server ConfigParser::parseServer(const std::vector<std::string>& block) {
 		} else if (directive == "error_page") {
 			if (it == block.end())	
 				throw CustomException("Missing error code && path after 'error_page'", 1);
-			std::pair<int, std::string> tmp = parseErrorPage(it);
+			std::pair<int, std::string> tmp = parseErrorPage(it, block.end());
 			errorPages.insert(tmp);
 		} else if (directive == "client_max_body_size") {
 			if (it == block.end())	
