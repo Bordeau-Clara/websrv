@@ -34,6 +34,9 @@ class Server {
 	void print();
 	std::vector<Location> getLocations() const;	
 
+	void startServer();
+	void stopServer();
+
 	void addConnection();
 	void endConnection();
 };

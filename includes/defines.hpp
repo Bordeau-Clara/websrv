@@ -31,3 +31,8 @@ static const char METHODS_KEYWORD[] = "methods";
 static const char GRAMMAR_OPEN = '{';
 static const char GRAMMAR_CLOSE = '}';
 static const char GRAMMAR_STOP = ';';
+
+// Misc infos messages
+static const char SERVER_START[] = "Starting server";
+static const char SERVER_START_SUCESS[] = "Server started sucessfully";
+static const char SERVER_STOP[] = "Stoping server";

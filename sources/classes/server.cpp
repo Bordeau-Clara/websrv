@@ -1,4 +1,5 @@
 #include "server.hpp"
+#include "Logger.hpp"
 
 Server::Server() {}
 
@@ -57,4 +58,16 @@ void Server::print() {
 
 std::vector<Location> Server::getLocations() const {
 	return _locations;
+}
+
+void Server::startServer() {
+	Logger::logMsg(INFO, SERVER_START);
+
+	Logger::logMsg(INFO, SERVER_START_SUCESS);
+	return ;	
+}
+
+void Server::stopServer() {
+	Logger::logMsg(INFO, SERVER_STOP);
+	return ;
 }

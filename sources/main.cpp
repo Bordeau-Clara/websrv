@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 16:43:59 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/10/06 07:01:57 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/10/06 07:20:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int main(int argc, char **argv) {
         ConfigParser configParser(configFileContent);
         servers = configParser.parse();
         
+/* DEBUG
 		std::vector<Server>::iterator it = servers.begin();
 		for ( ; it != servers.end(); it++) {
 			it->print();
@@ -38,8 +39,8 @@ int main(int argc, char **argv) {
 				it->print();
 			}	
 		}
-
-		startServer();
+*/
+		startServers(servers);
 /*
 		runServer();
 	

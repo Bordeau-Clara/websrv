@@ -77,6 +77,9 @@ READ_ERROR_CODE	includes/errors.hpp	/^static const int READ_ERROR_CODE = 5;$/;"	
 RED	includes/defines.hpp	/^static const char RED[] = "\\x1B[31m";$/;"	v	typeref:typename:const char[]
 RESET	includes/defines.hpp	/^static const char RESET[] = "\\x1B[0m";$/;"	v	typeref:typename:const char[]
 SERVER_KEYWORD	includes/defines.hpp	/^static const char SERVER_KEYWORD[] = "server";$/;"	v	typeref:typename:const char[]
+SERVER_START	includes/defines.hpp	/^static const char SERVER_START[] = "Starting server";$/;"	v	typeref:typename:const char[]
+SERVER_START_SUCESS	includes/defines.hpp	/^static const char SERVER_START_SUCESS[] = "Server started sucessfully";$/;"	v	typeref:typename:const char[]
+SERVER_STOP	includes/defines.hpp	/^static const char SERVER_STOP[] = "Stoping server";$/;"	v	typeref:typename:const char[]
 SRCS	Makefile	/^SRCS = $(shell find sources -name "*.cpp")$/;"	m
 SUCCESS	includes/defines.hpp	/^static const int SUCCESS = 0;$/;"	v	typeref:typename:const int
 Server	includes/server.hpp	/^class Server {$/;"	c
@@ -165,7 +168,9 @@ re	Makefile	/^re: fclean all$/;"	t
 run	Makefile	/^run: re $/;"	t
 server	tests/client.cpp	/^typedef struct server {$/;"	s	file:
 splitServerBlocks	sources/classes/configParser.cpp	/^std::vector<std::vector<std::string> > splitServerBlocks(const std::vector<std::string>& tokens)/;"	f	typeref:typename:std::vector<std::vector<std::string>>
-startServer	sources/execution/startServer.cpp	/^void startServer() {$/;"	f	typeref:typename:void
+startServer	sources/classes/server.cpp	/^void Server::startServer() {$/;"	f	class:Server	typeref:typename:void
+startServers	sources/execution/startServer.cpp	/^void startServers(std::vector<Server>& servers) {$/;"	f	typeref:typename:void
+stopServer	sources/classes/server.cpp	/^void Server::stopServer() {$/;"	f	class:Server	typeref:typename:void
 t_server	tests/client.cpp	/^} t_server;$/;"	t	typeref:struct:server	file:
 tokenizeLine	sources/parsing/parseStream.cpp	/^static std::vector<std::string> tokenizeLine(const std::string& line) {$/;"	f	typeref:typename:std::vector<std::string>	file:
 tryOpenOrThrow	sources/parsing/parseServerConfigurationFile.cpp	/^static void tryOpenOrThrow(const std::string& path, std::ifstream& out) { $/;"	f	typeref:typename:void	file:

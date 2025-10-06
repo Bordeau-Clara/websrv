@@ -23,6 +23,6 @@
 std::vector<std::string> parseConfig(const std::string& configFilePath, bool allowFallback);
 Server parseServer(std::string serverConfig);
 
-void startServer();
+void startServers(std::vector<Server>& servers);
 void runServer();
 void exitServer();
