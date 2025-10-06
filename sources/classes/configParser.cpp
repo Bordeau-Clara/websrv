@@ -125,19 +125,17 @@ static std::pair<int, std::string> parseErrorPage(
 	return pair;
 }
 
-/*
-static int parsePort(
+static int parseClientBodySize(
 		std::vector<std::string>::const_iterator it,
-    	const std::vector<std::string>::const_iterator end) {}
+    	const std::vector<std::string>::const_iterator end) {
+	if (it == end)	
+		throw CustomException("Missing value after 'client_max_body_size'", 1);
+	int tmp = atoi((*it).c_str());
+	if (tmp < 0)
+		throw CustomException("Invalid value after 'client_max_body_size'. Can't be < 0", 1);
+	return tmp;
+}
 
-
-*/
-/*
-static int parsePort(
-		std::vector<std::string>::const_iterator it,
-    	const std::vector<std::string>::const_iterator end) {}
-
-*/
 static std::string parseName(
 		std::vector<std::string>::const_iterator it,
     	const std::vector<std::string>::const_iterator end) {
@@ -190,20 +188,11 @@ Server ConfigParser::parseServer(const std::vector<std::string>& block) {
             name = parseName(it, block.end());
         } else if (directive == "location") {
 			std::vector<std::string> locationBlock = extractLocationBlock(it, block.end());
-			Location location = parseLocation(locationBlock);
-			locations.push_back(location);
+			locations.push_back(parseLocation(locationBlock));
 		} else if (directive == "error_page") {
-			if (it == block.end())	
-				throw CustomException("Missing error code && path after 'error_page'", 1);
-			std::pair<int, std::string> tmp = parseErrorPage(it, block.end());
-			errorPages.insert(tmp);
+			errorPages.insert(parseErrorPage(it, block.end()));
 		} else if (directive == "client_max_body_size") {
-			if (it == block.end())	
-				throw CustomException("Missing value after 'client_max_body_size'", 1);
-			int tmp = atoi((*it).c_str());
-			if (tmp < 0)
-				throw CustomException("Invalid value after 'client_max_body_size'. Can't be < 0", 1);
-			client_max_body_size = tmp;
+			client_max_body_size = parseClientBodySize(it, block.end());
 		}
     }
 	Server server(port, client_max_body_size, root, locations, errorPages, name);
