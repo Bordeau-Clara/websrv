@@ -42,6 +42,7 @@ INVALID_CONFIG_FILE	includes/errors.hpp	/^static const char INVALID_CONFIG_FILE[
 INVALID_CONFIG_FORMAT	includes/errors.hpp	/^static const char INVALID_CONFIG_FORMAT[] = "Invalid config format";$/;"	v	typeref:typename:const char[]
 INVALID_FILE_CODE	includes/errors.hpp	/^static const int INVALID_FILE_CODE = 2;$/;"	v	typeref:typename:const int
 INVALID_FILE_MESSAGE	includes/errors.hpp	/^static const char INVALID_FILE_MESSAGE[] = ": invalid file.";$/;"	v	typeref:typename:const char[]
+INVALID_PORT	includes/errors.hpp	/^static const char INVALID_PORT[] = "Invalid port value. Must be between 0 && 65535 inclusive";$/;"	v	typeref:typename:const char[]
 IN_DIRECTIVE	includes/configParser.hpp	/^const char IN_DIRECTIVE = 0b100;$/;"	v	typeref:typename:const char
 IN_LOCATION	includes/configParser.hpp	/^const char IN_LOCATION = 0b10;$/;"	v	typeref:typename:const char
 IN_SERVER	includes/configParser.hpp	/^const char IN_SERVER = 0b1; $/;"	v	typeref:typename:const char
@@ -95,6 +96,7 @@ _colors	includes/Logger.hpp	/^    static std::map<LogPrio, std::string> _colors;
 _colors	sources/classes/logger.cpp	/^std::map<LogPrio, std::string> Logger::_colors;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::string>
 _content	includes/configParser.hpp	/^	std::vector<std::string> _content;$/;"	m	class:ConfigParser	typeref:typename:std::vector<std::string>
 _contents	includes/server.hpp	/^	std::vector<std::string> _contents;	$/;"	m	class:Server	typeref:typename:std::vector<std::string>
+_errorPages	includes/server.hpp	/^	std::map<int, std::string> _errorPages;$/;"	m	class:Server	typeref:typename:std::map<int,std::string>
 _file	includes/Logger.hpp	/^    static std::ofstream _file;$/;"	m	class:Logger	typeref:typename:std::ofstream
 _file	sources/classes/logger.cpp	/^std::ofstream Logger::_file;$/;"	m	class:Logger	typeref:typename:std::ofstream
 _fileName	includes/Logger.hpp	/^	static std::string _fileName;$/;"	m	class:Logger	typeref:typename:std::string
@@ -104,6 +106,7 @@ _initialized	sources/classes/logger.cpp	/^bool Logger::_initialized = false;$/;"
 _levels	includes/Logger.hpp	/^    static std::map<LogPrio, std::pair<std::string, std::ostream*> > _levels;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::pair<std::string,std::ostream * >>
 _levels	sources/classes/logger.cpp	/^std::map<LogPrio, std::pair<std::string, std::ostream*> > Logger::_levels;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::pair<std::string,std::ostream * >>
 _locations	includes/server.hpp	/^	std::vector<Location> _locations;	$/;"	m	class:Server	typeref:typename:std::vector<Location>
+_maxBodySize	includes/server.hpp	/^	unsigned int _maxBodySize;$/;"	m	class:Server	typeref:typename:unsigned int
 _methods	includes/location.hpp	/^    std::vector<std::string> _methods;$/;"	m	class:Location	typeref:typename:std::vector<std::string>
 _name	includes/server.hpp	/^	std::string	_name;$/;"	m	class:Server	typeref:typename:std::string
 _path	includes/location.hpp	/^	std::string _path;$/;"	m	class:Location	typeref:typename:std::string

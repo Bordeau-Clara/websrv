@@ -23,5 +23,7 @@ static const char INVALID_CONFIG_FILE[] = "Invalid config file";
 static const char INVALID_CONFIG_FORMAT[] = "Invalid config format";
 static const int PARSING_ERROR = 6;
 
+static const char INVALID_PORT[] = "Invalid port value. Must be between 0 && 65535 inclusive";
+
 // Prototype for error reporting function implemented in sources/utilities/errors.cpp
 int errorMessage(const char *message, int ecode);

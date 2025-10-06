@@ -5,9 +5,11 @@ Server::Server() {}
 
 Server::Server(const Server& other) {
 	_port = other._port;
+	_maxBodySize = other._maxBodySize;
 	_name = other._name;
 	_root = other._root;
 	_locations = other._locations;
+	_errorPages = other._errorPages;
 }
 
 Server::~Server() {
@@ -16,13 +18,17 @@ Server::~Server() {
 
 Server::Server(
 		unsigned short& port, 
-		std::string& name, 
+		unsigned int& maxBodySize,
 		std::string& root,
-		std::vector<Location>& locations) {
+		std::vector<Location>& locations,
+		std::map<int, std::string>& errorPages,
+		std::string name) {
 	_port = port;
+	_maxBodySize = maxBodySize;
 	_name = name;
 	_root = root;
 	_locations = locations;
+	_errorPages = errorPages;
 }
 
 Server& Server::operator=(const Server& server) {
