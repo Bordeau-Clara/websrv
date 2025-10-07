@@ -1,9 +1,10 @@
 
 # Build / object files
 /build/
-/*.o
-/*.obj
-/*.out
+*.o
+*.d
+*.obj
+*.out
 
 # Executable
 /webserv
@@ -16,6 +17,10 @@ node_modules/
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+#	$(bear -- make re) files
+	compile_commands.json
+	.cache/
 
 # OS files
 .DS_Store
