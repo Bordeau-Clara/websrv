@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "location.hpp"
+#include "Locations.hpp"
 
 class Config {
 

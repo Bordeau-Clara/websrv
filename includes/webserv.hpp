@@ -14,11 +14,11 @@
 
 #include "Logger.hpp"
 #include "errors.hpp"
-#include "server.hpp"
+#include "Server.hpp"
 #include "defines.hpp"
 #include "utilities.hpp"
-#include "configParser.hpp"
-#include "customException.hpp"
+#include "ConfigParser.hpp"
+#include "CustomException.hpp"
 
 // Forward declarations for functions implemented in sources
 //std::vector<Server>	parseConfig(const std::string& configFilePath, bool allowFallback);

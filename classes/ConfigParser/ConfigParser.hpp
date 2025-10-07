@@ -5,9 +5,9 @@
 #include <vector>
 
 #include "errors.hpp"
-#include "config.hpp"
-#include "server.hpp"
-#include "location.hpp"
+#include "Config.hpp"
+#include "Server.hpp"
+#include "Locations.hpp"
 
 class ConfigParser {
 

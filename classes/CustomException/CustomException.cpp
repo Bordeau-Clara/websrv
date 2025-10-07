@@ -1,4 +1,4 @@
-#include "customException.hpp"
+#include "CustomException.hpp"
 
 // Constructeur de base
 CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg)

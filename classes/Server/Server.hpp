@@ -5,8 +5,8 @@
 #include <string>
 #include <iostream>
 
-#include "config.hpp"
-#include "location.hpp"
+#include "Config.hpp"
+#include "Locations.hpp"
 
 class Server {
 

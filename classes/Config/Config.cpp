@@ -1,6 +1,6 @@
-#include "config.hpp"
+#include "Config.hpp"
 
-Config::~Config() {}
+Config::~Config(){}
 
 Config::Config(unsigned short port,
 				unsigned int maxBodySize,

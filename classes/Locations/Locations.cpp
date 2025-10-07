@@ -1,4 +1,5 @@
 #include "webserv.hpp"
+#include "Locations.hpp"
 
 Location::Location() {
 }

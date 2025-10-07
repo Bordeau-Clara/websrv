@@ -1,4 +1,4 @@
-#include "server.hpp"
+#include "Server.hpp"
 #include "Logger.hpp"
 
 Server::Server(const Server& other) : _config(other._config) {}
@@ -75,9 +75,9 @@ void Server::startServer() {
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 	
-	const char* port = toString(_config.getPort()).c_str();
+	std::string	port = toString(_config.getPort());
 
-	if (getaddrinfo(NULL, port, &hints, &results) != 0) {
+	if (getaddrinfo(NULL, port.c_str(), &hints, &results) != 0) {
 		std::cerr << "Can't get server's adress" << std::endl;
 		_exit(-1);
 	}
