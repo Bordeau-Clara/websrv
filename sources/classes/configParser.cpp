@@ -188,7 +188,9 @@ Server ConfigParser::parseServer(const std::vector<std::string>& block) {
 			client_max_body_size = parseClientBodySize(it, block.end());
 		}
     }
-	Server server(port, client_max_body_size, root, locations, errorPages, name);
+    // Build Config and construct Server from it
+    Config cfg(port, client_max_body_size, root, locations, std::vector<std::string>(), errorPages, name);
+    Server server(cfg);
     return server;
 }
 

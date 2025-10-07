@@ -2,8 +2,6 @@
 
 Config::~Config() {}
 
-Config::Config() {}
-
 Config::Config(unsigned short port,
 				unsigned int maxBodySize,
 				std::string root,
@@ -20,6 +18,17 @@ Config::Config(unsigned short port,
 	_name = name;
 }
 
+Config& Config::operator=(const Config& src) {
+	if (this == &src)
+		return *this;
+	_port = src._port;
+	_maxBodySize = src._maxBodySize;
+	_root =  src._root;
+	_locations =  src._locations;
+	_contents =  src._contents;
+	_errorPages =  src._errorPages;
+	return *this;
+}
 
 unsigned short Config::getPort() const {
 	return _port;

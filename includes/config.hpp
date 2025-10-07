@@ -17,8 +17,6 @@ class Config {
 	std::vector<std::string> _contents;	
 	std::map<int, std::string> _errorPages;
 
-	Config();
-
 	public :
 
 		Config(unsigned short port, 
@@ -31,7 +29,7 @@ class Config {
 
 		~Config();
 
-		Config& operator=(const Config config);
+		Config& operator=(const Config& config);
 
 		unsigned short getPort() const;
 		unsigned int getMaxBodySize() const;

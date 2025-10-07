@@ -1,43 +1,15 @@
 #include "server.hpp"
 #include "Logger.hpp"
 
-Server::Server() {}
+Server::Server(const Server& other) : _config(other._config) {}
 
-Server::Server(const Server& other) {
-	_port = other._port;
-	_maxBodySize = other._maxBodySize;
-	_name = other._name;
-	_root = other._root;
-	_locations = other._locations;
-	_errorPages = other._errorPages;
-}
+Server::~Server() {}
 
-Server::~Server() {
-
-}
-
-Server::Server(
-		unsigned short& port, 
-		unsigned int& maxBodySize,
-		std::string& root,
-		std::vector<Location>& locations,
-		std::map<int, std::string>& errorPages,
-		std::string name) {
-	_port = port;
-	_maxBodySize = maxBodySize;
-	_name = name;
-	_root = root;
-	_locations = locations;
-	_errorPages = errorPages;
-}
+Server::Server(const Config& cfg) : _config(cfg) {}
 
 Server& Server::operator=(const Server& server) {
-	if (this == &server)
-		return *this;
-	_port = server._port;
-	_name = server._name;
-	_root = server._root;
-	_locations = server._locations;
+	if (this != &server)
+		_config = server._config;
 	return *this;
 }
 
@@ -52,25 +24,27 @@ void	endConnection() {
 void Server::print() {
 
 	std::cout << "PRINTING SERVER CONFIG" << std::endl;
-	std::cout << _port << std::endl;
-	std::cout << _name << std::endl;
-	std::cout << _root << std::endl;
+	std::cout << _config.getPort() << std::endl;
+	std::cout << _config.getName() << std::endl;
+	std::cout << _config.getRoot() << std::endl;
 
-	std::map<int, std::string>::iterator i = _errorPages.begin();	
-	for ( ; i != _errorPages.end(); i++) {
+	std::map<int, std::string> errorPages= _config.getErrorPages();	
+	std::map<int, std::string>::iterator i = errorPages.begin();	
+	for ( ; i != errorPages.end(); i++) {
 		std::pair<int, std::string> tmp = *i;
 		std::cout << tmp.first << ": " << tmp.second << std::endl;
 	}
 
-	std::vector<Location>::iterator it = _locations.begin();	
-	for ( ; it != _locations.end(); it++) {
+	std::vector<Location> locs = _config.getLocations();
+	std::vector<Location>::iterator it = locs.begin();    
+	for ( ; it != locs.end(); it++) {
 		it->print();
 		std::cout << "next" << std::endl;
 	}
 }
 
 std::vector<Location> Server::getLocations() const {
-	return _locations;
+	return _config.getLocations();
 }
 
 #include <string>
@@ -100,8 +74,10 @@ void Server::startServer() {
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
+	
+	const char* port = toString(_config.getPort()).c_str();
 
-	if (getaddrinfo(NULL, toString(_port).c_str(), &hints, &results) != 0) {
+	if (getaddrinfo(NULL, port, &hints, &results) != 0) {
 		std::cerr << "Can't get server's adress" << std::endl;
 		_exit(-1);
 	}
@@ -124,7 +100,8 @@ void Server::startServer() {
 }
 
 void Server::listening() {
-	std::string msg = SERVER_LISTENING + toString(_port); 
+	std::string port = toString(_config.getPort());
+	std::string msg = SERVER_LISTENING + port; 
 	Logger::logMsg(INFO, msg);
 
 	if (listen(_socket, 1024) == -1) {
@@ -147,7 +124,7 @@ void Server::listening() {
 
 		int received;
 			
-		char buffer[_maxBodySize] = {0};
+		char buffer[_config.getMaxBodySize()] = {0};
 		received = recv(clientSocket, buffer, sizeof(buffer), 0);
 		if (received == -1) {
 			std::cerr << "I,m blind" << std::endl;

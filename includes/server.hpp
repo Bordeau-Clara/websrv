@@ -11,30 +11,11 @@
 class Server {
 
 	Config _config;
-	// ports range from 0 to 65535
-	unsigned short	_port;
-	unsigned int _maxBodySize;
-	std::string	_name;
-	std::string	_root;
-	std::vector<Location> _locations;	
-	std::vector<std::string> _contents;	
-	std::map<int, std::string> _errorPages;
-
-//	std::vector<Clients> clients;
-
 	int _socket;
-
-	Server();
 
 	public:
 
-	Server(
-			unsigned short& port, 
-			unsigned int& maxBodySize,
-			std::string& root, 
-			std::vector<Location>& locations,
-			std::map<int, std::string>& errorPages,
-			std::string name=""); 
+	Server(const Config& cfg);
 	Server(const Server& src);
 
 	~Server();
@@ -42,7 +23,10 @@ class Server {
 	Server& operator=(const Server& server);
 
 	void print();
-	std::vector<Location> getLocations() const;	
+	std::vector<Location> getLocations() const;    
+
+	// Access config
+	const Config& getConfig() const;
 
 	void startServer();
 	void stopServer();
