@@ -35,3 +35,11 @@ void Location::print() {
 		std::cout << *it << std::endl;
 	}
 }
+
+std::string Location::getPath() const {
+	return _path;
+}
+
+std::vector<std::string> Location::getMethod() const {
+	return _methods;
+}

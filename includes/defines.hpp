@@ -36,3 +36,4 @@ static const char GRAMMAR_STOP = ';';
 static const char SERVER_START[] = "Starting server";
 static const char SERVER_START_SUCESS[] = "Server started sucessfully";
 static const char SERVER_STOP[] = "Stoping server";
+static const char SERVER_LISTENING[] = "Server listening on port ";

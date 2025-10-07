@@ -4,10 +4,10 @@
 #include <string>
 
 class Location {
+	
 	std::string _path;
     std::vector<std::string> _methods;
-    //std::vector<std::string> _fileTypes;
-
+	
 	Location();
 
     public:
@@ -21,4 +21,7 @@ class Location {
     	Location& operator=(const Location& src);
 
 		void print();
+
+		std::string getPath() const;
+		std::vector<std::string> getMethod() const;
 };

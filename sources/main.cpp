@@ -6,11 +6,20 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 16:43:59 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/10/06 07:20:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/10/07 09:03:22 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "webserv.hpp"
+
+volatile sig_atomic_t g_signal_received = 0;
+
+void signal_handler(int signal) {
+    if (signal == SIGINT || signal == SIGQUIT) {
+        g_signal_received = signal;
+    }
+	exit(0);
+}
 
 int main(int argc, char **argv) {
 
@@ -20,6 +29,10 @@ int main(int argc, char **argv) {
 		logger.logMsg(ERROR, USAGE);
 		return USAGE_CODE;
 	}
+
+	signal(SIGINT, signal_handler);
+    signal(SIGQUIT, signal_handler);
+
 	std::string configFile = argc == 2 ? argv[1] : DEFAULT_CONFIG;	
 	bool allowFallback = (argc == 2);
 	std::vector<std::string> configFileContent;
