@@ -13,12 +13,13 @@ class Server {
 	unsigned int _maxBodySize;
 	std::string	_name;
 	std::string	_root;
-	// Unsure about this one
 	std::vector<Location> _locations;	
 	std::vector<std::string> _contents;	
 	std::map<int, std::string> _errorPages;
 
 //	std::vector<Clients> clients;
+
+	int _socket;
 
 	Server();
 
@@ -42,6 +43,7 @@ class Server {
 
 	void startServer();
 	void stopServer();
+	void listening();
 
 	void addConnection();
 	void endConnection();

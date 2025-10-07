@@ -21,7 +21,13 @@
 
 // Forward declarations for functions implemented in sources
 //std::vector<Server>	parseConfig(const std::string& configFilePath, bool allowFallback);
+
+// Parsing funcitons outside objects
 std::vector<std::string> parseConfig(const std::string& configFilePath, bool allowFallback);
+std::vector<std::string> parseStream(std::ifstream& configFile);
+
+//
+
 Server parseServer(std::string serverConfig);
 
 void startServers(std::vector<Server>& servers);

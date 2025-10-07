@@ -1,10 +1,5 @@
 #include "webserv.hpp"
 
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <ios>
-
 // Try to open 'path' into 'out'. If the stream throws, translate to CustomException.
 // C++98: enable stream exceptions temporarily so open() throws std::ios::failure.
 static void tryOpenOrThrow(const std::string& path, std::ifstream& out) { 
@@ -48,95 +43,6 @@ static void openWithOptionalFallback(
             throw CustomException::make_nested(primaryEx, fallbackEx);
         }
     }
-}
-
-static inline bool isGrammarToken(const char c) {
-	return (c == GRAMMAR_OPEN || c == GRAMMAR_CLOSE || c == GRAMMAR_STOP);
-}
-
-// Supress excessive whitespaces and add some (pretty clear comment right xd)
-static std::string normalizeWhitespaces(std::string& line) {
-    bool space = false;
-    std::string processed;
-    std::string::iterator it = line.begin();
-    std::string::iterator end = line.end();
-    
-    while (it != line.end() && isspace(static_cast<unsigned char>(*it))) 
-	{
-        ++it;
-    }
-    for (; it != end; ++it) {
-        bool is_space = isspace(static_cast<unsigned char>(*it));
-		if (isGrammarToken(*it)) {
-			if (!space)
-				processed += ' ';
-			processed += *it;
-			processed += ' ';
-			space = true;
-		} else if (!is_space) {
-            processed += *it;
-            space = false;
-        } else if (!space) {
-            processed += ' ';
-            space = true;
-        }
-    }
-    if (!processed.empty() && *processed.end() == ' ') {
-        processed.erase(processed.size() - 1);
-    }
-    return processed;
-}
-
-// Helper to split the logic && mnake parse stream more readable
-static void parseString(
-		std::vector<std::string>& tokens,
-		std::string& line,
-		std::string& currentToken) {
-
-	for (std::string::iterator it = line.begin(); it != line.end(); ++it) {
-		char c = *it;
-        if (isGrammarToken(c)) {
-			if (!currentToken.empty()) {
-                tokens.push_back(currentToken);
-                currentToken.clear();
-            }
-            tokens.push_back(std::string(1, c));
-        } else if (isspace(static_cast<unsigned char>(c))) {
-			if (!currentToken.empty()) {
-				tokens.push_back(currentToken);
-                currentToken.clear();
-            }
-        } else {
-			currentToken += c;
-        }
-    }
-
-    if (!currentToken.empty()) {
-        tokens.push_back(currentToken);
-    }
-}
-
-// Main aprsing loop for the config file
-static std::vector<std::string> parseStream(std::ifstream& configFile) {
-    std::vector<std::string> tokens;
-    std::string line;
-
-    try {
-        while (std::getline(configFile, line)) {
-            if (!line.empty() && *line.begin() == '#') {
-                continue;
-            }
-            line = normalizeWhitespaces(line);
-            std::string currentToken;
-			parseString(tokens, line, currentToken);
-        }
-        if (configFile.bad()) {
-            throw CustomException(std::string(IO_CONFIG_ERROR), READ_ERROR_CODE);
-        }
-    } catch (const std::ios::failure& e) {
-        throw CustomException(std::string(e.what()), READ_ERROR_CODE);
-    }
-    return tokens;
 }
 
 /*
