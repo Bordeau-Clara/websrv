@@ -111,7 +111,8 @@ void Server::listening() {
 
 	std::vector<int> clients;
 
-	while (1) {
+	while (1)
+	{
 
 		int clientSocket;
 		struct sockaddr clientAdress;
@@ -122,21 +123,29 @@ void Server::listening() {
 			_exit(1);
 		}
 
-		int received;
-			
-		char buffer[_config.getMaxBodySize()] = {0};
-		received = recv(clientSocket, buffer, sizeof(buffer), 0);
-		if (received == -1) {
-			std::cerr << "I,m blind" << std::endl;
-			_exit(1);
-		} else {
-			std::cout << "Message: " << buffer << std::endl;
+		int 			received;
+		char			buffer[BUFFER_SIZE] = {0};
+		std::string		message;
+
+		while ((received = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0)
+		//recv BUFFER_SIZE bytes
+		{
+			message.append(buffer);
+			if (message.size() > _config.getMaxBodySize())
+			//break if exceed _maxBodySize
+			{
+				std::cout << "Deal with error of body too large" << std::endl;
+				break ;
+			}
 		}
-
+		if (received == -1)
+		{
+				std::cerr << "I,m blind" << std::endl;
+				_exit(1);
+		}
+		std::cout << "Message: " << message << std::endl;
 		close(clientSocket);
-
 	}
-
 	close(_socket);
 }
 
