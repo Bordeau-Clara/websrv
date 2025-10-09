@@ -1,0 +1,18 @@
+Que pense tu de ce pseudo code pour un logiciel de serveur nginxlike:
+1-	setup le server socket
+2-	TANT QUE (WebServ on)
+	a.	TANT QUE (Accept trouve des clients sans rater)
+		i.	creer un event
+		ii.	epoll_ctl(cet event)
+	b.	epoll_wait(remplit une ToDo[MAX_EVENT] d'event a traiter)
+	c.	creer une map requete pour chaque elemeent de la todo
+	c.	TANT QUE (ToDo a au moins un element)
+		i.	TANT QUE (de 0 a dernier event de ToDo)
+			*.		Recv(buffer_size)
+			**.		remplir requete coreesepondante
+			***.	SI (Requete complete)
+				i.		parser
+				ii.		traiter
+				iii.	repondre
+				iiii.	epoll_delete(event)
+				iiiii.	pop l'element de la map et close la socket
