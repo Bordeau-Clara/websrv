@@ -38,15 +38,14 @@ B.	WHILE (Web Server on)
    - epoll_ctl(ADD, server_socket, EPOLLIN)
 
 2. TANT QUE (serveur en marche)
-   a. n = epoll_wait(epoll_fd, events, MAX_EVENTS, -1)
-
-   b. POUR CHAQUE event dans events[0..n)
-       i. SI (event.fd == server_socket)
-            - TANT QUE (accept() renvoie un client valide)
-                 * set client_socket non-bloquant
-                 * epoll_ctl(ADD, client_socket, EPOLLIN)
-            - SINON (EAGAIN ou EWOULDBLOCK) → break
-
+	a.	n = epoll_wait(epoll_fd, events, MAX_EVENTS, -1)
+	b.	TANTevents[0..n[
+    	i.	SI (event.fd == server_socket)
+	   	- TANT QUE (accept() renvoie un client valide)
+            	*	set client_socket non-bloquant
+            	*	epoll_ctl(ADD, client_socket, EPOLLIN)
+				*	SI (EAGAIN ou EWOULDBLOCK)
+					*break
        ii. SINON (event.fd est un client)
             - recv() non bloquant
             - append() dans la requête associée à ce fd
