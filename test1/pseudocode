@@ -1,7 +1,7 @@
 Que pense tu de ce pseudo code pour un logiciel de serveur nginxlike:
 1-	setup le server socket
 2-	TANT QUE (WebServ on)
-	a.	TANT QUE (Accept trouve des clients sans rater)
+	a.	TANT QUE (Accept trouve des clients sans rater avec accept non bloquant)
 		i.	creer un event
 		ii.	epoll_ctl(cet event)
 	b.	epoll_wait(remplit une ToDo[MAX_EVENT] d'event a traiter)
@@ -16,3 +16,52 @@ Que pense tu de ce pseudo code pour un logiciel de serveur nginxlike:
 				iii.	repondre
 				iiii.	epoll_delete(event)
 				iiiii.	pop l'element de la map et close la socket
+
+A.	Set up Server Socket
+B.	WHILE (Web Server on)
+	a.	accept
+	b.	Creer un event avec fd
+	c.	epoll_ctl
+	d.	epoll_wait (list[])
+	e.	WHILE (list[i] ; it)
+		1.	recv(buffer)
+		2.	Remplir requete
+		3.	IF requete complete
+			*.	Parse
+			*.	Trailer
+			*.	Send
+			*.	epoll-delete
+
+1. setup(server_socket)
+   - bind + listen
+   - set server_socket en non-bloquant
+   - epoll_ctl(ADD, server_socket, EPOLLIN)
+
+2. TANT QUE (serveur en marche)
+   a. n = epoll_wait(epoll_fd, events, MAX_EVENTS, -1)
+
+   b. POUR CHAQUE event dans events[0..n)
+       i. SI (event.fd == server_socket)
+            - TANT QUE (accept() renvoie un client valide)
+                 * set client_socket non-bloquant
+                 * epoll_ctl(ADD, client_socket, EPOLLIN)
+            - SINON (EAGAIN ou EWOULDBLOCK) → break
+
+       ii. SINON (event.fd est un client)
+            - recv() non bloquant
+            - append() dans la requête associée à ce fd
+            - SI (requête complète détectée)
+                 * parser la requête
+                 * préparer la réponse
+                 * epoll_ctl(MOD, fd, EPOLLOUT)
+            - SINON SI (recv == 0 ou erreur)
+                 * epoll_ctl(DEL, fd)
+                 * close(fd)
+                 * supprimer la requête correspondante
+
+       iii. SI (event indique EPOLLOUT)
+            - send() non bloquant de la réponse
+            - SI (tout envoyé)
+                 * epoll_ctl(DEL, fd)
+                 * close(fd)
+                 * supprimer la requête
