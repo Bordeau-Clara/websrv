@@ -6,7 +6,7 @@
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:11:18 by aykrifa           #+#    #+#             */
-/*   Updated: 2025/10/17 15:35:16 by aykrifa          ###   ########.fr       */
+/*   Updated: 2025/10/19 15:09:21 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
+
+class	Location;
 
 class	Server
 {
@@ -29,18 +31,9 @@ class	Server
 		Server& operator=(const Server& server);
 
 		void print();
-		/*std::vector<Location> getLocations() const;    */
-		/**/
-		/*// Access config*/
-		/*const Config& getConfig() const;*/
-		/**/
-		/*void startServer();*/
-		/*void stopServer();*/
-		/*void listening();*/
-		/**/
-		/*void addConnection();*/
-		/*void endConnection();*/
-		/**/
+
 	private:
-		;
+		std::string				_name;
+		std::vector<Location>	_location;
+		Location				_Template;
 };
