@@ -9,12 +9,15 @@
 #include "Server.hpp"
 #include "Locations.hpp"
 
-class ConfigParser {
+class	Server;
+class	Location;
 
-	std::vector<Config> _configs;
-	std::vector<std::string> _content;
-   // void tokenize(const std::string &content);
-
+class ConfigParser
+{
+	static std::vector<std::string>	_server;
+	static std::vector<std::string>	_location;
+	Location						_globalLocationTemplate;
+	Location						_locationTemplate;
     ConfigParser();
     ConfigParser operator=(const ConfigParser& src);
 
@@ -22,8 +25,5 @@ class ConfigParser {
 
         ConfigParser(std::vector<std::string>& configFileContent);
         ~ConfigParser();
-
-        std::vector<Server> parse();
-
 		Server parseServer(const std::vector<std::string>& block);
 };
