@@ -6,7 +6,7 @@
 #    By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 13:28:35 by cbordeau          #+#    #+#              #
-#    Updated: 2025/10/07 13:59:43 by cbordeau         ###   ########.fr        #
+#    Updated: 2025/10/21 15:44:23 by aykrifa          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,11 @@
 NAME       = WebServ
 CPP        = c++
 CPPFLAGS   = -Wall -Wextra -Werror -std=c++98 -g3
-INCLUDES   = -Iincludes -Iclasses/Config -Iclasses/ConfigParser -Iclasses/CustomException -Iclasses/Locations -Iclasses/Logger -Iclasses/Server
+INCLUDES   = -Iincludes \
+			 -Iclasses/CustomException \
+			 -Iclasses/Locations \
+			 -Iclasses/ServerSocket \
+			 -Iclasses/Server \
 
 # Dossiers
 SRC_PATH   = sources
@@ -24,17 +28,19 @@ OBJ_PATH   = objs
 # Sources
 SOURCES = \
 	$(SRC_PATH)/main.cpp \
-	$(SRC_PATH)/execution/startServer.cpp \
-	$(SRC_PATH)/parsing/parseServerConfigurationFile.cpp \
-	$(SRC_PATH)/parsing/parseStream.cpp \
-	$(SRC_PATH)/utilities/errors.cpp \
-	$(SRC_PATH)/utilities/memory_utils.cpp \
-	$(CLASS_PATH)/Config/Config.cpp \
-	$(CLASS_PATH)/ConfigParser/ConfigParser.cpp \
-	$(CLASS_PATH)/CustomException/CustomException.cpp \
-	$(CLASS_PATH)/Locations/Locations.cpp \
-	$(CLASS_PATH)/Logger/Logger.cpp \
-	$(CLASS_PATH)/Server/Server.cpp
+	$(SRC_PATH)/parsing/commentFilter.cpp \
+	$(SRC_PATH)/parsing/extractStr.cpp \
+	# $(SRC_PATH)/execution/startServer.cpp \
+	# $(SRC_PATH)/parsing/parseServerConfigurationFile.cpp \
+	# $(SRC_PATH)/parsing/parseStream.cpp \
+	# $(SRC_PATH)/utilities/errors.cpp \
+	# $(SRC_PATH)/utilities/memory_utils.cpp \
+	# $(CLASS_PATH)/Config/Config.cpp \
+	# $(CLASS_PATH)/ConfigParser/ConfigParser.cpp \
+	# $(CLASS_PATH)/CustomException/CustomException.cpp \
+	# $(CLASS_PATH)/Locations/Locations.cpp \
+	# $(CLASS_PATH)/Logger/Logger.cpp \
+	# $(CLASS_PATH)/Server/Server.cpp
 
 # Objets (même structure que SOURCES mais dans objs/)
 OBJS = $(addprefix $(OBJ_PATH)/,$(SOURCES:.cpp=.o))
