@@ -6,13 +6,13 @@
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 15:02:44 by aykrifa           #+#    #+#             */
-/*   Updated: 2025/10/20 17:27:08 by aykrifa          ###   ########.fr       */
+/*   Updated: 2025/10/21 09:16:15 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	<iostream>
+#include <iostream>
 #include <fstream>
-#include<sstream>
+#include <sstream>
 
 void	comment_filter(std::string	&str)
 {
@@ -36,6 +36,8 @@ void	comment_filter(std::string	&str)
 			// on cherche l'expression fermante a partir de la fin de l'expression ouvrante
 			eraseUntil = str.find("\n", found + 1);
 			// meme si ca trouve rien on efface de found a eraseUntil
+			// on efface de found a erase until pour pas effacer le \n
+			// un bonne evolution serait de replace par un \n
 			len = (eraseUntil == std::string::npos) ? eraseUntil : eraseUntil - found;
 			str.erase(found, len);
 			// fin du fichier on break;
