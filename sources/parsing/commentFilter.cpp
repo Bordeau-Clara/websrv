@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   erase_comments.cpp                                 :+:      :+:    :+:   */
+/*   commentFilter.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 15:02:44 by aykrifa           #+#    #+#             */
-/*   Updated: 2025/10/21 09:16:15 by aykrifa          ###   ########.fr       */
+/*   Updated: 2025/10/21 15:40:38 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
+#include <string>
 
-void	comment_filter(std::string	&str)
+void	commentFilter(std::string &str)
 {
 	size_t	found = 0;
 	size_t	slash = 0;
@@ -59,22 +57,4 @@ void	comment_filter(std::string	&str)
 				break ;
 		}
 	}
-}
-
-std::string	extract_str(std::ifstream &ifs)
-{
-	std::ostringstream	sstr;
-
-	sstr << ifs.rdbuf();
-	return (sstr.str());
-}
-
-int main(int argc, char **argv)
-{
-	(void)argc;
-	std::string		InputFile(argv[1]);
-	std::ifstream	Inputfs(InputFile.c_str());
-	std::string		str = extract_str(Inputfs);
-	comment_filter(str);
-	std::cout << str;
 }
