@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/10/20 13:37:40 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/10/21 13:23:05 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ protected:
 
 public:
 	Request();
+
+	void	appendHeader(std::string, int start, int end);
+	void	appendBody(std::string, int start, int end);
+	void	appendBuffer(std::string, int start, int end);
+	void	set_hEnd(bool value);
+	void	set_bEnd(bool value);
+
+	std::string	*getHeader();
+	std::string	*getBody();
+	bool		get_hEnd();
+	bool		get_bEnd();
 };
 
 class Get : public Request

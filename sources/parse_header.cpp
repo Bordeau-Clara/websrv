@@ -6,52 +6,43 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/10/20 16:11:34 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/10/21 13:43:32 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/epoll.h>
-#include <string>
-#include <iostream>
-#include "Request.hpp"
+#include "../includes/parsing_header.hpp"
 
-const std::string DCRLF = "\r\n\r\n";
-const std::string CRLF = "\r\n";
+void	parse_header(std::string *header, Request *request);
 
-int	move_cursor(std::string::size_type *cursor, std::string str, std::string toFind)
-{
-	*cursor = str.find(toFind);
-	if (*cursor != std::string::npos)
-		return 1;
-	else
-		return 0;
-}
-void	parse_buffer(std::string buffer, Request *request)
+
+void	parse_buffer(std::string *buffer, Request *request)
 {
 	std::string::size_type cursor = 0;
-	if (move_cursor(&cursor, buffer, DCRLF) && !request->get_hEnd())
+	//header is full in buffer
+	if (move_cursor(&cursor, *buffer, DCRLF) && !request->get_hEnd())
 	{
-		request->appendHeader(buffer, 0, cursor);
-		request->set_hEnd(1);
-		buffer.erase(0, cursor + 2);
-		if (move_cursor(&cursor, buffer, DCRLF))
+		tokenize(buffer, request, cursor, 0);
+		//body is full in buffer
+		if (move_cursor(&cursor, *buffer, DCRLF))
 		{
+			tokenize(buffer, request, cursor, 1);
+			request->appendBuffer(*buffer, 0, buffer->length());
+			//parse_body(request->getBody, request);
 		}
+		else
+			tokenize(buffer, request, 1);
+		parse_header(request->getHeader(), request);
+		//will throw, try parse_buffer catch
 	}
-}
-
-void	get_token(std::string *header, std::string *token, std::string::size_type *cursor)
-{
-	*cursor = header->find(CRLF);
-	if (*cursor != std::string::npos)
+	else if (!request->get_hEnd())
+		tokenize(buffer, request, 0);
+	if (request->get_hEnd() && !request->get_bEnd() && move_cursor(&cursor, *buffer, DCRLF))
 	{
-		token->assign(*header, 0, *cursor);
-		*cursor += 2;
-		header->erase(0, *cursor);
+		tokenize(buffer, request, cursor, 1);
+		//parse_body(request->getBody, request);
 	}
-	else
-		;
-		//throw error;
+	else if (request->get_hEnd())
+		tokenize(buffer, request, 1);
 }
 
 int	find_type(std::string str, int end)
@@ -61,7 +52,7 @@ int	find_type(std::string str, int end)
 	return -1;
 }
 
-void	parse_header(std::string *header, struct epoll_event *event)
+void	parse_header(std::string *header, Request *request)
 {
 	std::string::size_type	cursor = 0;
 	std::string				token;
