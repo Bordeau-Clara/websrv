@@ -2,6 +2,7 @@
 
 // Return codes
 static const int	SUCCESS = 0;
+static const int	ERROR = 1;
 
 // Recv buffersize
 static const unsigned int	BUFFER_SIZE = 4096;

@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 16:43:59 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/10/21 15:43:17 by aykrifa          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:46:47 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ int main(int argc, char **argv)
 	try
 	{
 		// std::vector<ServerSocket>	ServerSocket;
-		// std::vector<std::string>	token;
 		std::string	file = extractStr(argv[1]);
 		commentFilter(file);
+		std::vector<std::string>	token;
+		tokenize(token, file);
 		std::cout << file << std::endl;
         
 /* DEBUG

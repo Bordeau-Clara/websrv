@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utilities.hpp                                      :+:      :+:    :+:   */
+/*   tokenize.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/21 15:38:29 by aykrifa           #+#    #+#             */
-/*   Updated: 2025/10/21 16:45:35 by aykrifa          ###   ########.fr       */
+/*   Created: 2025/10/21 16:42:17 by aykrifa           #+#    #+#             */
+/*   Updated: 2025/10/21 17:20:40 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-
-#include <cstddef>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
-#include <sstream>
+#include <string>
 #include <vector>
 
-std::string	extractStr(char *InputFile);
-void		commentFilter(std::string &str);
-void		tokenize(std::vector<std::string> &token, std::string str);
+#define WS "\f\r\n\t\v "
+
+void	tokenize(std::vector<std::string> &token, std::string str)
+{
+	size_t cursor = 0;
+	while (true)
+	{
+		cursor = str.find_first_not_of(WS);
+		if (cursor == std::string::npos)
+			break ;
+	}
+}
