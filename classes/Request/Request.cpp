@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/10/21 14:22:10 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/14 09:45:03 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	Request::appendBody(std::string str, int start, int end)
 
 void	Request::appendBuffer(std::string str, int start, int end)
 {
-	this->_bufferNextRequest.append(str, start, end);
+	this->_buffer.append(str, start, end);
 }
 
 void	Request::set_hEnd(bool value)
@@ -41,19 +41,19 @@ void	Request::set_bEnd(bool value)
 	this->_bEnd = value;
 }
 
-std::string	*Request::getHeader()
+std::string	Request::getHeader()
 {
-	return &this->_header;
+	return this->_header;
 }
 
-std::string	*Request::getBody()
+std::string	Request::getBody()
 {
-	return &this->_body;
+	return this->_body;
 }
 
-std::string	*Request::getBuffer()
+std::string	Request::getBuffer()
 {
-	return &this->_bufferNextRequest;
+	return this->_buffer;
 }
 
 bool		Request::get_hEnd()
@@ -64,4 +64,20 @@ bool		Request::get_hEnd()
 bool		Request::get_bEnd()
 {
 	return this->_bEnd;
+}
+
+void	Request::tokenize(std::string::size_type cursor, int mode)
+{
+	if (mode == 0)
+	{
+		this->_hEnd = 1;
+		this->_header.append(this->_buffer, 0, cursor);
+		this->_buffer.erase(0, cursor + 3);
+	}
+	if (mode == 1)
+	{
+		this->_bEnd = 1;
+		this->_body.append(this->_buffer, 0, cursor);
+		this->_buffer.erase(0, cursor + 3);
+	}
 }

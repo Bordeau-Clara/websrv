@@ -6,46 +6,32 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/10/21 15:30:28 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/14 10:21:12 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing_header.hpp"
 
-void	parse_buffer(std::string *buffer, Request *request)
+void	parse_buffer(Request *request)
 {
 	std::string::size_type cursor = 0;
 	//header is full in buffer
-	if (move_cursor(&cursor, *buffer, DCRLF) && !request->get_hEnd())
+	if (move_cursor(&cursor, request->getBuffer(), DCRLF) && !request->get_hEnd())
 	{
-		tokenize(buffer, request, cursor, HEADER);
+		request->tokenize(cursor, HEADER);
 		//body is full in buffer
-		if (move_cursor(&cursor, *buffer, DCRLF))
+		if (move_cursor(&cursor, request->getBuffer(), DCRLF))
 		{
-			tokenize(buffer, request, cursor, BODY);
-			request->appendBuffer(*buffer, 0, buffer->length());
-			buffer->erase(0, buffer->length());
-			//parse_body(request->getBody, request);
+			request->tokenize(cursor, BODY);
 		}
-		else
-			tokenize(buffer, request, BODY);
-		// parse_header(request->getHeader(), request);
-		//will throw, try parse_buffer catch
 	}
-	else if (!request->get_hEnd())
-		tokenize(buffer, request, HEADER);
-	if (request->get_hEnd() && !request->get_bEnd() && move_cursor(&cursor, *buffer, DCRLF))
+	if (request->get_hEnd() && !request->get_bEnd() && move_cursor(&cursor, request->getBuffer(), DCRLF))
 	{
-		tokenize(buffer, request, cursor, BODY);
-		request->appendBuffer(*buffer, 0, buffer->length());
-		buffer->erase(0, buffer->length());
-		//parse_body(request->getBody, request);
+		request->tokenize(cursor, BODY);
 	}
-	else if (request->get_hEnd())
-		tokenize(buffer, request, BODY);
-	std::cout << "header is : " << *request->getHeader() << std::endl;
-	std::cout << "body is : " << *request->getBody() << std::endl;
-	std::cout << "buffer is : " << *request->getBuffer() << std::endl;
+	std::cout << "header is : " << request->getHeader() << std::endl;
+	std::cout << "body is : " << request->getBody() << std::endl;
+	std::cout << "buffer is : " << request->getBuffer() << std::endl;
 }
 
 // int	find_type(std::string str, int end)

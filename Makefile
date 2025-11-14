@@ -6,7 +6,7 @@
 #    By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 13:28:35 by cbordeau          #+#    #+#              #
-#    Updated: 2025/10/21 14:02:45 by cbordeau         ###   LAUSANNE.ch        #
+#    Updated: 2025/11/14 09:54:37 by cbordeau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,10 +26,10 @@ SOURCES = \
 	$(SRC_PATH)/main.cpp \
 	$(SRC_PATH)/parse_header.cpp \
 	$(SRC_PATH)/parse_header_utils.cpp \
-	$(CLASS_PATH)/Request/Request.cpp \
-	$(CLASS_PATH)/Request/Get.cpp \
-	$(CLASS_PATH)/Request/Post.cpp \
-	$(CLASS_PATH)/Request/Delete.cpp 
+	$(CLASS_PATH)/Request/Request.cpp
+	# $(CLASS_PATH)/Request/Get.cpp \
+	# $(CLASS_PATH)/Request/Post.cpp \
+	# $(CLASS_PATH)/Request/Delete.cpp 
 
 # Objets (même structure que SOURCES mais dans objs/)
 OBJS = $(addprefix $(OBJ_PATH)/,$(SOURCES:.cpp=.o))

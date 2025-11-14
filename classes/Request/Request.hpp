@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/10/21 14:00:31 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/14 09:54:25 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ protected:
 	
 	std::string	_header;
 	std::string	_body;
-	std::string	_bufferNextRequest;
+	std::string	_buffer;
 
 	bool _hEnd;
 	bool _bEnd;
@@ -55,40 +55,42 @@ public:
 	void	set_hEnd(bool value);
 	void	set_bEnd(bool value);
 
-	std::string	*getHeader();
-	std::string	*getBody();
-	std::string	*getBuffer();
+	std::string	getHeader();
+	std::string	getBody();
+	std::string	getBuffer();
 	bool		get_hEnd();
 	bool		get_bEnd();
+
+	void		tokenize(std::string::size_type cursor, int mode);
 };
 
-class Get : public Request
-{
-private:
-	bool			_ifModif;
-	std::string	_ifModifiedSince;
-public:
-	Get();
-};
-
-class Post : public Request
-{
-private:
-	int			_expect;
-	std::string	_contentType;
-	int			_contentLength;
-	bool		_transfer_encoding;
-
-public:
-	Post();
-};
-
-class Delete : public Request
-{
-private:
-	std::string	_contentType;
-	int			_contentLength;
-	bool		_transfer_encoding;
-public:
-	Delete();
-};
+// class Get : public Request
+// {
+// private:
+// 	bool			_ifModif;
+// 	std::string	_ifModifiedSince;
+// public:
+// 	Get();
+// };
+//
+// class Post : public Request
+// {
+// private:
+// 	int			_expect;
+// 	std::string	_contentType;
+// 	int			_contentLength;
+// 	bool		_transfer_encoding;
+//
+// public:
+// 	Post();
+// };
+//
+// class Delete : public Request
+// {
+// private:
+// 	std::string	_contentType;
+// 	int			_contentLength;
+// 	bool		_transfer_encoding;
+// public:
+// 	Delete();
+// };

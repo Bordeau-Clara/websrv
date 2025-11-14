@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 14:22:22 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/10/21 17:08:12 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/14 10:00:34 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@ int	main()
 		std::string header;
 		
 		Request request = Request();
-		header.append("GET index.html HTTP/1.1\r\n");
-		header.append("Accept:text/html\r\n\r\n");
-		header.append("body\r\n\r\n");
-		header.append("POST index.html HTTP/1.1\r\n");
+		header = "GET index.html HTTP/1.1\r\n";
+		request.appendBuffer(header, 0, header.length());
+		header = "Accept:text/html\r\n\r\n";
+		request.appendBuffer(header, 0, header.length());
+		header = "body\r\n\r\n";
+		request.appendBuffer(header, 0, header.length());
+		header = "POST index.html HTTP/1.1\r\n";
+		request.appendBuffer(header, 0, header.length());
 
 		// std::string::iterator it = header.begin();
 		// it += 5;
@@ -34,21 +38,48 @@ int	main()
 		// std::string news(it.base());
 
 
-		parse_buffer(&header, &request);
+		parse_buffer(&request);
 	}
 	std::cout << "==========================" << std::endl;
 	{
 		std::string header;
 		Request request = Request();
-		header.append("GET index.html HTTP/1.1\r\n");
-		parse_buffer(&header, &request);
+		header = "GET index.html HTTP/1.1\r\n";
+		request.appendBuffer(header, 0, header.length());
+		parse_buffer(&request);
 		std::cout << "-------------" << std::endl;
-		header.append("Accept:text/html\r\n\r\n");
-		parse_buffer(&header, &request);
+		header = "Accept:text/html\r\n\r\n";
+		request.appendBuffer(header, 0, header.length());
+		parse_buffer(&request);
 		std::cout << "-------------" << std::endl;
-		header.append("body\r\n\r\n");
-		header.append("POST index.html HTTP/1.1\r\n");
+		header = "body\r\n\r\n";
+		request.appendBuffer(header, 0, header.length());
+		header = "POST index.html HTTP/1.1\r\n";
+		request.appendBuffer(header, 0, header.length());
 
-		parse_buffer(&header, &request);
+		parse_buffer(&request);
+	}
+	std::cout << "==========================" << std::endl;
+	{
+		std::string header;
+		Request request = Request();
+		header = "GET index.html HTTP/1.1\r\n";
+		request.appendBuffer(header, 0, header.length());
+		parse_buffer(&request);
+		std::cout << "-------------" << std::endl;
+		header = "Accept:text/html\r\n";
+		request.appendBuffer(header, 0, header.length());
+		parse_buffer(&request);
+		std::cout << "-------------" << std::endl;
+		header = "\r\n";
+		request.appendBuffer(header, 0, header.length());
+		parse_buffer(&request);
+		std::cout << "-------------" << std::endl;
+		header = "body\r\n\r\n";
+		request.appendBuffer(header, 0, header.length());
+		header = "POST index.html HTTP/1.1\r\n";
+		request.appendBuffer(header, 0, header.length());
+
+		parse_buffer(&request);
 	}
 }
