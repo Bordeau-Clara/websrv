@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 14:24:44 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 15:26:29 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 17:09:40 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ void	Request::parseHost(std::string str)
 
 void	Request::parseAccept(std::string str)
 {
+	//content types the sender is able to anderstand
+	//the server uses content negociation to select one of the proposals
+	//inform the client with Content-Type response
+	//
+	//stocker dans un vecteur de map int string
+	//format xxx, xxx;q=nb.nb
 	std::cout << "Accept is : " << str << std::endl;
 }
 
