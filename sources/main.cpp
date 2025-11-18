@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 14:22:22 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 11:13:39 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 15:29:29 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int	main()
 {
-	HeaderParsing::initFields();
+	Request::initFields();
 
 	//buffer avec header entier + body entier + bout de next buffer
 	{

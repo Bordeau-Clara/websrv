@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 11:51:38 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 15:28:44 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	find_type(std::string str)
 	for (int i = 0; i < 3; i++)
 	{
 	  // std::cout << "Field at index is "<< HeaderParsing::fields[index][i] << std::endl;
-		if (!HeaderParsing::fields[index][i].empty() && !HeaderParsing::fields[index][i].compare(str))
+		if (!Request::fields[index][i].empty() && !Request::fields[index][i].compare(str))
 			return index + i;
 	}
 	std::cout << "Wrong index is " << index << std::endl;

@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 13:39:53 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 10:11:03 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 15:29:12 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <sys/epoll.h>
 #include <string>
 #include <iostream>
-#include "../classes/HeaderParser/HeaderParser.hpp"
+#include "../classes/Request/Request.hpp"
 
 // const std::string DCRLF = "\r\n\r\n";
 // const std::string CRLF = "\r\n";

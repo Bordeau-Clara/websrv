@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 11:38:03 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 15:38:42 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string>
 const std::string DCRLF = "\r\n\r\n";
 const std::string CRLF = "\r\n";
+const std::string OWS = " \t";
 
 typedef enum method
 {
@@ -50,6 +51,10 @@ protected:
 
 public:
 	Request();
+
+	static void initFields();
+	static std::string fields[207][3];
+	static void (Request::*ptr[210])(std::string);
 
 	void		appendHeader(std::string, int start, int end);
 	void		appendBody(std::string, int start, int end);

@@ -6,11 +6,11 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 14:24:44 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 11:39:27 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 15:26:29 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HeaderParser.hpp"
+#include "Request.hpp"
 #include <iostream>
 
 void	Request::parseHost(std::string str)

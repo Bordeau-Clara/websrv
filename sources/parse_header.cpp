@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 11:50:00 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 15:29:53 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	parse_header(Request *request)
 		// std::cout << "header after first getField is " << request->getHeader() << std::endl;
 		request->getToken(&token, &cursor);
 		// std::cout << "Token is " << token << std::endl;
-		if (HeaderParsing::ptr[type] != NULL)
-			(request->*HeaderParsing::ptr[type])(token);
+		if (Request::ptr[type] != NULL)
+			(request->*Request::ptr[type])(token);
 		else
 			std::cout << "Invalid index is " << type << std::endl;
 		

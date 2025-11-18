@@ -6,7 +6,7 @@
 #    By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 13:28:35 by cbordeau          #+#    #+#              #
-#    Updated: 2025/11/17 14:46:27 by cbordeau         ###   LAUSANNE.ch        #
+#    Updated: 2025/11/18 15:30:35 by cbordeau         ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,8 @@ SOURCES = \
 	$(SRC_PATH)/parse_header.cpp \
 	$(SRC_PATH)/parse_header_utils.cpp \
 	$(CLASS_PATH)/Request/Request.cpp \
-	$(CLASS_PATH)/HeaderParser/HeaderParser.cpp \
-	$(CLASS_PATH)/HeaderParser/FieldsParse.cpp 
+	$(CLASS_PATH)/Request/HeaderParser.cpp \
+	$(CLASS_PATH)/Request/FieldsParse.cpp 
 	# $(CLASS_PATH)/Request/Get.cpp \
 	# $(CLASS_PATH)/Request/Post.cpp \
 	# $(CLASS_PATH)/Request/Delete.cpp 
