@@ -21,6 +21,7 @@ SRC_FILES = \
 # Classes listing
 CLASS_FILES = \
 	ArgChecker/ArgChecker.cpp \
+	ConfigParser/ConfigParser.cpp \
 
 CLASSES = $(addprefix $(CLASS_DIR)/, $(CLASS_FILES))
 SOURCES = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
@@ -29,6 +30,7 @@ SOURCES = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
 INC_DIR = \
 		  includes \
 		  $(CLASS_DIR)/ArgChecker \
+		  $(CLASS_DIR)/ConfigParser \
 	
 ##################################################################################
 #compilation
@@ -50,12 +52,14 @@ all: $(NAME)
 
 # LINK
 $(NAME): $(OBJS)
+	@echo "[DEBUG] Linking into $@ ..."
 	$(CC) $(OBJS) \
 		-o $@
 
 #compilation
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
+	@echo "[DEBUG] Compiling $< ..."
 	$(CC) -c $(CFLAGS) $(INCLUDES) \
 		$< -o $@
 

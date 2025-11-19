@@ -10,13 +10,14 @@
       "-g3",
       "-Iincludes",
       "-Iclasses/ArgChecker",
+      "-Iclasses/ConfigParser",
       "-o",
-      "build/classes/ArgChecker/ArgChecker.o",
-      "classes/ArgChecker/ArgChecker.cpp"
+      "build/classes/ConfigParser/ConfigParser.o",
+      "classes/ConfigParser/ConfigParser.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/ArgChecker/ArgChecker.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/ArgChecker/ArgChecker.o"
+    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
+    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/ConfigParser.cpp",
+    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/ConfigParser.o"
   },
   {
     "arguments": [
@@ -29,12 +30,33 @@
       "-g3",
       "-Iincludes",
       "-Iclasses/ArgChecker",
+      "-Iclasses/ConfigParser",
+      "-o",
+      "build/classes/ArgChecker/ArgChecker.o",
+      "classes/ArgChecker/ArgChecker.cpp"
+    ],
+    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
+    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ArgChecker/ArgChecker.cpp",
+    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ArgChecker/ArgChecker.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-std=c++98",
+      "-g3",
+      "-Iincludes",
+      "-Iclasses/ArgChecker",
+      "-Iclasses/ConfigParser",
       "-o",
       "build/sources/main.o",
       "sources/main.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/sources/main.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/sources/main.o"
+    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
+    "file": "/home/aykrifa/Desktop/repo/webserv/code/sources/main.cpp",
+    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/sources/main.o"
   }
 ]

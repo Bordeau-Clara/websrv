@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   extractStr.cpp                                     :+:      :+:    :+:   */
+/*   ConfigParser.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/21 15:30:48 by aykrifa           #+#    #+#             */
-/*   Updated: 2025/10/21 15:41:52 by aykrifa          ###   ########.fr       */
+/*   Created: 2025/11/19 12:28:02 by aykrifa           #+#    #+#             */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+#include <vector>
+#include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
 
-std::string	extractStr(char *InputFile)
+class	ConfigParser
 {
-	std::ifstream		ifs(InputFile);
-	std::ostringstream	sstr;
+	public:
+		static void	run(char *);
 
-	sstr << ifs.rdbuf();
-	return (sstr.str());
-}
+	private:
+		ConfigParser(){}
+		~ConfigParser(){}
+};

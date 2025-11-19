@@ -17,7 +17,7 @@ int	main(int argc, char **argv)
 	try
 	{
 		ArgChecker::checkargs(argc);
-		ArgChecker::;
+		ConfigParser::run(argv[1]);
 	}
 	catch (std::exception	&e)
 	{
