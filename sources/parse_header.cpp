@@ -6,12 +6,12 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 15:29:53 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/19 17:37:23 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing_header.hpp"
-#include "../classes/HeaderParser/HeaderParser.hpp"
+#include "../classes/Request/Request.hpp"
 #include <iostream>
 
 void	parse_buffer(Request *request)
@@ -47,9 +47,11 @@ void	parse_header(Request *request)
 	if (request->getHeader().empty())
 		return;
 	request->getToken(&token, &cursor);
+	//parse_request(token, event);
+	//if CGI parse_header in cgi mode
+	
 	// std::cout << "header after first getToken is " << request->getHeader() << std::endl;
 	// std::cout << "Token is " << token << std::endl;
-	//parse_request(token, event);
 	int type;
 	while (1)
 	{

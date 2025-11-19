@@ -6,12 +6,11 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 15:28:44 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/19 12:41:41 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Request.hpp"
-#include "../HeaderParser/HeaderParser.hpp"
 #include <cstring>
 #include <iostream>
 #include <strings.h>
