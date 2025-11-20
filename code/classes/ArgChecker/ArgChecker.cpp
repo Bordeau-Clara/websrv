@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #include "ArgChecker.hpp"
+#define FALLBACK 0
 
 void	ArgChecker::checkargs(int argc)
 {
@@ -17,7 +18,7 @@ void	ArgChecker::checkargs(int argc)
 	{
 		throw (TooMuchArgs());
 	}
-	if (argc < 2)
+	if (argc < 2 && !FALLBACK)
 	{
 		throw (TooFewArgs());
 	}

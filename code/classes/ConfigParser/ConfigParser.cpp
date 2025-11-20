@@ -70,7 +70,7 @@ static std::string	extractStr(const char *file)
 	return (ostrs.str());
 }
 
-void	tokenize(std::vector<std::string> &token, std::string str, std::string sep)
+void	tokenize(std::vector<std::string> &token, std::string str, std::string sep, std::string solotok)
 {
 	size_t	cursor = 0;
 	while (true)

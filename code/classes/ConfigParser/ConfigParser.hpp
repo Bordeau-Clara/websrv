@@ -15,6 +15,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "tokens.hpp"
 
 class	ConfigParser
 {
