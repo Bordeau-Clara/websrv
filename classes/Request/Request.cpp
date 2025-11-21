@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/21 14:18:41 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/21 14:46:22 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,25 @@ void	Request::fillChunkedBody()
 {
 	std::string line;
 	unsigned long chunk_size;
+	std::string::size_type cursor = 0;
 
-
-	line.assign(this->_buffer.substr(0, this->_buffer.find(CRLF)));
-	chunk_size = hexToLong(line);
-	(void)chunk_size;
+	while(1)
+	{
+		cursor = this->_buffer.find(CRLF);
+		if (cursor != std::string::npos)
+		{
+			line.assign(this->_buffer.substr(0, cursor));
+			this->_buffer.erase(0, line.size() + 1);
+		}
+		else
+			break;
+		chunk_size = hexToLong(line);
+		if (this->_buffer.size() >= chunk_size + 2)
+		{
+			//put chunk_size octets in body
+			//erase chunk_size octet + 2 from buffer
+		}
+		else
+			break;
+	}
 }
