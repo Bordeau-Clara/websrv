@@ -6,16 +6,18 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 15:38:42 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/21 14:18:10 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+#include <execution>
 #include <string>
-const std::string DCRLF = "\r\n\r\n";
-const std::string CRLF = "\r\n";
-const std::string OWS = " \t";
+const std::string	DCRLF = "\r\n\r\n";
+const std::string	CRLF = "\r\n";
+const std::string	OWS = " \t";
+const bool			CHUNKED = 1;
 
 typedef enum method
 {
@@ -23,98 +25,80 @@ typedef enum method
 	POST,
 	DELETE,
 	OTHER,
-} methode;
+} method;
+
+typedef enum parsing_state
+{
+	HEADER = 0,
+	BODY,
+	SEND,
+} parsing_state;
 
 class Request
 {
-protected:
-	int			_start; //pour chuncked request, pour verifier le temps
+private:
+	int					_start; //pour chuncked request, pour verifier le temps
 	
-	std::string	_header;
-	std::string	_body;
-	std::string	_buffer;
+	std::string			_header;
+	std::string			_body;
+	std::string			_buffer;
 
-	bool		_hEnd;
-	bool		_bEnd;
+	parsing_state		_state;
 
-	method 		_method;
-	std::string	_uri;
-
-	std::string	_host;
-	std::string	_accept;
-	std::string	_acceptEncoding;
-	std::string	_cookies;
-	std::string	_language;
-	std::string	_authorization;
-
-	bool		_connection;
+	method 				_method;
+	std::string			_uri;
 
 public:
 	Request();
 
-	static void initFields();
-	static std::string fields[207][3];
-	static void (Request::*ptr[210])(std::string);
+	static std::string	fields[207][3];
+	static void			(Request::*fctField[210])(std::string);
+	static void			initFields();
 
-	void		appendHeader(std::string, int start, int end);
-	void		appendBody(std::string, int start, int end);
-	void		appendBuffer(std::string, int start, int end);
-	void		set_hEnd(bool value);
-	void		set_bEnd(bool value);
+	void				setState(parsing_state value);
 
-	std::string	getHeader();
-	std::string	getBody();
-	std::string	getBuffer();
-	bool		get_hEnd();
-	bool		get_bEnd();
+	std::string			getHeader();
+	std::string			getBody();
+	std::string			getBuffer();
+	parsing_state		getState();
 
-	void		tokenize(std::string::size_type cursor, int mode);
-	void		getToken(std::string *header, std::string::size_type *cursor);
-	int			getField(std::string::size_type *cursor);
+	void				fillHeader(std::string::size_type cursor);
+	void				fillBody();
+	void				fillChunkedBody();
+	void				appendBuffer(std::string, int start, int end);
 
-	void		parseHost(std::string);
-	void		parseAccept(std::string);
-	void		parseAcceptEncoding(std::string);
-	void		parseCookies(std::string);
-	void		parseLanguage(std::string);
-	void		parseAuthorization(std::string);
-	void		parseConnection(std::string);
+	void				getToken(std::string *header, std::string::size_type *cursor);
+	int					getField(std::string::size_type *cursor);
 
-	void		parseIfModifiedSince(std::string);
-
-	void		parseExpect(std::string);
-	void		parseContentType(std::string);
-	void		parseContentLength(std::string);
-	void		parseTransferEncoding(std::string);
-};
-
-class Get : public Request
-{
 private:
-	bool		_ifModif;
-	std::string	_ifModifiedSince;
-public:
-	Get();
-};
-
-class Post : public Request
-{
-private:
-	int			_expect;
-	std::string	_contentType;
-	int			_contentLength;
-	bool		_transfer_encoding;
+	std::string			_host;
+	std::string			_accept;
+	std::string			_acceptEncoding;
+	std::string			_cookies;
+	std::string			_language;
+	std::string			_authorization;
+	std::string			_ifModifiedSince;
+	std::string			_contentType;
+	int					_expect;
+	unsigned long		_contentLength;
+	bool				_transfer_encoding;
+	bool				_connection;
+	bool				_ifModif;
 
 public:
-	Post();
-};
 
-class Delete : public Request
-{
-private:
-	std::string	_contentType;
-	int			_contentLength;
-	bool		_transfer_encoding;
-public:
-	Delete();
+	bool				getTransferEncoding();
+
+	void				parseHost(std::string);
+	void				parseAccept(std::string);
+	void				parseAcceptEncoding(std::string);
+	void				parseCookies(std::string);
+	void				parseLanguage(std::string);
+	void				parseAuthorization(std::string);
+	void				parseConnection(std::string);
+	void				parseIfModifiedSince(std::string);
+	void				parseExpect(std::string);
+	void				parseContentType(std::string);
+	void				parseContentLength(std::string);
+	void				parseTransferEncoding(std::string);
 };

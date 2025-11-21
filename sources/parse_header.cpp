@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/20 08:09:16 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/21 14:17:02 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,18 @@ void	parse_buffer(Request *request)
 {
 	std::string::size_type cursor = 0;
 	//header is full in buffer
-	if (move_cursor(&cursor, request->getBuffer(), DCRLF) && !request->get_hEnd())
+	if (request->getState() == HEADER && move_cursor(&cursor, request->getBuffer(), DCRLF))
 	{
-		request->tokenize(cursor, HEADER);
+		request->fillHeader(cursor);
 		parse_header(request);
-		//body is full in buffer
-		if (move_cursor(&cursor, request->getBuffer(), DCRLF))
-		{
-			request->tokenize(cursor, BODY);
-		}
 	}
-	if (request->get_hEnd() && !request->get_bEnd() && move_cursor(&cursor, request->getBuffer(), DCRLF))
+	if (request->getState() == BODY)
 	{
-		request->tokenize(cursor, BODY);
+		//fill body according to content-length and transfer-encoding (chunked)
+		if (request->getTransferEncoding() == CHUNKED)
+			request->fillChunkedBody();
+		else
+			request->fillBody();
 	}
 	std::cout << "++++++++++++++++" << std::endl;
 	std::cout << "header is : " << request->getHeader() << std::endl;
@@ -43,7 +42,6 @@ void	parse_header(Request *request)
 	std::string::size_type	cursor = 0;
 	std::string				token;
 
-	// std::cout << "header at the beginning is " << request->getHeader() << std::endl;
 	if (request->getHeader().empty())
 		return;
 	request->getToken(&token, &cursor);
@@ -51,8 +49,6 @@ void	parse_header(Request *request)
 	//if CGI parse_header in cgi mode
 	//state CGI but same parsing function?
 	
-	// std::cout << "header after first getToken is " << request->getHeader() << std::endl;
-	// std::cout << "Token is " << token << std::endl;
 	int type;
 	while (1)
 	{
@@ -65,7 +61,6 @@ void	parse_header(Request *request)
 		if (cursor != std::string::npos)
 		{
 			type = request->getField(&cursor);
-			// std::cout << "Type is " << type << std::endl;
 		}
 		else
 		{
@@ -78,11 +73,9 @@ void	parse_header(Request *request)
 			std::cout << "Type = -1" << std::endl;
 			break;
 		}
-		// std::cout << "header after first getField is " << request->getHeader() << std::endl;
 		request->getToken(&token, &cursor);
-		// std::cout << "Token is " << token << std::endl;
-		if (Request::ptr[type] != NULL)
-			(request->*Request::ptr[type])(token);
+		if (Request::fctField[type] != NULL)
+			(request->*Request::fctField[type])(token);
 		else
 			std::cout << "Invalid index is " << type << std::endl;
 		

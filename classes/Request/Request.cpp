@@ -6,27 +6,18 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/19 12:41:41 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/21 14:18:41 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include <cstdlib>
 #include <cstring>
+#include <string>
 #include <iostream>
-#include <strings.h>
 
-Request::Request() : _hEnd(0), _bEnd(0), _method(OTHER), _connection(1)
+Request::Request() : _state(HEADER), _method(OTHER), _connection(1)
 {
-}
-
-void	Request::appendHeader(std::string str, int start, int end)
-{
-	this->_header.append(str, start, end);
-}
-
-void	Request::appendBody(std::string str, int start, int end)
-{
-	this->_body.append(str, start, end);
 }
 
 void	Request::appendBuffer(std::string str, int start, int end)
@@ -34,55 +25,32 @@ void	Request::appendBuffer(std::string str, int start, int end)
 	this->_buffer.append(str, start, end);
 }
 
-void	Request::set_hEnd(bool value)
+void	Request::setState(parsing_state value)
 {
-	this->_hEnd = value;
+	this->_state = value;
 }
 
-void	Request::set_bEnd(bool value)
+void	Request::fillHeader(std::string::size_type cursor)
 {
-	this->_bEnd = value;
+	this->_state = BODY;
+	this->_header.append(this->_buffer, 0, cursor + 2);
+	this->_buffer.erase(0, cursor + 3);
 }
 
-std::string	Request::getHeader()
+void	Request::fillBody()
 {
-	return this->_header;
-}
-
-std::string	Request::getBody()
-{
-	return this->_body;
-}
-
-std::string	Request::getBuffer()
-{
-	return this->_buffer;
-}
-
-bool		Request::get_hEnd()
-{
-	return this->_hEnd;
-}
-
-bool		Request::get_bEnd()
-{
-	return this->_bEnd;
-}
-
-void	Request::tokenize(std::string::size_type cursor, int mode)
-{
-	if (mode == 0)
+	if ((this->_body.size() + this->_buffer.size()) <= this->_contentLength)
 	{
-		this->_hEnd = 1;
-		this->_header.append(this->_buffer, 0, cursor + 2);
-		this->_buffer.erase(0, cursor + 3);
+		this->_body.append(this->_buffer, 0, this->_buffer.size());
+		this->_buffer.erase(0, this->_buffer.size());
 	}
-	if (mode == 1)
+	else
 	{
-		this->_bEnd = 1;
-		this->_body.append(this->_buffer, 0, cursor + 2);
-		this->_buffer.erase(0, cursor + 3);
+		this->_body.append(this->_buffer, 0, this->_contentLength - this->_body.size());
+		this->_buffer.erase(0, this->_contentLength - this->_body.size());
 	}
+	if (this->_body.size() == this->_contentLength)
+		this->_state = SEND;
 }
 
 void	Request::getToken(std::string *token, std::string::size_type *cursor)
@@ -142,4 +110,24 @@ int	Request::getField(std::string::size_type *cursor)
 	this->_header.erase(0, *cursor);
 	// *cursor = this->_header.find(CRLF);
 	return type;
+}
+
+unsigned long hexToLong(std::string line)
+{
+	unsigned long chunk_size;
+	const char* semicolon = std::strchr(line.data(), ';');
+
+	chunk_size = std::strtoul(line.data(), semicolon ? (char**)&semicolon : NULL, 16);
+
+	return chunk_size;
+}
+void	Request::fillChunkedBody()
+{
+	std::string line;
+	unsigned long chunk_size;
+
+
+	line.assign(this->_buffer.substr(0, this->_buffer.find(CRLF)));
+	chunk_size = hexToLong(line);
+	(void)chunk_size;
 }

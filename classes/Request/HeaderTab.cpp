@@ -6,14 +6,14 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:45:29 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 15:27:36 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/21 12:56:25 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Request.hpp"
 
 std::string Request::fields[207][3] = {};
-void (Request::*Request::ptr[210])(std::string) = {NULL};
+void (Request::*Request::fctField[210])(std::string) = {NULL};
 
 void Request::initFields()
 {
@@ -34,20 +34,20 @@ void Request::initFields()
 	Request::fields[201][0] = "transfer-encoding";
 	Request::fields[205][0] = "if-modified-since";
 
-	// Request::ptr[40] = &Request::parseRange;
-	Request::ptr[42] = &Request::parseAccept;
-	Request::ptr[58] = &Request::parseHost;
-	// Request::ptr[66] = &Request::parseOrigin;
-	Request::ptr[67] = &Request::parseExpect;
-	Request::ptr[70] = &Request::parseCookies;
-	Request::ptr[102] = &Request::parseConnection;
-	Request::ptr[147] = &Request::parseLanguage;
-	Request::ptr[150] = &Request::parseAcceptEncoding;
-	// Request::ptr[151] = &Request::parseCacheControl;
-	Request::ptr[164] = &Request::parseAuthorization;
-	// Request::ptr[187] = &Request::parseIfNoneMatch;
-	Request::ptr[189] = &Request::parseContentLength;
-	Request::ptr[191] = &Request::parseContentType;
-	Request::ptr[201] = &Request::parseTransferEncoding;
-	Request::ptr[205] = &Request::parseIfModifiedSince;
+	// Request::fctField[40] = &Request::parseRange;
+	Request::fctField[42] = &Request::parseAccept;
+	Request::fctField[58] = &Request::parseHost;
+	// Request::fctField[66] = &Request::parseOrigin;
+	Request::fctField[67] = &Request::parseExpect;
+	Request::fctField[70] = &Request::parseCookies;
+	Request::fctField[102] = &Request::parseConnection;
+	Request::fctField[147] = &Request::parseLanguage;
+	Request::fctField[150] = &Request::parseAcceptEncoding;
+	// Request::fctField[151] = &Request::parseCacheControl;
+	Request::fctField[164] = &Request::parseAuthorization;
+	// Request::fctField[187] = &Request::parseIfNoneMatch;
+	Request::fctField[189] = &Request::parseContentLength;
+	Request::fctField[191] = &Request::parseContentType;
+	Request::fctField[201] = &Request::parseTransferEncoding;
+	Request::fctField[205] = &Request::parseIfModifiedSince;
 }
