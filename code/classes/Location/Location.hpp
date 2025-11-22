@@ -20,52 +20,50 @@ static const int	DELETE = 2;
 
 class	Location
 {
-public:
 	public:Location(void);
 	public:Location(Location&);
 	public:~Location(void);
-
 	public:Location							&operator=(const Location&);
 
-	public:const std::string					&getName(void) const;
+	public:const std::string				&getName(void) const;
 	public:void								setName(std::string);
+	private:std::string					_name;
+
+	public:const std::string				&getRoot(void) const;
+	public:void								setRoot(std::string);
+	private:std::string					_root;
 
 	public:void								setAlias(std::string);
-	public:const std::string					&getAlias(void) const;
+	public:const std::string				&getAlias(void) const;
+	private:std::string					_alias;
 
 	public:void								setClientMaxBodySize(unsigned int);
 	public:unsigned int						getClientMaxBodySize(void) const;
+	private:unsigned int				_client_max_body_size;
 
 	public:void								setCgiSuffix(std::vector<std::string>);
-	public:const std::vector<std::string>		&getCgiSuffix(void) const;
+	public:const std::vector<std::string>	&getCgiSuffix(void) const;
+	private:std::vector<std::string>	_cgi_suffix;
 
 	public:void								setMethod(bool[3]);
-	public:const bool							*isMethodAllowed(void) const;
+	public:const bool						*isMethodAllowed(void) const;
+	private:bool						_methods[3];
 
-	public:const std::string					&getRoot(void) const;
-	public:void								setRoot(std::string);
-
-	public:const std::string					&getRedirect(void) const;
+	public:const std::string				&getRedirect(void) const;
 	public:void								setRedirect(std::string);
+	private:std::string					_redirect;
 
 	public:bool								isAutoindexEnabled(void) const;
 	public:void								setAutoindex(bool);
+	private:bool						_autoindex;
 
 	public:const std::map<int, std::string>	&getErrorPages(void) const;
 	public:void								setErrorPages(std::map<int, std::string>);
-
-	public:const std::string					&getPostDirectory(void) const;
-	public:void								setPostDirectory(std::string);
-
-private:
-	private:std::string					_name;
-	private:std::string					_root;
-	private:std::string					_alias;
-	private:std::string					_redirect;
-	private:unsigned int				_client_max_body_size;
-	private:bool						_autoindex;
-	private:std::vector<std::string>	_cgi_suffix;
 	private:std::map<int, std::string>	_error_page;
-	private:bool						_methods[3];
+
+	public:const std::string				&getPostDirectory(void) const;
+	public:void								setPostDirectory(std::string);
 	private:std::string					_post_directory;
 };
+
+std::ostream			&operator<<(std::ostream&, const Location&);
