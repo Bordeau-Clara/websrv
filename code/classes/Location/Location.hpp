@@ -45,7 +45,8 @@ class	Location
 	public:const std::vector<std::string>	&getCgiSuffix(void) const;
 	private:std::vector<std::string>	_cgi_suffix;
 
-	public:void								setMethod(bool[3]);
+	public:void								setMethods(bool[3]);
+	public:const bool						*getMethods(void);
 	public:const bool						*isMethodAllowed(void) const;
 	private:bool						_methods[3];
 
