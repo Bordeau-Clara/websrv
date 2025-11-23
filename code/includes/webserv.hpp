@@ -15,3 +15,4 @@
 #include "ArgChecker.hpp"
 #include "ConfigParser.hpp"
 #include "Logger.hpp"
+#include "Location.hpp"

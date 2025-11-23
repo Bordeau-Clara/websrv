@@ -23,6 +23,7 @@ CLASS_FILES = \
 	ArgChecker/ArgChecker.cpp \
 	ConfigParser/ConfigParser.cpp \
 	Logger/Logger.cpp \
+	Location/Location.cpp \
 
 CLASSES = $(addprefix $(CLASS_DIR)/, $(CLASS_FILES))
 SOURCES = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
@@ -33,6 +34,7 @@ INC_DIR = \
 		  $(CLASS_DIR)/ArgChecker \
 		  $(CLASS_DIR)/ConfigParser \
 		  $(CLASS_DIR)/Logger \
+		  $(CLASS_DIR)/Location \
 	
 ##################################################################################
 #compilation

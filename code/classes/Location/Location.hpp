@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 #include <map>
-
+#include <ostream>
 
 static const int	GET = 0;
 static const int	POST = 1;
@@ -25,8 +25,8 @@ class	Location
 	public:~Location(void);
 	public:Location							&operator=(const Location&);
 
-	public:const std::string				&getName(void) const;
 	public:void								setName(std::string);
+	public:const std::string				&getName(void) const;
 	private:std::string					_name;
 
 	public:const std::string				&getRoot(void) const;
@@ -46,8 +46,7 @@ class	Location
 	private:std::vector<std::string>	_cgi_suffix;
 
 	public:void								setMethods(bool[3]);
-	public:const bool						*getMethods(void);
-	public:const bool						*isMethodAllowed(void) const;
+	public:const bool						*getMethods(void) const;
 	private:bool						_methods[3];
 
 	public:const std::string				&getRedirect(void) const;

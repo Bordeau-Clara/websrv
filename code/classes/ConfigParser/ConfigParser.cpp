@@ -164,12 +164,12 @@ void	ConfigParser::run(char *file)
 			default :
 				throw (std::runtime_error("Unauthorized directive in server scope :" + *it));
 		}
-	/* TODO
-		* verifier quelle directive j'ai
-		* cree un serveur parent pour les directives trouvee.
-		* Si serveur trouver saute a la next brace
-		* Si brace pas fermee: erreur
-		* Si directive non autorisee erreur
-	*/
+		/* TODO
+			* verifier quelle directive j'ai
+			* cree un serveur parent pour les directives trouvee.
+			* Si serveur trouver saute a la next brace
+			* Si brace pas fermee: erreur
+			* Si directive non autorisee erreur
+		*/
 	}
 }
