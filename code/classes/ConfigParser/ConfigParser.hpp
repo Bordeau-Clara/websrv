@@ -22,6 +22,7 @@ class	ConfigParser
 {
 	public:
 		static void	run(char *);
+		static int	checkDirective(std::string &token);
 
 	private:
 		ConfigParser(){}

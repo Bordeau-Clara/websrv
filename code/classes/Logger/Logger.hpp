@@ -17,6 +17,8 @@
 
 #include "logfiles.hpp"
 
+static const std::string	SEPARATOR = "##############################################################################################################\n";
+
 class	Logger
 {
 	public:

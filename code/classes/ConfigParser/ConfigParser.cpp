@@ -65,13 +65,13 @@ static void	commentFilter(std::string &str)
 
 static std::string	extractStr(const char *file)
 {
-	std::ifstream		ifs;
-
-	ifs.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	ifs.open(file);
+	//https://stackoverflow.com/questions/29310166/check-if-a-fstream-is-either-a-file-or-directory
+	std::fstream		fs(file);
+	if (fs.fail())
+		throw (std::runtime_error("Cannot open '" + std::string(file) + '\''));
 
 	std::ostringstream	ostrs;
-	ostrs	<< ifs.rdbuf();
+	ostrs	<< fs.rdbuf();
 	return (ostrs.str());
 }
 
@@ -102,7 +102,7 @@ void	tokenize(std::vector<std::string> &token, std::string &str)
 	}
 }
 
-int	checkDirective(std::string &token)
+int	ConfigParser::checkDirective(std::string &token)
 {
 	for (int i = 0; i != NONE; ++i)
 	{
@@ -115,14 +115,14 @@ int	checkDirective(std::string &token)
 void	ConfigParser::run(char *file)
 {
 	std::string	str = extractStr(file);
-	/**/Logger::print(LOG_CONFIGPARSER) << "|| Extracted str \nVV" << std::endl << str;
+	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Extracted str \nVV" << std::endl << str;
 
 	commentFilter(str);
-	/**/Logger::print(LOG_CONFIGPARSER) << "|| Comment trimmed \nVV" << std::endl << str;
+	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Comment trimmed \nVV" << std::endl << str;
 
 	std::vector<std::string>	token;
 	tokenize(token, str);
-	/**/Logger::print(LOG_CONFIGPARSER) << "|| Token list \nVV";
+	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Token list \nVV";
 	/**/for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); ++it)
 	/**/{Logger::print(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
 	/**/Logger::print(LOG_CONFIGPARSER) << std::endl;
