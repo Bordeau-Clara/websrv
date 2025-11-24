@@ -12,6 +12,7 @@
 #include "ConfigParser.hpp"
 #include "Logger.hpp"
 #include "Location.hpp"
+#include "Server.hpp"
 #include <exception>
 #include <vector>
 #include <fstream>
@@ -113,6 +114,11 @@ int	ConfigParser::checkDirective(std::string &token)
 	throw (std::runtime_error("Unrecognized token " + token));
 }
 
+void	parseServer(std::vector<Server> &servers, std::vector<std::string>::iterator it)
+{
+	;
+}
+
 void	ConfigParser::run(char *file)
 {
 	std::string	str = extractStr(file);
@@ -128,8 +134,7 @@ void	ConfigParser::run(char *file)
 	/**/{Logger::print(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
 	/**/Logger::print(LOG_CONFIGPARSER) << std::endl;
 
-	Location	globalLocationTemplate;
-	;
+	std::vector<Server>	servers;
 	for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); ++it)
 	{
 		switch (checkDirective(*it))
@@ -138,50 +143,49 @@ void	ConfigParser::run(char *file)
 			// skip until next brace
 			case SERVER:
 				it++;
-				if (*it != "{")
-					throw (std::runtime_error("Missing opening bracket after server directive"));
+				parseServer(servers, it);
 				// skip until corresponding }
 				// if no corresponding throw
 				break ;
-			// fill global template
-			// case LISTEN:
+			// // fill global template
+			// // case LISTEN:
+			// // 	break ;
+			// case ERROR_PAGE:
+			// 	// fill(globalLocationTemplate)
+			// 	// until ; if no throw
 			// 	break ;
-			case ERROR_PAGE:
-				// fill(globalLocationTemplate)
-				// until ; if no throw
-				break ;
-			case CLIENT_MAX_BODY_SIZE:
-				// fill(globalLocationTemplate)
-				// until ; if no throw
-				break ;
-			case METHODS:
-				// fill(globalLocationTemplate)
-				// until ; if no throw
-				break ;
-			case RETURN:
-				// fill(globalLocationTemplate)
-				// until ; if no throw
-				break ;
-			case ROOT:
-				// fill(globalLocationTemplate)
-				// until ; if no throw
-				break ;
-			case ALIAS:
-				// fill(globalLocationTemplate)
-				// until ; if no throw
-				break ;
-			case AUTOINDEX:
-				// fill(globalLocationTemplate)
-				// until ; if no throw
-				break ;
-			case CGI_SUFFIX:
-				// fill(globalLocationTemplate)
-				// until ; if no throw
-				break ;
-			case POST_LOCATION:
-				// fill(globalLocationTemplate)
-				// until ; if no throw
-				break ;
+			// case CLIENT_MAX_BODY_SIZE:
+			// 	// fill(globalLocationTemplate)
+			// 	// until ; if no throw
+			// 	break ;
+			// case METHODS:
+			// 	// fill(globalLocationTemplate)
+			// 	// until ; if no throw
+			// 	break ;
+			// case RETURN:
+			// 	// fill(globalLocationTemplate)
+			// 	// until ; if no throw
+			// 	break ;
+			// case ROOT:
+			// 	// fill(globalLocationTemplate)
+			// 	// until ; if no throw
+			// 	break ;
+			// case ALIAS:
+			// 	// fill(globalLocationTemplate)
+			// 	// until ; if no throw
+			// 	break ;
+			// case AUTOINDEX:
+			// 	// fill(globalLocationTemplate)
+			// 	// until ; if no throw
+			// 	break ;
+			// case CGI_SUFFIX:
+			// 	// fill(globalLocationTemplate)
+			// 	// until ; if no throw
+			// 	break ;
+			// case POST_LOCATION:
+			// 	// fill(globalLocationTemplate)
+			// 	// until ; if no throw
+			// 	break ;
 			default :
 				throw (std::runtime_error("Unauthorized directive in server scope :" + *it));
 		}

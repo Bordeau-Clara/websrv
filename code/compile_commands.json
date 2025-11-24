@@ -13,13 +13,14 @@
       "-Iclasses/ConfigParser",
       "-Iclasses/Logger",
       "-Iclasses/Location",
+      "-Iclasses/Server",
       "-o",
       "build/classes/ArgChecker/ArgChecker.o",
       "classes/ArgChecker/ArgChecker.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ArgChecker/ArgChecker.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ArgChecker/ArgChecker.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ArgChecker/ArgChecker.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ArgChecker/ArgChecker.o"
   },
   {
     "arguments": [
@@ -35,78 +36,13 @@
       "-Iclasses/ConfigParser",
       "-Iclasses/Logger",
       "-Iclasses/Location",
+      "-Iclasses/Server",
       "-o",
       "build/classes/ConfigParser/ConfigParser.o",
       "classes/ConfigParser/ConfigParser.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/ConfigParser.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/ConfigParser.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-c",
-      "-Wall",
-      "-Wextra",
-      "-Werror",
-      "-std=c++98",
-      "-g3",
-      "-Iincludes",
-      "-Iclasses/ArgChecker",
-      "-Iclasses/ConfigParser",
-      "-Iclasses/Logger",
-      "-Iclasses/Location",
-      "-o",
-      "build/classes/Logger/Logger.o",
-      "classes/Logger/Logger.cpp"
-    ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/Logger/Logger.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/Logger/Logger.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-c",
-      "-Wall",
-      "-Wextra",
-      "-Werror",
-      "-std=c++98",
-      "-g3",
-      "-Iincludes",
-      "-Iclasses/ArgChecker",
-      "-Iclasses/ConfigParser",
-      "-Iclasses/Logger",
-      "-Iclasses/Location",
-      "-o",
-      "build/classes/Location/Location.o",
-      "classes/Location/Location.cpp"
-    ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/Location/Location.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/Location/Location.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-c",
-      "-Wall",
-      "-Wextra",
-      "-Werror",
-      "-std=c++98",
-      "-g3",
-      "-Iincludes",
-      "-Iclasses/ArgChecker",
-      "-Iclasses/ConfigParser",
-      "-Iclasses/Logger",
-      "-Iclasses/Location",
-      "-o",
-      "build/sources/main.o",
-      "sources/main.cpp"
-    ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/sources/main.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/sources/main.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ConfigParser/ConfigParser.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ConfigParser/ConfigParser.o"
   }
 ]
