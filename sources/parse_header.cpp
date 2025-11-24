@@ -6,7 +6,6 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/22 17:07:18 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +38,39 @@ void	parse_buffer(Request *request)
 	std::cout << "++++++++++++++++" << std::endl;
 }
 
+void	parse_request(Request *request, std::string token)
+{
+	//parser methode
+	//reconstituer/parser URI
+	//check HTTP/1.1
+	
+	std::string::size_type cursor= 0;
+
+	if (move_cursor(&cursor, token, " "))
+	{
+		request->parseMethod(token.substr(0, cursor));
+		token.erase(0, cursor + 1);
+	}
+	else
+	{
+		//error, throw ?
+	}
+	if (move_cursor(&cursor, token, " "))
+	{
+		request->parseURI(token.substr(0, cursor));
+		token.erase(0, cursor + 1);
+	}
+	else
+	{
+		//error, throw ?
+	}
+	if (token.compare("HTTP/1.1"))
+	{
+		std::cout << "Wrong HTTP protocol :" + token << std::endl;
+		//error, throw
+	}
+}
+
 void	parse_header(Request *request)
 {
 	std::string::size_type	cursor = 0;
@@ -47,7 +79,7 @@ void	parse_header(Request *request)
 	if (request->getHeader().empty())
 		return;
 	request->getToken(&token, &cursor);
-	//parse_request(token, event);
+	parse_request(request, token);
 	//if CGI parse_header in cgi mode
 	//state CGI but same parsing function?
 	
@@ -59,22 +91,17 @@ void	parse_header(Request *request)
 			std::cout << "header emptied" << std::endl;
 			break;
 		}
-		// cursor = request->getHeader().find(":");
-		// if (cursor != std::string::npos)
 		if (move_cursor(&cursor, request->getHeader(), ":"))
-		{
 			type = request->getField(&cursor);
-		}
 		else
 		{
 			std::cout << ": not found" << std::endl;
-			break;
+			break; //throw error?
 		}
-			//throw error;
 		if (type < 0)
 		{
 			std::cout << "Type = -1" << std::endl;
-			break;
+			break; //throw error?
 		}
 		request->getToken(&token, &cursor);
 		if (Request::fctField[type] != NULL)

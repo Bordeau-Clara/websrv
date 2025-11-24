@@ -125,7 +125,7 @@ unsigned long hexToLong(std::string line)
 void	Request::fillChunkedBody()
 {
 	std::string				line;
-	static unsigned long			chunk_size = 0;
+	static unsigned long	chunk_size = 0;
 	std::string::size_type	cursor = 0;
 
 	while(1)
@@ -133,8 +133,6 @@ void	Request::fillChunkedBody()
 		if (this->_state == CHUNK_SIZE && move_cursor(&cursor, this->_buffer, CRLF))
 		{
 			line.assign(this->_buffer.substr(0, cursor));
-			// std::cout << "Chunk line is :" << line << std::endl;
-			// std::cout << "Chunk line is erased :" << this->_buffer.substr(0, line.size() + 2) << std::endl;
 			this->_buffer.erase(0, line.size() + 2);
 			chunk_size = hexToLong(line);
 			if (chunk_size == 0 && this->_trailer)
@@ -149,9 +147,12 @@ void	Request::fillChunkedBody()
 		{
 			//put chunk_size octets in body
 			this->_body.append(this->_buffer, 0, chunk_size);
-			// std::cout << "Append to body is :" << this->_buffer.substr(0, chunk_size) << std::endl;
+			if (this->_buffer[chunk_size + 1] != '\r' && this->_buffer[chunk_size + 2] != '\n')
+			{
+				//trow 400 Bad request
+				std::cout << "Number of octet not in adequation whith chunk size" << std::endl;
+			}
 			//erase chunk_size octet + 2 from buffer
-			// std::cout << "Octet is erased :" << this->_buffer.substr(0, chunk_size + 2) << std::endl;
 			this->_buffer.erase(0, chunk_size + 2);
 			this->_state = CHUNK_SIZE;
 			continue;
@@ -164,4 +165,39 @@ void	Request::fillChunkedBody()
 		}
 		break;
 	}
+}
+
+void	Request::parseMethod(std::string str)
+{
+	if (str.compare("GET"))
+		this->_method = GET;
+	else if (str.compare("POST"))
+		this->_method = POST;
+	else if (str.compare("DELETE"))
+		this->_method = DELETE;
+	else
+	{
+		std::cout << "BAD METHOD" << std::endl;
+		;//throw 400
+	}
+}
+
+std::string resolveURI(std::string str)
+{
+	return str;
+}
+
+void	Request::parseURI(std::string str)
+{
+	std::string::size_type cursor = 0;
+	if (move_cursor(&cursor, str, "?"))
+	{
+		this->_queryString.assign(str.substr(cursor + 1));
+		str.erase(cursor);
+	}
+	// std::cout << "uri is:" + str << std::endl;
+	// std::cout << "query is is:" + this->_queryString << std::endl;
+	
+	//resolve uri
+	this->_uri = resolveURI(str);
 }

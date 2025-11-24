@@ -48,6 +48,7 @@ private:
 
 	method 				_method;
 	std::string			_uri;
+	std::string			_queryString;
 
 public:
 	Request();
@@ -67,6 +68,9 @@ public:
 	void				fillBody();
 	void				fillChunkedBody();
 	void				appendBuffer(std::string, int start, int end);
+
+	void				parseMethod(std::string);
+	void				parseURI(std::string);
 
 	void				getToken(std::string *header, std::string::size_type *cursor);
 	int					getField(std::string::size_type *cursor);

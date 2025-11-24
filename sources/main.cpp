@@ -6,7 +6,6 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 14:22:22 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/22 16:11:47 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,7 +238,7 @@ int	main()
 		std::string header;
 
 		Request request = Request();
-		header = "GET index.html HTTP/1.1\r\n";
+		header = "GET index.html?lan=en HTTP/1.1\r\n";
 		header.append("Host:58\r\n");
 		header.append("content-type:185\r\n");
 		header.append("content-length:189\r\n");
