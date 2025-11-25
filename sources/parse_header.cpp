@@ -103,6 +103,7 @@ void	parse_header(Request *request)
 			std::cout << "Type = -1" << std::endl;
 			break; //throw error?
 		}
+		//skip OWS
 		request->getToken(&token, &cursor);
 		if (Request::fctField[type] != NULL)
 			(request->*Request::fctField[type])(token);

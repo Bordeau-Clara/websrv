@@ -29,6 +29,7 @@ typedef enum method
 typedef enum parsing_state
 {
 	HEADER = 0,
+	CGI,
 	BODY,
 	CHUNK_SIZE,
 	TRAILERS,
