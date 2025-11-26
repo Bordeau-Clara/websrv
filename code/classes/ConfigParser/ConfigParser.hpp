@@ -28,6 +28,10 @@ class	ConfigParser
 		static void	parseServer(std::vector<Server>&,
 						  std::vector<std::string>::iterator&,
 						  std::vector<std::string>::iterator&);
+		static std::map<std::string, Location>	parseServerLoop(std::vector<Server> &servers,
+							   std::vector<std::string>::iterator &it,
+							   std::vector<std::string>::iterator &it_end);
+
 		static void	parseLocation(std::map<std::string, Location>&,
 							std::vector<std::string>::iterator&,
 							std::vector<std::string>::iterator&);
