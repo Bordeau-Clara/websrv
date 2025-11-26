@@ -21,7 +21,7 @@ static const std::string METHODS[] = {"GET", "POST", "DELETE"};
 
 class	Location
 {
-public:Location(const std::string&);
+	public:Location(const std::string&);
 	public:Location(const Location&);
 	public:~Location(void);
 	public:Location							&operator=(const Location&);
