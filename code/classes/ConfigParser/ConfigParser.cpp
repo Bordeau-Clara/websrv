@@ -10,10 +10,10 @@
 /* ************************************************************************** */
 
 #include "ConfigParser.hpp"
-#include "Logger.hpp"
 #include "Server.hpp"
 #include "Location.hpp"
 #include "tokens.hpp"
+// #include "Logger.hpp"
 
 int	ConfigParser::checkDirective(std::string &token)
 {
@@ -94,10 +94,13 @@ void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
 							   std::vector<std::string>::iterator &it,
 							   std::vector<std::string>::iterator &it_end)
 {
-	// save location name
+	// save current location name
 	std::vector<std::string>::iterator	name = it;
 	if (locations.find(*name) != locations.end())
-		Logger::print(LOG_CONFIGPARSER) << "WARNING, location " << *name << " already exists" << std::endl;
+		throw (std::runtime_error("location " + *name + " already exists"));
+	if (*name == DIRECTIVE[CLOSING_BRACKET])
+		throw (std::runtime_error("location need an path identifier"));
+
 	it++;
 	if (it == it_end || *it != "{")
 		throw (std::runtime_error("Missing bracket after location '" + *name + "'\n-->" + *it ));
@@ -105,18 +108,17 @@ void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
 	locations.insert(std::make_pair(*name, current));
 }
 
-std::map<std::string, Location>	ConfigParser::parseServerLoop(std::vector<Server> &servers,
+std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current,
 							   std::vector<std::string>::iterator &it,
 							   std::vector<std::string>::iterator &it_end)
 {
-	(void)servers;
 	std::map<std::string, Location> locations;
 	while (true)
 	{
 		switch (checkDirective(*it))
 		{
 			case LISTEN:
-				// parseListen(server, it);
+				parseListen(current, it, it_end);
 				break ;
 			case LOCATION:
 				it++;
@@ -144,7 +146,7 @@ void	ConfigParser::parseServer(std::vector<Server> &servers,
 	it++;
 
 	// build location for current
-	std::map<std::string, Location> locations = parseServerLoop(servers, it, it_end);
+	std::map<std::string, Location> locations = parseServerLoop(current, it, it_end);
 
 	// check interface:port are unique
 	for (std::vector<Server>::iterator it1 = servers.begin(); it1 != servers.end(); it++)

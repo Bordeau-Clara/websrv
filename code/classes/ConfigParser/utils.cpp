@@ -13,6 +13,15 @@
 #include "Location.hpp"
 #include "tokens.hpp"
 
+void	ConfigParser::parseListen(Server &current,
+								std::vector<std::string>::iterator &it,
+								std::vector<std::string>::iterator &it_end)
+{
+	(void)current;
+	(void)it;
+	(void)it_end;
+}
+
 void	ConfigParser::parseRoot(Location &current,
 								std::vector<std::string>::iterator &it,
 								std::vector<std::string>::iterator &it_end)

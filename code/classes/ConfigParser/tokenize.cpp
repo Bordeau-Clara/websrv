@@ -86,7 +86,6 @@ void	ConfigParser::tokenize(std::vector<std::string> &token, char *file)
 
 	while (cursor < str.length())
 	{
-		// std::cout << "iterate ..." << std::endl;
 		size_t	end;
 
 		if (WHITESPACES.find(str[cursor]) != std::string::npos)
