@@ -138,7 +138,7 @@ int	main()
 		header.append("transfer-encoding:201\r\n\r\n");
 
 		header.append("7\r\nMozilla\r\n9\r\nDeveloper\r\n");
-		header.append("8\r\nNetwork\r\n0\r\n\r\n");
+		header.append("7\r\nNetwork\r\n0\r\n\r\n");
 		request.appendBuffer(header, 0, header.length());
 
 		parse_buffer(&request);

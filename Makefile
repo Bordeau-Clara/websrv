@@ -6,7 +6,7 @@
 #    By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 13:28:35 by cbordeau          #+#    #+#              #
-#    Updated: 2025/11/21 12:59:38 by cbordeau         ###   LAUSANNE.ch        #
+#    Updated: 2025/11/28 11:50:42 by cbordeau         ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,9 @@ OBJ_PATH   = objs
 # Sources
 SOURCES = \
 	$(SRC_PATH)/main.cpp \
+	$(SRC_PATH)/parse_buffer.cpp \
 	$(SRC_PATH)/parse_header.cpp \
+	$(SRC_PATH)/parse_request_line.cpp \
 	$(SRC_PATH)/parse_header_utils.cpp \
 	$(CLASS_PATH)/Request/Request.cpp \
 	$(CLASS_PATH)/Request/Getter.cpp \

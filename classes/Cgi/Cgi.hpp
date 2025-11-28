@@ -24,11 +24,17 @@ private:
 
 public:
 	Cgi();
-	Cgi(Request&);
+	Cgi(Request&); //copie de CGI_HEADER + prendre adresse de request
 
 	void						createBasicEnv();
 
 	void						addFields(std::string);
+	void						getFieldFromUri();
+
+	void				parseCgiHost(std::string field, std::string token);
+	void				parseCgiContentType(std::string);
+	void				parseCgiContentLength(std::string); //do after body parsing? if chunked do after?
+};
 
 	//variable static:
 				//GATEWAY_INTERFACE
@@ -52,4 +58,3 @@ public:
 				//CONTENT_TYPE
 	//a obtenir autrement:
 				//REMOTE_ADDR -> ipv4 du client
-};

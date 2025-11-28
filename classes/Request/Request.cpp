@@ -65,7 +65,7 @@ void	Request::getToken(std::string *token, std::string::size_type *cursor)
 		this->_header.erase(0, *cursor);
 	}
 	else if (*cursor == std::string::npos)
-		std::cout << "Cursor is at NULL" << std::endl;
+		std::cout << RED << "Cursor is at NULL" << WHITE << std::endl;
 		//throw error;
 }
 
@@ -95,7 +95,7 @@ int	find_type(std::string str)
 		if (!Request::fields[index][i].empty() && !Request::fields[index][i].compare(str))
 			return index + i;
 	}
-	std::cout << "Wrong index is " << index << std::endl;
+	std::cout << RED << "Wrong index is " << index << WHITE << std::endl;
 	return -1;
 }
 
@@ -147,10 +147,10 @@ void	Request::fillChunkedBody()
 		{
 			//put chunk_size octets in body
 			this->_body.append(this->_buffer, 0, chunk_size);
-			if (this->_buffer[chunk_size + 1] != '\r' && this->_buffer[chunk_size + 2] != '\n')
+			if (this->_buffer[chunk_size ] != '\r' && this->_buffer[chunk_size + 1] != '\n')
 			{
 				//trow 400 Bad request
-				std::cout << "Number of octet not in adequation whith chunk size" << std::endl;
+				std::cout << RED << "Number of octet not in adequation whith chunk size" << WHITE << std::endl;
 			}
 			//erase chunk_size octet + 2 from buffer
 			this->_buffer.erase(0, chunk_size + 2);

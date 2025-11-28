@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 13:39:53 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/22 15:51:52 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/28 11:56:10 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,7 @@ void	tokenize(std::string *buffer, Request *request, int mode);
 void	get_token(std::string *header, std::string *token, std::string::size_type *cursor);
 
 void	parse_buffer(Request *request);
+void	parse_header_type(Request *request);
 void	parse_header(Request *request);
+void	parse_cgi_header(Request *request);
+void	parse_request_line(Request *request, std::string token);
