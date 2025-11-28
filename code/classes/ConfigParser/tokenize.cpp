@@ -13,7 +13,6 @@
 #include "ConfigParser.hpp"
 #include "Logger.hpp"
 #include <vector>
-#include <sstream>
 
 // Si find renvoie la meme chose alors c'est qu'il ya plus de commentaires.
 // si le debut de commentaire le plus proche
@@ -63,49 +62,41 @@ static void	commentFilter(std::string &str)
 	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Comment trimmed \nVV" << std::endl << str;
 }
 
-static std::string	extractStr(const char *file)
+void	ConfigParser::tokenInit(void)
 {
-	//https://stackoverflow.com/questions/29310166/check-if-a-fstream-is-either-a-file-or-directory
-	std::fstream		fs(file);
-	if (fs.fail())
-		throw (std::runtime_error("Cannot open '" + std::string(file) + '\''));
-
-	std::ostringstream	ostrs;
-	ostrs	<< fs.rdbuf();
-	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Extracted str \nVV" << std::endl << ostrs;
-	return (ostrs.str());
+	tokenize();
+	_token_it = _token_vec.begin();
+	_token_it_end = _token_vec.end();
 }
 
-void	ConfigParser::tokenize(std::vector<std::string> &token, char *file)
+void	ConfigParser::tokenize(void)
 {
-	std::string	str = extractStr(file);
-
-	commentFilter(str);
+	commentFilter(_str);
 
 	size_t	cursor = 0;
 
-	while (cursor < str.length())
+	while (cursor < this->_str.length())
 	{
 		size_t	end;
 
-		if (WHITESPACES.find(str[cursor]) != std::string::npos)
+		if (WHITESPACES.find(_str[cursor]) != std::string::npos)
 		{
-			end = str.find_first_not_of(WHITESPACES, cursor);
+			end = this->_str.find_first_not_of(WHITESPACES, cursor);
 		}
-		else if (OPERAND.find(str[cursor]) != std::string::npos)
+		else if (OPERAND.find(_str[cursor]) != std::string::npos)
 		{
 			end = cursor + 1;
-			token.push_back(str.substr(cursor, end - cursor));
+			_token_vec.push_back(_str.substr(cursor, end - cursor));
 		}
 		else
 		{
-			end = str.find_first_of(WHITESPACES + OPERAND, cursor);
-			token.push_back(str.substr(cursor, end - cursor));
+			end = this->_str.find_first_of(WHITESPACES + OPERAND, cursor);
+			_token_vec.push_back(_str.substr(cursor, end - cursor));
 		}
 		cursor = end;
 	}
 	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Token list \nVV";
-	/**/for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); ++it)
+	/**/for (std::vector<std::string>::iterator it = _token_vec.begin(); it != _token_vec.end(); ++it)
 	/**/{Logger::print(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
 	/**/Logger::print(LOG_CONFIGPARSER) << std::endl;
 }

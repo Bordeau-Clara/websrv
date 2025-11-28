@@ -13,169 +13,191 @@
 #include "Server.hpp"
 #include "Location.hpp"
 #include "tokens.hpp"
-// #include "Logger.hpp"
+#include "Logger.hpp"
+#include <sstream>
 
-int	ConfigParser::checkDirective(std::string &token)
+static std::string	extractStr(const char *file)
+{
+	//https://stackoverflow.com/questions/29310166/check-if-a-fstream-is-either-a-file-or-directory
+	std::fstream		fs(file);
+	if (fs.fail())
+		throw (std::runtime_error("Cannot open '" + std::string(file) + '\''));
+
+	std::ostringstream	ostrs;
+	ostrs	<< fs.rdbuf();
+	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Extracted str \nVV" << std::endl << ostrs;
+	return (ostrs.str());
+}
+
+ConfigParser::ConfigParser(char *file)
+{
+	this->_str = extractStr(file);
+}
+
+int	ConfigParser::checkDirective(void)
 {
 	for (int i = 0; i != NONE; ++i)
 	{
-		if (token == DIRECTIVE[i])
+		if (get() == DIRECTIVE[i])
 			return (i);
 	}
-	throw (std::runtime_error("Unrecognized token " + token));
+	throw (std::runtime_error("Unrecognized token " + get()));
 }
 
-Location	ConfigParser::parseLocationLoop(std::map<std::string, Location> &locations,
-							std::vector<std::string>::iterator &it,
-							std::vector<std::string>::iterator &it_end,
-							std::vector<std::string>::iterator &name)
+Location	ConfigParser::parseLocationLoop(Location &current)
 {
-	(void)locations;
-	Location	current;
-	parseAlias(current, name, it_end);
 	while (true)
 	{
-		if (++it == it_end)
+		next();
+		if (end())
 			throw (std::runtime_error("Location scope not closed by '}'"));
-		int	directive = checkDirective(*it);
-		if (++it == it_end)
+		int	directive = checkDirective();
+		next();
+		if (end())
 			throw (std::runtime_error("Empty directive " + DIRECTIVE[directive]));
 		switch (directive)
 		{
 			case ROOT:
-			parseRoot(current, it, it_end);
+			parseRoot(current);
 			break ;
 
 			case ALIAS:
-			parseAlias(current, it, it_end);
+			parseAlias(current);
 			break ;
 
 			case CLIENT_MAX_BODY_SIZE:
-			parseClientMaxBodySize(current, it, it_end);
+			parseClientMaxBodySize(current);
 			break ;
 
 			case CGI_SUFFIX:
-			parseCgi(current, it, it_end);
+			parseCgi(current);
 			break ;
 
 			case ALLOWED_METHODS:
-			parseAllowedMethods(current, it, it_end);
+			parseAllowedMethods(current);
 			break ;
 
 			case RETURN:
-			parseReturn(current, it, it_end);
+			parseReturn(current);
 			break ;
 
 			case AUTOINDEX:
-			parseAutoIndex(current, it, it_end);
+			parseAutoIndex(current);
 			break ;
 
 			case ERROR_PAGE:
-			parseErrorPages(current, it, it_end);
+			parseErrorPages(current);
 			break ;
 
 			case POST_LOCATION:
-			parsePostLocation(current, it, it_end);
+			parsePostLocation(current);
 			break ;
 
 			case CLOSING_BRACKET:
 			return (current);
 
 			default :
-			throw (std::runtime_error("Unauthorized directive in location scope \n-->" + *it));
+			throw (std::runtime_error("Unauthorized directive in location scope \n-->" + get()));
 		}
-		it++;
-		if (*it != ";")
-			throw (std::runtime_error("too much argument in directive " + DIRECTIVE[directive] + "\n-->" + *it));
+		next();
+		if (get() != ";")
+			throw (std::runtime_error("too much argument in directive " + DIRECTIVE[directive] + "\n-->" + get()));
 	}
 }
 
-void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseLocation(std::map<std::string, Location> &locations)
 {
 	// save current location name
-	std::vector<std::string>::iterator	name = it;
+	std::vector<std::string>::iterator	name = _token_it;
 	if (locations.find(*name) != locations.end())
 		throw (std::runtime_error("location " + *name + " already exists"));
 	if (*name == DIRECTIVE[CLOSING_BRACKET])
 		throw (std::runtime_error("location need an path identifier"));
-
-	it++;
-	if (it == it_end || *it != "{")
-		throw (std::runtime_error("Missing bracket after location '" + *name + "'\n-->" + *it ));
-	Location current = parseLocationLoop(locations, it, it_end, name);
+	Location	current;
+	parseAlias(current);
+	next();
+	if (end() || get() != "{")
+		throw (std::runtime_error("Missing bracket after location '" + *name + "'\n-->" + get()));
+	parseLocationLoop(current);
 	locations.insert(std::make_pair(*name, current));
 }
 
-std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current)
 {
 	std::map<std::string, Location> locations;
 	while (true)
 	{
-		switch (checkDirective(*it))
+		switch (checkDirective())
 		{
 			case LISTEN:
-				parseListen(current, it, it_end);
+				parseListen(current);
 				break ;
 			case LOCATION:
-				it++;
-				parseLocation(locations, it, it_end);
+				this->next();
+				parseLocation(locations);
 				break ;
 			case CLOSING_BRACKET:
 			return (locations);
 			default :
-				throw (std::runtime_error("Unauthorized directive in server scope :" + *it));
+				throw (std::runtime_error("Unauthorized directive in server scope :" + this->get()));
 		}
 	}
 }
 
 
-void	ConfigParser::parseServer(std::vector<Server> &servers,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseServer(std::vector<Server> &servers)
 {
 	Server	current;
 	// check if there is an opening bracket
-	if (*it != "{")
+	if (this->get() != "{")
 	{
-		throw (std::runtime_error("Unrecognized token " + *it));
+		throw (std::runtime_error("Unrecognized token " + this->get()));
 	}
-	it++;
+	this->next();
 
 	// build location for current
-	std::map<std::string, Location> locations = parseServerLoop(current, it, it_end);
+	std::map<std::string, Location> locations = parseServerLoop(current);
 
 	// check interface:port are unique
-	for (std::vector<Server>::iterator it1 = servers.begin(); it1 != servers.end(); it++)
-	{
-		// if (current *it1)
-			// throw (std::runtime_error("Server may not have same port" + *it));
-	}
+	// for (std::vector<Server>::iterator it1 = servers.begin(); it1 != servers.end(); this->next())
+	// {
+	// 	// if (current *it1)
+	// 		// throw (std::runtime_error("Server may not have same port" + *it));
+	// }
 	servers.push_back(current);
 }
 
-void	ConfigParser::run(char *file)
+inline void	ConfigParser::next(void)
 {
-	std::vector<std::string>	token;
+	++_token_it;
+}
+
+bool	ConfigParser::end(void) const
+{
+	return(_token_it == _token_it_end);
+}
+
+std::string	ConfigParser::get(void)
+{
+	return(*_token_it);
+}
+
+std::vector<Server>	ConfigParser::run(void)
+{
 	std::vector<Server>	servers;
 
-	tokenize(token, file);
-	std::vector<std::string>::iterator it;
-	std::vector<std::string>::iterator it_end = token.end();
-	for (it = token.begin(); it != it_end; ++it)
+	for (this->tokenInit(); !this->end(); this->next())
 	{
-		switch (checkDirective(*it))
+		switch (checkDirective())
 		{
 			case SERVER:
-			it++;
-			parseServer(servers, it, it_end);
+			this->next();
+			parseServer(servers);
 			break ;
 
 			default :
-				throw (std::runtime_error("Unauthorized directive in server scope :" + *it));
+				throw (std::runtime_error("Unauthorized directive in server scope :" + this->get()));
 		}
 	}
+	return (servers);
 }

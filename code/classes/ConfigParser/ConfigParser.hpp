@@ -22,61 +22,43 @@ class	Location;
 class	ConfigParser
 {
 	public:
-		static void	run(char *);
-		static void	tokenize(std::vector<std::string>&, char*);
-
-		static void	parseServer(std::vector<Server>&,
-						  std::vector<std::string>::iterator&,
-						  std::vector<std::string>::iterator&);
-		static std::map<std::string, Location>	parseServerLoop(Server&,
-							   std::vector<std::string>::iterator&,
-							   std::vector<std::string>::iterator&);
-
-		static void	parseListen(Server&,
-						  std::vector<std::string>::iterator&,
-						  std::vector<std::string>::iterator&);
-
-		static void	parseLocation(std::map<std::string, Location>&,
-							std::vector<std::string>::iterator&,
-							std::vector<std::string>::iterator&);
-		static Location	parseLocationLoop(std::map<std::string, Location>&,
-							std::vector<std::string>::iterator&,
-							std::vector<std::string>::iterator&,
-							std::vector<std::string>::iterator&);
-
-		static void	parseRoot(Location&,
-						std::vector<std::string>::iterator&,
-						std::vector<std::string>::iterator&);
-		static void	parseAlias(Location&,
-						std::vector<std::string>::iterator&,
-						std::vector<std::string>::iterator&);
-		static void	parseClientMaxBodySize(Location&,
-						std::vector<std::string>::iterator&,
-						std::vector<std::string>::iterator&);
-		static void	parseCgi(Location&,
-						std::vector<std::string>::iterator&,
-						std::vector<std::string>::iterator&);
-		static void	parseAllowedMethods(Location&,
-						std::vector<std::string>::iterator&,
-						std::vector<std::string>::iterator&);
-		static void	parseReturn(Location&,
-						std::vector<std::string>::iterator&,
-						std::vector<std::string>::iterator&);
-		static void	parseAutoIndex(Location&,
-						std::vector<std::string>::iterator&,
-						std::vector<std::string>::iterator&);
-
-		static void	parseErrorPages(Location&,
-						std::vector<std::string>::iterator&,
-						std::vector<std::string>::iterator&);
-
-		static void	parsePostLocation(Location&,
-						std::vector<std::string>::iterator&,
-						std::vector<std::string>::iterator&);
-
-		static int	checkDirective(std::string&);
+		ConfigParser(char *);
+		~ConfigParser(){}
+		std::vector<Server>	run(void);
 
 	private:
+
+		std::string							_str;
+		std::vector<std::string>			_token_vec;
+		std::vector<std::string>::iterator	_token_it;
+		std::vector<std::string>::iterator	_token_it_end;
+
+		void		next(void);
+		bool		end(void) const;
+		std::string	get(void);
+
+		void	tokenInit(void);
+		void	tokenize(void);
+
+		int		checkDirective(void);
+		void	parseServer(std::vector<Server>&);
+		std::map<std::string, Location>	parseServerLoop(Server&);
+
+		void	parseListen(Server&);
+
+		void	parseLocation(std::map<std::string, Location>&);
+		Location	parseLocationLoop(Location&);
+
+		void	parseRoot(Location&);
+		void	parseAlias(Location&);
+		void	parseClientMaxBodySize(Location&);
+		void	parseCgi(Location&);
+		void	parseAllowedMethods(Location&);
+		void	parseReturn(Location&);
+		void	parseAutoIndex(Location&);
+
+		void	parseErrorPages(Location&);
+
+		void	parsePostLocation(Location&);
 		ConfigParser(){}
-		~ConfigParser(){}
 };

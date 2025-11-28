@@ -17,7 +17,8 @@ int	main(int argc, char **argv)
 	{
 		Logger::add(LOG_CONFIGPARSER);
 		ArgChecker::checkargs(argc);
-		ConfigParser::run(argv[1]);
+		ConfigParser	parser(argv[1]);
+		parser.run();
 	}
 	catch (std::exception	&e)
 	{

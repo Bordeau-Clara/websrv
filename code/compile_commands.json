@@ -18,9 +18,9 @@
       "build/classes/ArgChecker/ArgChecker.o",
       "classes/ArgChecker/ArgChecker.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ArgChecker/ArgChecker.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ArgChecker/ArgChecker.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ArgChecker/ArgChecker.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ArgChecker/ArgChecker.o"
   },
   {
     "arguments": [
@@ -41,9 +41,9 @@
       "build/classes/ConfigParser/ConfigParser.o",
       "classes/ConfigParser/ConfigParser.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/ConfigParser.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/ConfigParser.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ConfigParser/ConfigParser.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ConfigParser/ConfigParser.o"
   },
   {
     "arguments": [
@@ -64,9 +64,9 @@
       "build/classes/ConfigParser/utils.o",
       "classes/ConfigParser/utils.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/utils.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/utils.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ConfigParser/utils.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ConfigParser/utils.o"
   },
   {
     "arguments": [
@@ -87,9 +87,9 @@
       "build/classes/ConfigParser/tokenize.o",
       "classes/ConfigParser/tokenize.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/tokenize.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/tokenize.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ConfigParser/tokenize.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ConfigParser/tokenize.o"
   },
   {
     "arguments": [
@@ -110,9 +110,9 @@
       "build/classes/Logger/Logger.o",
       "classes/Logger/Logger.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/Logger/Logger.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/Logger/Logger.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Logger/Logger.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Logger/Logger.o"
   },
   {
     "arguments": [
@@ -133,9 +133,9 @@
       "build/classes/Location/Location.o",
       "classes/Location/Location.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/Location/Location.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/Location/Location.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Location/Location.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Location/Location.o"
   },
   {
     "arguments": [
@@ -156,9 +156,9 @@
       "build/classes/Server/Server.o",
       "classes/Server/Server.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/Server/Server.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/Server/Server.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Server/Server.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Server/Server.o"
   },
   {
     "arguments": [
@@ -179,8 +179,8 @@
       "build/sources/main.o",
       "sources/main.cpp"
     ],
-    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/sources/main.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/sources/main.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/sources/main.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/sources/main.o"
   }
 ]

@@ -13,151 +13,126 @@
 #include "Location.hpp"
 #include "tokens.hpp"
 
-void	ConfigParser::parseListen(Server &current,
-								std::vector<std::string>::iterator &it,
-								std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseListen(Server &current)
 {
 	(void)current;
-	(void)it;
-	(void)it_end;
 }
 
-void	ConfigParser::parseRoot(Location &current,
-								std::vector<std::string>::iterator &it,
-								std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseRoot(Location &current)
 {
-	(void)it_end;
-	if (it->at(0) != '/')
-		throw (std::runtime_error("root must be a valid path syntax\n-->" + *it));
-	current.setRoot(*it);
+	if (get().at(0) != '/')
+		throw (std::runtime_error("root must be a valid path syntax\n-->" + get()));
+	current.setRoot(get());
 }
 
-void	ConfigParser::parseAlias(Location &current,
-								std::vector<std::string>::iterator &it,
-								std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseAlias(Location &current)
 {
-	(void)it_end;
-	if (it->at(0) != '/')
-		throw (std::runtime_error("alias must be a valid path syntax\n-->" + *it));
-	current.setAlias(*it);
+	if (get().at(0) != '/')
+		throw (std::runtime_error("alias must be a valid path syntax\n-->" + get()));
+	current.setAlias(get());
 }
 
 #include <cstdlib>
-void	ConfigParser::parseClientMaxBodySize(Location &current,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseClientMaxBodySize(Location &current)
 {
-	(void)it_end;
 	int i;
 	try
 	{
-		i = std::strtol(it->c_str(), NULL, 10);
+		i = std::strtol(get().c_str(), NULL, 10);
     }
 	catch (std::invalid_argument const& ex)
 	{
-		throw (std::runtime_error("max_client_body_size must be a number argument\n-->" + *it));
+		throw (std::runtime_error("max_client_body_size must be a number argument\n-->" + get()));
 	}
 	catch (std::out_of_range const& ex)
 	{
-		throw (std::runtime_error("max_client_body_size must not exceed int value\n-->" + *it));
+		throw (std::runtime_error("max_client_body_size must not exceed int value\n-->" + get()));
 	}
 	current.setClientMaxBodySize(i);
 }
 
-void	ConfigParser::parseCgi(Location &current,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseCgi(Location &current)
 {
 	std::set<std::string> suffixes = current.getCgiSuffix();
-	for (;*it != ";" && it != it_end; it++)
+	for (;get() != ";" && !end(); next())
 	{
-		if (it->at(0) != '.')
-			throw (std::runtime_error("CGI suffix must start with '.'\n-->" + *it));
-		suffixes.insert(*it);
+		if (get().at(0) != '.')
+			throw (std::runtime_error("CGI suffix must start with '.'\n-->" + get()));
+		suffixes.insert(get());
 	}
-	if (it == it_end)
-		throw (std::runtime_error("Unclosed directive CGI \n-->" + *(--it)));
-	it--;
+	if (end())
+		throw (std::runtime_error("Unclosed directive CGI \n-->edit"));
+	_token_it--;
 	current.setCgiSuffixSet(suffixes);
 }
 
-void	ConfigParser::parseAllowedMethods(Location &current,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseAllowedMethods(Location &current)
 {
 	bool	methods[3]= {
 					current.getMethods()[GET],
 					current.getMethods()[POST],
 					current.getMethods()[DELETE]
 					};
-	for (;*it != ";" && it != it_end; it++)
+	for (;get() != ";" && !end(); next())
 	{
 		int i;
 		for (i = 0; i < 3; i++)
 		{
-			if (*it == METHODS[i])
+			if (get() == METHODS[i])
 			{
 				methods[i] = true;
 				break ;
 			}
 		}
 		if (i == 3)
-			throw (std::runtime_error("Unrecognized http method\n-->" + *it));
+			throw (std::runtime_error("Unrecognized http method\n-->" + get()));
 	}
-	if (it == it_end)
-		throw (std::runtime_error("Unclosed directive methods \n-->" + *(--it)));
-	it--;
+	if (end())
+		throw (std::runtime_error("Unclosed directive methods \n-->" + *(--_token_it)));
+	_token_it--;
 	current.setMethods(methods);
 }
 
-void	ConfigParser::parseReturn(Location &current,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseReturn(Location &current)
 {
-	(void)it_end;
 	if (0)
-		throw (std::runtime_error(DIRECTIVE[RETURN] + " must be a valid url\n-->" + *it));
-	current.setRedirect(*it);
+		throw (std::runtime_error(DIRECTIVE[RETURN] + " must be a valid url\n-->" + get()));
+	current.setRedirect(get());
 }
 
-void	ConfigParser::parseAutoIndex(Location &current,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseAutoIndex(Location &current)
 {
-	(void)it_end;
 	bool	autoindex;
-	if (*it == "on" || *it == "ON")
+	if (get() == "on" || get() == "ON")
 		autoindex = true;
-	else if (*it == "off" || *it == "OFF")
+	else if (get() == "off" || get() == "OFF")
 		autoindex = false;
 	else
-		throw (std::runtime_error("In directive " + DIRECTIVE[AUTOINDEX] + " :unrecognized token\n-->" + *it));
+		throw (std::runtime_error("In directive " + DIRECTIVE[AUTOINDEX] + " :unrecognized token\n-->" + get()));
 	current.setAutoindex(autoindex);
 }
 
-void	ConfigParser::parseErrorPages(Location &current,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parseErrorPages(Location &current)
 {
 	static const int	codes[] = {404};
 	static const int	max = sizeof(codes) / sizeof(int);
 
-	std::vector<std::string>::iterator it_start = it;
+	std::vector<std::string>::iterator it_start = _token_it;
 
 	int	size = 0;
-	for (;*it != ";" && it != it_end; it++)
+	for (;get() != ";" && !end(); next())
 		size++;
-	if (it == it_end)
-		throw (std::runtime_error("Unclosed directive " + DIRECTIVE[ERROR_PAGE] + " \n-->" + *(--it)));
+	if (end())
+		throw (std::runtime_error("Unclosed directive " + DIRECTIVE[ERROR_PAGE] + " \n-->" + *(--_token_it)));
 	if (size < 2)
-		throw (std::runtime_error("Directive" + DIRECTIVE[ERROR_PAGE] + "need at least 2 arguments\n-->" + *(--it)));
+		throw (std::runtime_error("Directive" + DIRECTIVE[ERROR_PAGE] + "need at least 2 arguments\n-->" + *(--_token_it)));
 
 	// it at last argument
-	it--;
+	--_token_it;
 	// should be the location of each error_pages
-	if (it->at(0) != '/')
-		throw (std::runtime_error(DIRECTIVE[ERROR_PAGE] + " must be a valid path syntax\n-->" + *it));
-	for (; it_start < it; it_start++)
+	if (get().at(0) != '/')
+		throw (std::runtime_error(DIRECTIVE[ERROR_PAGE] + " must be a valid path syntax\n-->" + get()));
+	for (; it_start < _token_it; it_start++)
 	{
 		int	nb;
 		try// extraire le nb de la str
@@ -177,17 +152,14 @@ void	ConfigParser::parseErrorPages(Location &current,
 			if (i == max)
 				throw ("Unrecognized error page code \n-->" + *it_start);
 			if (codes[i] == nb)
-				current.setErrorPage(nb, *it);
+				current.setErrorPage(nb, get());
 		}
 	}
 }
 
-void	ConfigParser::parsePostLocation(Location &current,
-							std::vector<std::string>::iterator &it,
-							std::vector<std::string>::iterator &it_end)
+void	ConfigParser::parsePostLocation(Location &current)
 {
-	(void)it_end;
-	if (it->at(0) != '/')
-		throw (std::runtime_error("post_location must be a valid path syntax\n-->" + *it));
-	current.setRoot(*it);
+	if (get().at(0) != '/')
+		throw (std::runtime_error("post_location must be a valid path syntax\n-->" + get()));
+	current.setRoot(get());
 }
