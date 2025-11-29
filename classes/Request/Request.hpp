@@ -36,12 +36,14 @@ typedef enum parsing_state
 	CHUNK_SIZE,
 	TRAILERS,
 	SEND,
+	// SEND_CGI,
 } parsing_state;
 
 class Request
 {
 private:
 	int					_start; //pour chuncked request, pour verifier le temps
+	std::string			_status; //to put in response
 	
 	std::string			_header;
 	std::string			_body;

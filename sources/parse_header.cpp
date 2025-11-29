@@ -42,6 +42,7 @@ void	parse_header(Request *request)
 	int type;
 	while (1)
 	{
+		//look at parse_cgi_header for amelioration
 		if (request->getHeader().empty())
 		{
 			std::cout << "header emptied" << std::endl;
@@ -93,8 +94,11 @@ void	parse_cgi_header(Request *request)
 		{
 			std::cout << RED << ": not found" << WHITE << std::endl;
 			break; //throw error?
+			//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 		}
-		request->getField(&field, &cursor);//why don't get field do the search?
+		//if (!request->getField() | !request->getToken())
+		//edit status and return
+		request->getField(&field, &cursor);//why don't getField() do the search?
 		request->getToken(&token, &cursor);// should skip the ows qnd not parsers
 		cgi.addFields(field, token);
 	}
@@ -104,3 +108,10 @@ void	parse_cgi_header(Request *request)
 	else
 		request->setState(BODY);
 }
+//class request devient client et request est le constructeur de client (clien herite de request)
+//les fonctions de parsing vont dans request pour la lisibilite
+//
+//construction reponse:
+//si cgi -> recuperer header + body => comment savoir si cgi? Encore une variable? Peut pas avec state car passe en send quand cgi a fini
+//state "SEND_CGI"? Et donc va check la class cgi qui ce trouve dan client?
+//else a construire a partir des variable et uri
