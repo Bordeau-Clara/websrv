@@ -12,7 +12,7 @@
 #include "Request.hpp"
 #include "../../includes/parsing_header.hpp"
 
-Request::Request() : _status(0), _state(HEADER), _method(OTHER), _connection(1), _trailer(0)
+Request::Request() : _status(), _state(HEADER), _method(OTHER), _connection(1), _trailer(0)
 {
 }
 

@@ -10,8 +10,9 @@
 /* ************************************************************************** */
 
 #include "Cgi.hpp"
+// #include "../Request/Request.hpp"
 
-Cgi::Cgi()
+Cgi::Cgi(): _env(CGI_HEADER)
 {
 }
 
@@ -21,6 +22,7 @@ void	Cgi::addFields(std::string field, std::string token)
 	(void)token;
 }
 
-void	Cgi::getFieldFromUri()
+void	Cgi::getFieldFromUri(Request *request)
 {
+	(void)request;
 }

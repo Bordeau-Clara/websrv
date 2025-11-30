@@ -11,9 +11,11 @@
 
 #pragma once
 
-// #include "../Request/Request.hpp"
 #include <string>
 #include <vector>
+#include "../../includes/define_cgi.hpp"
+
+class Request;
 class Cgi
 {
 private:
@@ -30,7 +32,7 @@ public:
 	void						createBasicEnv();
 
 	void						addFields(std::string field, std::string token);//check for host, type, length and or add
-	void						getFieldFromUri();//to call in constructor
+	void						getFieldFromUri(Request *request);//to call in constructor
 	//do function in request createCgi() to add uri, methode, query without getters
 
 	// void				parseCgiHost(std::string field, std::string token);

@@ -23,8 +23,8 @@ const std::string	CRLF = "\r\n";
 const std::string	OWS = " \t";
 const bool			CHUNKED = 1;
 
-int	find_type(std::string str);
-unsigned long hexToLong(std::string line);
+int				find_type(std::string str);
+unsigned long	hexToLong(std::string line);
 
 typedef enum method
 {
