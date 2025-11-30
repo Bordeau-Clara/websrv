@@ -14,12 +14,12 @@
 
 std::string	skipOWS(std::string str)
 {
-	int cursor = 0;
-	while (str[cursor] && OWS.find(str[cursor]))
-	{
-		cursor++;
-	}
-	str.erase(0, cursor);
+	// int cursor = 0;
+	// while (str[cursor] && OWS.find(str[cursor]))
+	// {
+	// 	cursor++;
+	// }
+	// str.erase(0, cursor);
 	return str;
 }
 

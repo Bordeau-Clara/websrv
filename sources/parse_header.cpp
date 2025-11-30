@@ -20,7 +20,8 @@ void	parse_header_type(Request *request)
 
 	if (request->getHeader().empty())
 		return;
-	request->getToken(&token, &cursor);
+	request->getToken(&token, &cursor);//can't use this cause it skip ows
+	// std::cout << GREEN << "Request line is:" + token << WHITE << std::endl;
 	parse_request_line(request, token);
 	if (request->getState() == CGI)
 		parse_cgi_header(request);

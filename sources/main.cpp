@@ -239,7 +239,7 @@ int	main()
 
 		Request request = Request();
 		header = "GET index.html?lan=en HTTP/1.1\r\n";
-		header.append("Host:58\r\n");
+		header.append("Host:                  58\r\n");
 		header.append("content-type:185\r\n");
 		header.append("content-length:189\r\n");
 		header.append("transfer-encoding:201\r\n\r\n");

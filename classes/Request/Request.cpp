@@ -57,6 +57,15 @@ int	Request::getToken(std::string *token, std::string::size_type *cursor)
 {
 	//skip OWS here
 	// std::cout << "Token  before assign is " << *token << std::endl;
+	
+	int	Ows = 0;
+
+	while (this->_header[Ows] && OWS.find(this->_header[Ows]) != std::string::npos)
+	{
+		// std::cout << BLUE << "Ows char is:" << this->_header[Ows] << WHITE << std::endl;
+		Ows++;
+	}
+	std::cout << BLUE << "Ows is:" << Ows << WHITE << std::endl;
 	*cursor = this->_header.find(CRLF);
 	if (*cursor == std::string::npos)
 	{
@@ -64,14 +73,12 @@ int	Request::getToken(std::string *token, std::string::size_type *cursor)
 		return 0;
 		//throw error;
 	}
-	token->assign(this->_header, 0, *cursor);
+	token->assign(this->_header, Ows, *cursor);
 	// std::cout << "Token after assign is " << *token << std::endl;
 	*cursor += 2;
 	this->_header.erase(0, *cursor);
 	return 1;
 }
-
-int	find_type(std::string str);
 
 int	Request::getField(std::string::size_type *cursor, int *type)
 {
