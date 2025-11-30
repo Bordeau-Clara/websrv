@@ -11,6 +11,8 @@
 
 #include <map>
 #include <string>
+#include <sys/socket.h>
+#include <netinet/in.h>
 class	Location;
 
 class	Server
@@ -22,5 +24,7 @@ class	Server
 	
 	private:
 		std::map<std::string, Location>	_locations;
-		// std::string			_
+		unsigned short int	_port;
+		unsigned int		_interface;
+		static const int	socket_in_family = AF_INET;
 };
