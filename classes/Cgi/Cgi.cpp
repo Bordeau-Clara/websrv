@@ -16,10 +16,21 @@ Cgi::Cgi(): _env(CGI_HEADER)
 {
 }
 
+std::string	httpToCgiHeader(std::string field)
+{
+	for (int i = 0; field[i] != std::string::npos; i++)
+	{
+	}
+	return (HTTP + field);
+}
+
 void	Cgi::addFields(std::string field, std::string token)
 {
-	(void)field;
-	(void)token;
+	std::string	variable;
+
+	//check for host/type/length to be parse separated cause dont have HTTP_ preposition
+
+	variable.assign(httpToCgiHeader(field));
 }
 
 void	Cgi::getFieldFromUri(Request *request)

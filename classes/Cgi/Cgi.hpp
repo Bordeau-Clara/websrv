@@ -19,7 +19,7 @@ class Request;
 class Cgi
 {
 private:
-	int							_pipe[2];
+	int							_responsePipe[2];
 	std::vector<std::string>	_env;
 	// Request&					_client;
 	std::string					_buffer;
@@ -32,7 +32,7 @@ public:
 	void						createBasicEnv();
 
 	void						addFields(std::string field, std::string token);//check for host, type, length and or add
-	void						getFieldFromUri(Request *request);//to call in constructor
+	void						getFieldFromUri(Request *request);//to call in constructor -> no
 	//do function in request createCgi() to add uri, methode, query without getters
 
 	// void				parseCgiHost(std::string field, std::string token);
