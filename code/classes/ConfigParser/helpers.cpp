@@ -1,11 +1,11 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ConfigParser.cpp                                   :+:      :+:    :+:   */
+/*   helpers.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/19 12:23:47 by aykrifa           #+#    #+#             */
+/*   Created: 2025/12/01 11:51:16 by aykrifa           #+#    #+#             */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -13,25 +13,39 @@
 #include "Server.hpp"
 #include "Location.hpp"
 #include "tokens.hpp"
-#include <sstream>
 
 #include "FileStream.hpp"
 extern FileStream	streams;
 
-static std::string	extractStr(const char *file)
+int	ConfigParser::checkDirective(void)
 {
-	//https://stackoverflow.com/questions/29310166/check-if-a-fstream-is-either-a-file-or-directory
-	std::fstream		fs(file);
-	if (fs.fail())
-		throw (std::runtime_error("Cannot open '" + std::string(file) + '\''));
-
-	std::ostringstream	ostrs;
-	ostrs	<< fs.rdbuf();
-	/**/streams.print(LOG_CONFIGPARSER) << SEPARATOR + "|| Extracted str \nVV" << std::endl << ostrs;
-	return (ostrs.str());
+	for (int i = 0; i != NONE; ++i)
+	{
+		if (get() == DIRECTIVE[i])
+		{
+			_last_directive = i;
+			return (i);
+		}
+	}
+	throw (std::runtime_error("Checkdirective(): unrecognized token " + get()));
 }
 
-ConfigParser::ConfigParser(char *file): _last_directive(NONE)
+void	ConfigParser::next(void)
 {
-	this->_str = extractStr(file);
+	++_token_it;
+}
+
+bool	ConfigParser::end(void) const
+{
+	return(_token_it == _token_it_end);
+}
+
+const std::string	ConfigParser::get(void) const
+{
+	return(*_token_it);
+}
+
+int	ConfigParser::getDirective(void) const
+{
+	return (_last_directive);
 }

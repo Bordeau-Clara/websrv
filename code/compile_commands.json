@@ -61,12 +61,12 @@
       "-Iclasses/Location",
       "-Iclasses/Server",
       "-o",
-      "build/classes/ConfigParser/utils.o",
-      "classes/ConfigParser/utils.cpp"
+      "build/classes/ConfigParser/tokenize.o",
+      "classes/ConfigParser/tokenize.cpp"
     ],
     "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/utils.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/utils.o"
+    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/tokenize.cpp",
+    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/tokenize.o"
   },
   {
     "arguments": [
@@ -84,12 +84,58 @@
       "-Iclasses/Location",
       "-Iclasses/Server",
       "-o",
-      "build/classes/ConfigParser/tokenize.o",
-      "classes/ConfigParser/tokenize.cpp"
+      "build/classes/ConfigParser/run.o",
+      "classes/ConfigParser/run.cpp"
     ],
     "directory": "/home/aykrifa/Desktop/repo/webserv/code",
-    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/tokenize.cpp",
-    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/tokenize.o"
+    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/run.cpp",
+    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/run.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-std=c++98",
+      "-g3",
+      "-Iincludes",
+      "-Iclasses/ArgChecker",
+      "-Iclasses/ConfigParser",
+      "-Iclasses/FileStream",
+      "-Iclasses/Location",
+      "-Iclasses/Server",
+      "-o",
+      "build/classes/ConfigParser/directive.o",
+      "classes/ConfigParser/directive.cpp"
+    ],
+    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
+    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/directive.cpp",
+    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/directive.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-std=c++98",
+      "-g3",
+      "-Iincludes",
+      "-Iclasses/ArgChecker",
+      "-Iclasses/ConfigParser",
+      "-Iclasses/FileStream",
+      "-Iclasses/Location",
+      "-Iclasses/Server",
+      "-o",
+      "build/classes/ConfigParser/helpers.o",
+      "classes/ConfigParser/helpers.cpp"
+    ],
+    "directory": "/home/aykrifa/Desktop/repo/webserv/code",
+    "file": "/home/aykrifa/Desktop/repo/webserv/code/classes/ConfigParser/helpers.cpp",
+    "output": "/home/aykrifa/Desktop/repo/webserv/code/build/classes/ConfigParser/helpers.o"
   },
   {
     "arguments": [

@@ -22,8 +22,10 @@ SRC_FILES = \
 CLASS_FILES = \
 	ArgChecker/ArgChecker.cpp \
 	ConfigParser/ConfigParser.cpp \
-	ConfigParser/utils.cpp \
 	ConfigParser/tokenize.cpp \
+	ConfigParser/run.cpp \
+	ConfigParser/directive.cpp \
+	ConfigParser/helpers.cpp \
 	FileStream/FileStream.cpp \
 	Location/Location.cpp \
 	Server/Server.cpp \

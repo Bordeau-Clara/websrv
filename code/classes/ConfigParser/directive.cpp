@@ -9,6 +9,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
+#include <cstdlib>
+#include <limits>
+#include <stdexcept>
+
 #include "ConfigParser.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
@@ -17,9 +22,6 @@
 static const int LOCALHOST = 0x7F000001;
 static const char *DIGITS = "0123456789";
 
-#include <cstdlib>
-#include <limits>
-#include <stdexcept>
 static unsigned int	parse_ipv4(std::string str)
 {
 	if (str == "localhost")
@@ -59,9 +61,6 @@ static unsigned int	parse_ipv4(std::string str)
 	}
 	return (ipv4);
 }
-
-#include <cstdlib>
-#include <limits>
 
 static unsigned short	parse_port(std::string str)
 {
@@ -123,7 +122,6 @@ void	ConfigParser::parseAlias(Location &current)
 	current.setAlias(get());
 }
 
-#include <cstdlib>
 void	ConfigParser::parseClientMaxBodySize(Location &current)
 {
 	int i;
@@ -203,7 +201,6 @@ void	ConfigParser::parseAutoIndex(Location &current)
 	current.setAutoindex(autoindex);
 }
 
-#include <cstdlib>
 void	ConfigParser::parseErrorPages(Location &current)
 {
 	static const int	codes[] = {404};

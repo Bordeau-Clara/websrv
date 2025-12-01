@@ -32,10 +32,12 @@ class	ConfigParser
 		std::vector<std::string>			_token_vec;
 		std::vector<std::string>::iterator	_token_it;
 		std::vector<std::string>::iterator	_token_it_end;
+		int									_last_directive;
 
-		void		next(void);
-		bool		end(void) const;
-		std::string	get(void);
+		void				next(void);
+		bool				end(void) const;
+		const std::string	get(void) const;
+		int					getDirective(void) const;
 
 		void	tokenInit(void);
 		void	tokenize(void);
