@@ -21,7 +21,9 @@ Location	ConfigParser::parseLocationLoop(Location &current)
 		next();
 		if (end())
 			throw (std::runtime_error("Unexpected end context location not closed by '}'"));
-		switch (checkDirective())
+		checkDirective();
+		next();
+		switch (getDirective())
 		{
 			case ROOT:
 			parseRoot(current);

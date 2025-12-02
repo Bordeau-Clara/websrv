@@ -88,7 +88,6 @@ static unsigned short	parse_port(std::string str)
 
 void	ConfigParser::parseListen(Server &current)
 {
-	next();
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -120,12 +119,11 @@ void	ConfigParser::parseListen(Server &current)
 
 void	ConfigParser::parseRoot(Location &current)
 {
-	next();
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
-	if (get().at(0) != '/')
-		throw (std::runtime_error("root must be a valid path syntax\n-->" + get()));
+	// if (get().at(0) != '/')
+	// 	throw (std::runtime_error("root must be a valid path syntax\n-->" + get()));
 	current.setRoot(get());
 	next();
 	if (get() != ";")
@@ -135,8 +133,11 @@ void	ConfigParser::parseRoot(Location &current)
 
 void	ConfigParser::parseAlias(Location &current)
 {
-	if (get().at(0) != '/')
-		throw (std::runtime_error("alias must be a valid path syntax\n-->" + get()));
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
+	// if (get().at(0) != '/')
+	// 	throw (std::runtime_error("alias must be a valid path syntax\n-->" + get()));
 	current.setAlias(get());
 	next();
 	if (get() != ";")
@@ -146,7 +147,6 @@ void	ConfigParser::parseAlias(Location &current)
 
 void	ConfigParser::parseClientMaxBodySize(Location &current)
 {
-	next();
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -172,7 +172,6 @@ void	ConfigParser::parseClientMaxBodySize(Location &current)
 
 void	ConfigParser::parseCgi(Location &current)
 {
-	next();
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -191,7 +190,6 @@ void	ConfigParser::parseCgi(Location &current)
 
 void	ConfigParser::parseAllowedMethods(Location &current)
 {
-	next();
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -215,17 +213,17 @@ void	ConfigParser::parseAllowedMethods(Location &current)
 			throw (std::runtime_error("Unrecognized http method\n-->" + get()));
 	}
 	if (end())
-		throw (std::runtime_error("Unclosed directive methods \n-->" + *(--_token_it)));
+		throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
 	current.setMethods(methods);
 	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseReturn(Location &current)
 {
-	next();
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
+	//TBD
 	if (0)
 		throw (std::runtime_error(DIRECTIVE[RETURN] + " must be a valid url\n-->" + get()));
 	current.setRedirect(get());
@@ -237,7 +235,6 @@ void	ConfigParser::parseReturn(Location &current)
 
 void	ConfigParser::parseAutoIndex(Location &current)
 {
-	next();
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -251,13 +248,12 @@ void	ConfigParser::parseAutoIndex(Location &current)
 	current.setAutoindex(autoindex);
 	next();
 	if (get() != ";")
-		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+		throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
 	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseErrorPages(Location &current)
 {
-	next();
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -275,7 +271,7 @@ void	ConfigParser::parseErrorPages(Location &current)
 						// should be the location of each error_pages
 		}
 		if (end())
-			throw (std::runtime_error("Unclosed directive " + DIRECTIVE[ERROR_PAGE] + " \n-->" + *(--_token_it)));
+			throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
 		if (size < 2)
 			throw (std::runtime_error("Directive" + DIRECTIVE[ERROR_PAGE] + "need at least 2 arguments\n-->" + *(--_token_it)));
 	}
@@ -314,7 +310,6 @@ void	ConfigParser::parseErrorPages(Location &current)
 
 void	ConfigParser::parsePostLocation(Location &current)
 {
-	next();
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 

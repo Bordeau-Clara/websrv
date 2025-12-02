@@ -23,12 +23,12 @@ static const std::string	DIRECTIVE[] =
 		"listen",				// short (port)
 		"error_page",			// int
 		"client_max_body_size",	// int
-		"allowed_methods",		//
+		"allow_methods",		//
 		"return",				// URL (redirection)
 		"root",					// path (debut du path)
 		"alias",				// expr (remplace location)
 		"autoindex",			// on |off
-		"cgi_suffix",			// .expr
+		"cgi_ext",			// .expr
 		"post_directory",		// path
 		"{",					//
 		"}",					//
