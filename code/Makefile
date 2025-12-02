@@ -33,7 +33,7 @@ CLASS_FILES = \
 CLASSES = $(addprefix $(CLASS_DIR)/, $(CLASS_FILES))
 SOURCES = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
 
-#
+# include directories
 INC_DIR = \
 		  includes \
 		  $(CLASS_DIR)/ArgChecker \
