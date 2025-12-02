@@ -30,5 +30,10 @@ int	main(int argc, char **argv)
 	{
 		std::cerr << "Exception caught :"<< e.what() << std::endl;
 	}
+	try {servers.at(0).startListen();}
+	catch (std::exception	&e)
+	{
+		std::cerr << "Exception caught :"<< e.what() << std::endl;
+	}
 	printServerInfo(servers);
 }

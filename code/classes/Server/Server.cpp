@@ -110,9 +110,9 @@ void	Server::startListen(void)
     int opt = 1;
     setsockopt(this->getFd(), SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
-    // Lier le socket à une adresse et un port
+    // bind socket to interface port
     struct sockaddr_in server_addr;
-    server_addr.sin_family = this->socket_type;
+    server_addr.sin_family = this->socket_adress_family;
     server_addr.sin_addr.s_addr = htonl(this->getInterface());
     server_addr.sin_port = htons(this->getPort());
     if (bind(this->getFd(), (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1)
@@ -120,12 +120,12 @@ void	Server::startListen(void)
 		throw (std::runtime_error("bind"));
     }
 
-	streams.print(LOG_SERVER) << "htons: " << server_addr.sin_port << std::endl;
-    // Écouter les connexions entrantes
+	//listen
     if (listen(this->getFd(), this->socket_max_connection) == -1)
 	{
 		throw (std::runtime_error("listen"));
     }
+	streams.print(LOG_SERVER) << *this << SEPARATOR << std::endl;
 }
 
 std::ostream	&operator<<(std::ostream &lhs, const Server &rhs)
