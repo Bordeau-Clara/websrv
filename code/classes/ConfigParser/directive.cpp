@@ -88,6 +88,7 @@ static unsigned short	parse_port(std::string str)
 
 void	ConfigParser::parseListen(Server &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -119,6 +120,7 @@ void	ConfigParser::parseListen(Server &current)
 
 void	ConfigParser::parseRoot(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -133,6 +135,7 @@ void	ConfigParser::parseRoot(Location &current)
 
 void	ConfigParser::parseAlias(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -147,6 +150,7 @@ void	ConfigParser::parseAlias(Location &current)
 
 void	ConfigParser::parseClientMaxBodySize(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -172,6 +176,7 @@ void	ConfigParser::parseClientMaxBodySize(Location &current)
 
 void	ConfigParser::parseCgi(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -190,6 +195,7 @@ void	ConfigParser::parseCgi(Location &current)
 
 void	ConfigParser::parseAllowedMethods(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -220,6 +226,7 @@ void	ConfigParser::parseAllowedMethods(Location &current)
 
 void	ConfigParser::parseReturn(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -235,6 +242,7 @@ void	ConfigParser::parseReturn(Location &current)
 
 void	ConfigParser::parseAutoIndex(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -254,6 +262,7 @@ void	ConfigParser::parseAutoIndex(Location &current)
 
 void	ConfigParser::parseErrorPages(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -276,8 +285,9 @@ void	ConfigParser::parseErrorPages(Location &current)
 			throw (std::runtime_error("Directive" + DIRECTIVE[ERROR_PAGE] + "need at least 2 arguments\n-->" + *(--_token_it)));
 	}
 
-	if ((page->at(0) != '/'))
-		throw (std::runtime_error(DIRECTIVE[ERROR_PAGE] + " must be a valid path syntax\n-->" + *page));
+	//TBD
+	// if ((page->at(0) != '/'))
+	// 	throw (std::runtime_error(DIRECTIVE[ERROR_PAGE] + " must be a valid path syntax\n-->" + *page));
 	// for each token until 
 	for (; it_start < _token_it; it_start++)
 	{
@@ -301,7 +311,7 @@ void	ConfigParser::parseErrorPages(Location &current)
 			if (codes[i] == nb)
 			{
 				current.setErrorPage(nb, *page);
-				streams.print(LOG_DIRECTIVE) << "Error page " << nb << " " + get() + " added" << std::endl;
+				streams.print(LOG_DIRECTIVE) << nb << ": " + *page << std::endl;
 			}
 		}
 	}
@@ -310,6 +320,7 @@ void	ConfigParser::parseErrorPages(Location &current)
 
 void	ConfigParser::parsePostLocation(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
