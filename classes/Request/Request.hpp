@@ -77,6 +77,10 @@ public:
 	std::string			getBuffer();
 	parsing_state		getState();
 
+	method				getMethod();
+	std::string			getUri();
+	std::string			getQueryString();
+
 	void				fillHeader(std::string::size_type cursor);
 	void				fillBody();
 	void				fillChunkedBody();

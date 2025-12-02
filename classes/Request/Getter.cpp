@@ -35,3 +35,18 @@ bool	Request::getTransferEncoding()
 {
 	return this->_transferEncoding;
 }
+
+method	Request::getMethod()
+{
+	return this->_method;
+}
+
+std::string	Request::getUri()
+{
+	return this->_uri;
+}
+
+std::string	Request::getQueryString()
+{
+	return this->_queryString;
+}
