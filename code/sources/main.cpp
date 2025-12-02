@@ -15,6 +15,7 @@ FileStream	streams;
 
 int	main(int argc, char **argv)
 {
+	std::vector<Server>	servers;
 	try
 	{
 		streams.add(LOG_CONFIGPARSER);
@@ -23,10 +24,11 @@ int	main(int argc, char **argv)
 		streams.add(LOG_LOCATION);
 		ArgChecker::checkargs(argc);
 		ConfigParser	parser(argv[1]);
-		parser.run();
+		servers = parser.run();
 	}
 	catch (std::exception	&e)
 	{
 		std::cerr << "Exception caught :"<< e.what() << std::endl;
 	}
+	printServerInfo(servers);
 }

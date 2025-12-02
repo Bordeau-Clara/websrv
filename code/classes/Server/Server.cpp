@@ -14,11 +14,14 @@
 #include <stdexcept>
 
 #include "FileStream.hpp"
+#include "logfiles.hpp"
 extern FileStream	streams;
 
+static const unsigned int				DEFAULT_SERVER_INTERFACE = 0;
+static const unsigned short				DEFAULT_SERVER_PORT = 8080;
 Server::Server(void):
-	_port(8080),
-	_interface(0),
+	_port(DEFAULT_SERVER_PORT),
+	_interface(DEFAULT_SERVER_INTERFACE),
 	_fd(-1)
 {}
 
@@ -147,4 +150,13 @@ std::ostream	&operator<<(std::ostream &lhs, const Server &rhs)
 		}
 	}
 	return (lhs);
+}
+
+void	printServerInfo(const std::vector<Server> servers)
+{
+	int	i = 0;
+	for (std::vector<Server>::const_iterator it = servers.begin(); it != servers.end(); it++)
+	{
+		streams.print(LOG_SERVER) << "SERVER " << i << ":" << std::endl << *it << std::endl;
+	}
 }

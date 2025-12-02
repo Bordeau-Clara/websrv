@@ -233,8 +233,7 @@ std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 	lhs << std::endl;
 
 	const bool	*methods = rhs.getMethods();
-	lhs << std::endl
-		<< "methods: "
+	lhs << "methods: "
 		<< (methods[GET] ? "GET ": "")
 		<< (methods[POST] ? "POST ": "")
 		<< (methods[DELETE] ? "DELETE ": "")
@@ -251,10 +250,6 @@ std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 	lhs << "post_directory: "
 		<< rhs.getPostDirectory()
 		<< std::endl;
-	// Source - https://stackoverflow.com/a
-	// Posted by P0W, modified by community. See post 'Timeline' for change history
-	// Retrieved 2025-11-23, License - CC BY-SA 4.0
-
 	// error pages
 	std::map<int, std::string>	Pages = rhs.getErrorPages();
 	for (std::map<int, std::string>::iterator it = Pages.begin(); it != Pages.end(); it++)

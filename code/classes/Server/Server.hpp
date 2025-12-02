@@ -13,6 +13,7 @@
 #include <string>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <vector>
 class	Location;
 
 class	Server
@@ -63,3 +64,4 @@ class	Server
 };
 
 std::ostream	&operator<<(std::ostream &lhs, const Server &rhs);
+void		printServerInfo(const std::vector<Server> servers);

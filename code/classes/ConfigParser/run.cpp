@@ -141,6 +141,7 @@ void	ConfigParser::parseServer(std::vector<Server> &servers)
 	// build location for current
 	std::map<std::string, Location> locations = parseServerLoop(current);
 	// should check interface:port are unique
+	current.setLocationsMap(locations);
 	servers.push_back(current);
 }
 
