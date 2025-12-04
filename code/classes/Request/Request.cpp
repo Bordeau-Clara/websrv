@@ -49,58 +49,61 @@ void	Request::fillBody()
 		this->_state = SEND;
 }
 
-int	Request::getToken(std::string *token, std::string::size_type *cursor)
+int	Request::getToken(std::string *token)
 {
 	// std::cout << "Token  before assign is " << *token << std::endl;
 	int	Ows = 0;
+	std::string::size_type	cursor = 0;
 
 	while (this->_header[Ows] && OWS.find(this->_header[Ows]) != std::string::npos)
 		Ows++;
 
-	*cursor = this->_header.find(CRLF);
-	if (*cursor == std::string::npos)
+	if (!move_cursor(&cursor, this->_header, CRLF))
 	{
 		std::cout << RED << "Cursor is at NULL" << WHITE << std::endl;
 		return 0;
 		//throw error;
+		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
-	token->assign(this->_header, Ows, *cursor);
+	token->assign(this->_header, Ows, cursor);
 	// std::cout << "Token after assign is " << *token << std::endl;
-	*cursor += 2;
-	this->_header.erase(0, *cursor);
+	cursor += 2;
+	this->_header.erase(0, cursor);
 	return 1;
 }
 
-int	Request::getField(std::string::size_type *cursor, int *type)
+int	Request::getField(int *type)
 {
 	std::string field;
-	if (!move_cursor(cursor, this->_header, ":"))
+	std::string::size_type	cursor = 0;
+	if (!move_cursor(&cursor, this->_header, ":"))
 	{
 		std::cout << RED << ": not found" << WHITE << std::endl;
 		return 0;
 		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
-	*cursor += 1;
-	field.assign(this->_header.substr(0, *cursor));
+	cursor += 1;
+	field.assign(this->_header.substr(0, cursor));
 	*type = find_type(field);
 	// *cursor += 1;
-	this->_header.erase(0, *cursor);
+	this->_header.erase(0, cursor);
 	// *cursor = this->_header.find(CRLF);
 	return *type;
 }
 
-int	Request::getField(std::string *field, std::string::size_type *cursor)
+int	Request::getField(std::string *field)
 {
-	if (!move_cursor(cursor, this->_header, ":"))
+	std::string::size_type	cursor = 0;
+	if (!move_cursor(&cursor, this->_header, ":"))
 	{
 		std::cout << RED << ": not found" << WHITE << std::endl;
 		return 0;
 		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
-	*cursor += 1;
-	field->assign(this->_header.substr(0, *cursor));
+	cursor += 1;
+	field->assign(this->_header.substr(0, cursor));
 	// *cursor += 1;
-	this->_header.erase(0, *cursor);
+	this->_header.erase(0, cursor);
 	// *cursor = this->_header.find(CRLF);
 	return 1;
 }

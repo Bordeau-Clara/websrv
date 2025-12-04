@@ -91,9 +91,9 @@ public:
 	void				parseMethod(std::string);
 	void				parseURI(std::string);
 
-	int					getToken(std::string *header, std::string::size_type *cursor);
-	int					getField(std::string::size_type *cursor, int *type);
-	int					getField(std::string *field, std::string::size_type *cursor);
+	int					getToken(std::string *header);
+	int					getField(int *type);
+	int					getField(std::string *field);
 
 private:
 	std::string			_host;

@@ -17,7 +17,7 @@
 void	parse_buffer(Request *request)
 {
 	//can a \r or \n be alone in header???
-	std::string::size_type cursor = 0;
+	std::string::size_type cursor = 0;//cursor has to be here for fill header
 	//header is full in buffer
 	if (request->getState() == HEADER && move_cursor(&cursor, request->getBuffer(), DCRLF))
 	{

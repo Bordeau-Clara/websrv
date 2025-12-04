@@ -16,7 +16,6 @@
 // string = expr + final CRLF
 void	parse_header_type(Request *request)
 {
-	std::string::size_type	cursor = 0;
 	std::string				token;
 
 	if (request->getHeader().empty())
@@ -24,7 +23,7 @@ void	parse_header_type(Request *request)
 	//cant be empty
 	//error if empty???
 
-	request->getToken(&token, &cursor);//can't use this cause it skip ows
+	request->getToken(&token);//can't use this cause it skip ows
 	// std::cout << GREEN << "Request line is:" + token << WHITE << std::endl;
 	parse_request_line(request, token);
 	if (request->getState() == CGI)
@@ -40,7 +39,6 @@ void	parse_header_type(Request *request)
 
 void	parse_header(Request *request)
 {
-	std::string::size_type	cursor = 0;
 	std::string				token;
 
 	if (request->getHeader().empty())
@@ -56,7 +54,7 @@ void	parse_header(Request *request)
 			std::cout << "header emptied" << std::endl;
 			break;
 		}
-		if (!request->getField(&cursor, &type) || !request->getToken(&token, &cursor))
+		if (!request->getField(&type) || !request->getToken(&token))
 		{
 			std::cout << RED << "Error in field or token" << WHITE << std::endl;
 			return; //throw error?
@@ -80,7 +78,6 @@ void	parse_header(Request *request)
 
 void	parse_cgi_header(Request *request)
 {
-	std::string::size_type	cursor = 0;
 	std::string				token;
 	std::string				field;
 	Cgi						cgi;
@@ -95,7 +92,7 @@ void	parse_cgi_header(Request *request)
 			std::cout << "header emptied" << std::endl;
 			break;
 		}
-		if (!request->getField(&field, &cursor) | !request->getToken(&token, &cursor))
+		if (!request->getField(&field) | !request->getToken(&token))
 		{
 			std::cout << "invalid field or token" << std::endl;
 			return;
