@@ -105,7 +105,6 @@ std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current)
 	std::map<std::string, Location> locations;
 	while (true)
 	{
-		streams.print(LOG_DIRECTIVE) << "SCOPE SERVER" << std::endl;
 		checkDirective();
 		switch (getDirective())
 		{
@@ -141,6 +140,7 @@ void	ConfigParser::parseServer(std::vector<Server> &servers)
 	// build location for current
 	std::map<std::string, Location> locations = parseServerLoop(current);
 	// should check interface:port are unique
+	// should check if at least one location
 	current.setLocationsMap(locations);
 	servers.push_back(current);
 }
@@ -151,7 +151,6 @@ std::vector<Server>	ConfigParser::run(void)
 
 	for (this->tokenInit(); !this->end(); this->next())
 	{
-		streams.print(LOG_DIRECTIVE) << "SCOPE GLOBAL" << std::endl;
 		switch (checkDirective())
 		{
 			case SERVER:

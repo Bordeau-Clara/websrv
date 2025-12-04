@@ -53,7 +53,6 @@ void	ConfigParser::tokenInit(void)
 {
 	tokenize();
 	_token_it = _token_vec.begin();
-	_token_it_end = _token_vec.end();
 }
 
 void	ConfigParser::tokenize(void)
