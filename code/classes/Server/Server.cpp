@@ -29,7 +29,7 @@ Server::Server(const Server &copy):
 	_locations(copy._locations),
 	_port(copy.getPort()),
 	_interface(copy._interface),
-	_fd(-1)
+	_fd(getFd())
 {}
 
 Server::~Server(void)
@@ -42,7 +42,7 @@ Server	Server::operator=(const Server &rhs)
 	this->setLocationsMap(rhs.getLocations());
 	this->setPort(rhs.getPort());
 	this->setInterface(rhs.getInterface());
-	this->setFd(-1);
+	this->setFd(rhs.getFd());
 	return (*this);
 }
 
