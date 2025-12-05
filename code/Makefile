@@ -17,6 +17,11 @@ OBJ_DIR   = build
 # Sources listing
 SRC_FILES = \
 	main.cpp \
+	\
+	parse_buffer.cpp \
+	parse_header.cpp \
+	parse_request_line.cpp \
+	parse_header_utils.cpp \
 
 # Classes listing
 CLASS_FILES = \
@@ -29,6 +34,13 @@ CLASS_FILES = \
 	FileStream/FileStream.cpp \
 	Location/Location.cpp \
 	Server/Server.cpp \
+	\
+	Request/Request.cpp \
+	Request/Getter.cpp \
+	Request/HeaderTab.cpp \
+	Request/FieldsParser.cpp \
+	Request/RequestUtils.cpp \
+	Cgi/Cgi.cpp \
 
 CLASSES = $(addprefix $(CLASS_DIR)/, $(CLASS_FILES))
 SOURCES = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
@@ -41,7 +53,9 @@ INC_DIR = \
 		  $(CLASS_DIR)/FileStream \
 		  $(CLASS_DIR)/Location \
 		  $(CLASS_DIR)/Server \
-	
+		  $(CLASS_DIR)/Request \
+		  $(CLASS_DIR)/Cgi \
+
 ##################################################################################
 #compilation
 NAME		= WebServ

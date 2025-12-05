@@ -1,0 +1,132 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Request.hpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
+/*                                                                            */
+/* ************************************************************************** */
+
+#pragma once
+
+#include <execution>
+#include <string>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include "../Cgi/Cgi.hpp"
+
+const std::string	DCRLF = "\r\n\r\n";
+const std::string	CRLF = "\r\n";
+const std::string	OWS = " \t";
+const bool			CHUNKED = 1;
+
+int				find_type(std::string str);
+unsigned long	hexToLong(std::string line);
+
+typedef enum method
+{
+	GET = 0,
+	POST,
+	DELETE,
+	OTHER,
+} method;
+
+typedef enum parsing_state
+{
+	HEADER = 0,
+	CGI,
+	BODY,
+	CHUNK_SIZE,
+	TRAILERS,
+	SEND,
+	// SEND_CGI, -> so that resonse builder knows what to parse and how
+	// or put variable in cgi or request or if *cgi==NULL?
+} parsing_state;
+
+class Request
+{
+private:
+	int					_start; //pour chuncked request, pour verifier le temps
+	std::string			_status; //to put in response
+	
+	std::string			_header;
+	std::string			_body;
+	std::string			_buffer;
+
+	parsing_state		_state;
+
+	method 				_method;
+	std::string			_uri;
+	std::string			_path;//need to keep the URI for the CGI so put the full file path here
+	std::string			_queryString;
+
+	Cgi*				_cgi;
+
+public:
+	Request();
+
+	static std::string	fields[207][3];
+	static void			(Request::*fctField[210])(std::string);
+	static void			initFields();
+
+	void				setState(parsing_state value);
+
+	std::string			getHeader();
+	std::string			getBody();
+	std::string			getBuffer();
+	parsing_state		getState();
+
+	method				getMethod();
+	std::string			getUri();
+	std::string			getQueryString();
+
+	void				fillHeader(std::string::size_type cursor);
+	void				fillBody();
+	void				fillChunkedBody();
+	void				appendBuffer(std::string, int start, int end);
+
+	void				parseMethod(std::string);
+	void				parseURI(std::string);
+
+	int					getToken(std::string *header);
+	int					getField(int *type);
+	int					getField(std::string *field);
+
+private:
+	std::string			_host;
+	std::string			_accept;
+	std::string			_acceptEncoding;
+	std::string			_cookies;
+	std::string			_language;
+	std::string			_authorization;
+	std::string			_ifModifiedSince;
+	std::string			_contentType;
+	int					_expect;
+	unsigned long		_contentLength;
+	bool				_transferEncoding;
+	bool				_connection;
+	bool				_ifModif;
+	bool				_trailer;
+
+public:
+
+	bool				getTransferEncoding();
+	bool				getTrailer();
+
+	void				parseHost(std::string);
+	void				parseAccept(std::string);
+	void				parseAcceptEncoding(std::string);
+	void				parseCookies(std::string);
+	void				parseLanguage(std::string);
+	void				parseAuthorization(std::string);
+	void				parseConnection(std::string);
+	void				parseIfModifiedSince(std::string);
+	void				parseExpect(std::string);
+	void				parseContentType(std::string);
+	void				parseContentLength(std::string);
+	void				parseTransferEncoding(std::string);
+	void				parseTrailer(std::string);
+};

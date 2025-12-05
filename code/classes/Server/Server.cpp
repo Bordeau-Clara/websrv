@@ -29,7 +29,7 @@ Server::Server(const Server &copy):
 	_locations(copy._locations),
 	_port(copy.getPort()),
 	_interface(copy._interface),
-	_fd(getFd())
+	_fd(copy.getFd())
 {}
 
 Server::~Server(void)

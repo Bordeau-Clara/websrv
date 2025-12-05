@@ -13,10 +13,11 @@
 #include <set>
 #include <map>
 #include <ostream>
+#include "Request.hpp"
+// static const int	GET = 0;
+// static const int	POST = 1;
+// static const int	DELETE = 2;
 
-static const int	GET = 0;
-static const int	POST = 1;
-static const int	DELETE = 2;
 static const std::string METHODS[] = {"GET", "POST", "DELETE"};
 
 class	Location
