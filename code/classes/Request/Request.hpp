@@ -12,10 +12,12 @@
 #pragma once
 
 #include <execution>
+#include <netinet/in.h>
 #include <string>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <sys/socket.h>
 #include "requestDefines.hpp"
 
 int				find_type(std::string str);
@@ -40,6 +42,10 @@ class Cgi;
 
 class Request
 {
+public://epollloop variable for accept
+	struct sockaddr_in client_addr;
+	static const socklen_t client_len = sizeof(sockaddr_in);
+	int fd;
 private:
 	int					_start; //pour chuncked request, pour verifier le temps
 	std::string			_status; //to put in response
