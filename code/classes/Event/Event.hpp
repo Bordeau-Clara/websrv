@@ -21,4 +21,6 @@ struct Event
 {
 	Event(type _type):_type(_type){}
 	type _type;
+private:
+	// Event(const Event &);
 };

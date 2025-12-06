@@ -9,6 +9,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "EventManager.hpp"
 #include "parsing_header.hpp"
 #include <iostream>
 #include <string>
@@ -25,6 +26,7 @@ int	main(int argc, char **argv)
 		streams.add(LOG_SERVER);
 		streams.add(LOG_DIRECTIVE);
 		streams.add(LOG_LOCATION);
+		streams.add(LOG_EVENT);
 
 		ArgChecker::checkargs(argc);
 		ConfigParser	parser(argv[1]);
@@ -35,15 +37,47 @@ int	main(int argc, char **argv)
 		std::cerr << "Exception caught :"<< e.what() << std::endl;
 		return (1);
 	}
-	try {servers.at(0).startListen();}
-	catch (std::exception	&e)
-	{
-		std::cerr << "Exception caught :"<< e.what() << std::endl;
-		return (1);
-	}
+	// try
+	// {
+	// 	servers.at(0).startListen();
+	// }
+	// catch (std::exception	&e)
+	// {
+	// 	std::cerr << "Exception caught :"<< e.what() << std::endl;
+	// 	return (1);
+	// }
 	printServerInfo(servers);
 	Request::initFields();
 
+	try
+	{
+		EventManager	Webserv(servers);
+		Webserv.run();
+	}
+	catch (std::exception &e)
+	{
+		std::cerr << "WEBSERV BOBO :" << e.what() << std::endl;
+	}
+
+	// std::cout << "==========================" << std::endl;
+	// {
+	// 	std::cout<< RED + "test 1" + WHITE << std::endl;
+	// 	std::string header;
+	//
+	// 	Request request(servers.at(0));
+	// 	header = "GET index.html HTTP/1.1\r\n";
+	// 	header.append("Host:58\r\n");
+	// 	header.append("content-type:185\r\n");
+	// 	header.append("content-length:189\r\n");
+	// 	header.append("transfer-encoding:201\r\n\r\n");
+	//
+	// 	header.append("4\r\nWiki\r\n5\r\n");
+	// 	header.append("pedia\r\n0\r\n\r\n");
+	// 	request.appendBuffer(header, 0, header.length());
+	//
+	// 	parse_buffer(&request);
+	// }
+	//
 	//buffer avec header entier + body entier + bout de next buffer
 	// {
 		// std::string header;
@@ -132,24 +166,6 @@ int	main(int argc, char **argv)
 		//
 		// parse_buffer(&request);
 	// }
-	std::cout << "==========================" << std::endl;
-	{
-		std::cout<< RED + "test 1" + WHITE << std::endl;
-		std::string header;
-
-		Request request(servers.at(0));
-		header = "GET index.html HTTP/1.1\r\n";
-		header.append("Host:58\r\n");
-		header.append("content-type:185\r\n");
-		header.append("content-length:189\r\n");
-		header.append("transfer-encoding:201\r\n\r\n");
-
-		header.append("4\r\nWiki\r\n5\r\n");
-		header.append("pedia\r\n0\r\n\r\n");
-		request.appendBuffer(header, 0, header.length());
-
-		parse_buffer(&request);
-	}
 // 	std::cout << "==========================" << std::endl;
 // 	{
 // 		std::cout<< RED + "test 2" + WHITE << std::endl;
