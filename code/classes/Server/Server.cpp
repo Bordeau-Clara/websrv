@@ -143,6 +143,7 @@ std::string intToIPv4(uint32_t ip_int) {
 }
 
 #include <iostream>
+#include <fcntl.h>
 void	Server::startListen(void)
 {
 
@@ -174,6 +175,9 @@ void	Server::startListen(void)
 	{
 		throw (std::runtime_error("listen"));
     }
+
+	// Configurer le socket server en non-bloquant
+	fcntl(this->_fd, F_SETFL, O_NONBLOCK);
 	std::cout << "listening " << getPort() << "on interface: " << intToIPv4(getInterface()) << std::endl;
 	streams.print(LOG_SERVER) << *this << SEPARATOR << std::endl;
 }
