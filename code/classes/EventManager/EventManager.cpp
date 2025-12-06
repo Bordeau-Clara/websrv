@@ -9,6 +9,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "EventManager.hpp"
+
+#include <cerrno>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -18,22 +21,30 @@
 #include <fcntl.h>
 #include <stdexcept>
 
-#include "EventManager.hpp"
 #include "Server.hpp"
 #include "Request.hpp"
+#include "FileStream.hpp"
+#include "logfiles.hpp"
+
+extern FileStream	streams;
 
 EventManager::EventManager(std::vector<Server> &servers)
 {
     // 2. Créer une instance epoll
+	streams.print(LOG_EVENT) << "epoll_create : "
+		<< std::endl;
     _fd = epoll_create1(0);
     if (_fd == -1)
 	{
         perror("epoll_create1");
 		throw (std::runtime_error("ERROR"));
     }
+	streams.print(LOG_EVENT) << _fd
+		<< std::endl;
 
 	for(std::vector<Server>::iterator it = servers.begin(); it != servers.end(); it++)
 	{
+		it->startListen();
 		// Structure pour les événements
 		struct epoll_event event;
 		event.events = EPOLLIN;
@@ -41,49 +52,34 @@ EventManager::EventManager(std::vector<Server> &servers)
 		event.data.ptr = &(*it);
 
 		// 3. Ajouter le socket serveur à epoll
+		streams.print(LOG_EVENT) << "if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, event.data.fd, &event) == -1)"
+			<< std::endl
+			<< "current SERVER:" << std::endl
+			<< *it
+			<< std::endl;
 		if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, event.data.fd, &event) == -1)
 		{
+			streams.print(LOG_EVENT) << "ERRNO : " << errno 
+				<< " EBADF: " << EBADF
+				<< " EINVAL" << EINVAL
+				<< " ELOOP" << ELOOP
+				<< " EPERM" << EPERM
+				<< std::endl;
 			perror("epoll_ctl: server_fd");
 			throw (std::runtime_error("ERROR"));
 		}
 	}
 }
 
-void	EventManager::getNewEvent(void)
+void	EventManager::serverAccept(void)
 {
-	//a.n = epoll_wait
-	_nEvent = epoll_wait(this->_fd, this->_events, MAX_EVENTS, -1);
-	if (_nEvent == -1)
-	{
-		perror("epoll_wait");
-		throw (std::runtime_error("ERROR"));
-	}
-	_it = 0;
-}
-
-epoll_data_t	EventManager::getData(void)
-{
-	return (_events[_it].data);
-}
-
-void	*EventManager::getPtr(void)
-{
-	if (_it == _nEvent)
-		return (NULL);
-	return (_events[_it].data.ptr);
-}
-
-void	EventManager::eventNext(void)
-{
-	_it++;
-}
-
-void	EventManager::serverAccept(Server &current)
-{
+	Server &server = *(Server*)getPtr();
 	//TANT QUE accept()
 	while (1)
 	{
-		Request *client = new Request(current);
+		Request *client = new Request(server);
+		streams.print(LOG_EVENT) << "accept(getData().fd, (struct sockaddr *)&client->client_addr, &client->client_len);"
+			<< std::endl;
 		client->fd = accept(getData().fd, (struct sockaddr *)&client->client_addr, &client->client_len);
 		if (client->fd == -1)
 		{
@@ -104,7 +100,69 @@ void	EventManager::serverAccept(Server &current)
 			close(client->fd);
 			continue;
 		}
-		printf("Nouvelle connexion acceptée: %d\n", client->fd);
+		streams.print(LOG_EVENT) << "Nouvelle connexion acceptée: " << client->fd
+			<< std::endl;
+	}
+}
+
+// Request *client = (Request *)getPtr();
+// if current evnet == epollin
+	// ssize_t count = recv(getData().fd, buffer, sizeof(buffer), 0); // kesako
+	//client .appendBuffer(buffer);
+	//parse_buffer(client);
+	//if client.status = SEND 
+	// mettre en EPOLLOUT
+// if EPOLLOUT
+	// send
+	// if connexion == KEEPALIVE 
+		// event == eppollin
+		// epoll_ctl(MOD EPOLLIN) 
+		//reinitialiser client ?????? C CLARA LA FOLLE
+	//else
+		//epoll ctl delete close fd mais sa va jamais arriver
+#include "parsing_header.hpp"
+void	EventManager::handleClient()
+{
+	static char buffer[BUFFER_SIZE + 1] = {0};
+	Request &client = *(Request *)getPtr();
+	if (getEvent().events == EPOLLIN)
+	{
+		ssize_t count = recv(getData().fd, buffer, sizeof(buffer), 0); // kesako
+		if (count == -1)
+			throw (std::runtime_error("RECV KO"));
+		//if count == 0 check time pour client fantome
+		streams.print(LOG_EVENT) << "[RECV]" << std::endl
+			<< std::string(buffer).substr(0, count + 1)
+			<< std::endl;
+		
+		client.appendBuffer(buffer, 0, count + 1);
+		parse_buffer(&client);
+		if (client.getState() == SEND)
+		{
+			// streams.print(LOG_EVENT) << "[CLIENT READY FO SEND]" << std::endl
+			// 	<< client
+			// 	<< std::endl;
+			// mettre en EPOLLOUT
+			getEvent().events = EPOLLOUT;
+			epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
+			//streams.print();
+		}
+	}
+	else
+	{
+		streams.print(LOG_EVENT) << "[ENVOI]" << std::endl
+			<< std::endl;
+		if (send(getData().fd, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, World!", 48, 0) == -1)
+			throw (std::runtime_error("SEND"));
+		streams.print(LOG_EVENT) << "[SUCCESS]" << std::endl
+			<< std::endl;
+		// if connexion == KEEPALIVE 
+			// event == eppollin
+			// epoll_ctl(MOD EPOLLIN) 
+			//reinitialiser client ?????? C CLARA LA FOLLE
+		//else
+			// close(events[i].data.fd);
+			// epoll ctl delete
 	}
 }
 
@@ -116,27 +174,13 @@ void	EventManager::run(void)
 		for (getNewEvent(); getPtr(); eventNext())
 		{
 			// 1. SI(event.fd == server_socket)
-			if (1 /*events[i].data.ptr is a server ?*/) // SERVER
+			if (checkEvent() == SRV) // SERVER
 			{
-				serverAccept(*(Server*)getPtr());
+				serverAccept();
 			}
 			else// CLIENT
 			{
-				// Request *client = (Request *)getPtr();
-				// if current evnet == epollin
-					// ssize_t count = recv(getData().fd, buffer, sizeof(buffer), 0); // kesako
-					//client .appendBuffer(buffer);
-					//parse_buffer(client);
-					//if client.status = SEND 
-					// mettre en EPOLLOUT
-				// if EPOLLOUT
-					// send
-					// if connexion == KEEPALIVE 
-						// event == eppollin
-						// epoll_ctl(MOD EPOLLIN) 
-						//reinitialiser client ?????? C CLARA LA FOLLE
-					//else
-						//epoll ctl delete close fd mais sa va jamais arriver
+				handleClient();
 			}
 		}
     }

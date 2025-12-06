@@ -28,14 +28,21 @@ class EventManager
 		EventManager(std::vector<Server>&);
 		~EventManager(void){};
 		void			run(void);
-		void			getNewEvent(void);
-		epoll_data_t	getData(void);
-		void			*getPtr(void);
-		void			eventNext(void);
-		void			serverAccept(Server&);
+	
+		void				getNewEvent(void);
+		epoll_data_t		getData(void);
+		void				*getPtr(void);
+		struct epoll_event	&getEvent(void);
+		void				eventNext(void);
+		bool				checkEvent(void);
+
+		void			serverAccept(void);
+		void			handleClient(void);
 	private:
 		int					_fd;
 		struct epoll_event	_events[MAX_EVENTS];
 		int					_nEvent;
 		int					_it;
 };
+
+static const int	BUFFER_SIZE = 2048;
