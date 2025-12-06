@@ -51,16 +51,8 @@ EventManager::EventManager(std::vector<Server> &servers)
 		event.data.ptr = &(*it);
 
 		// 3. Ajouter le socket serveur à epoll
-		streams.print(LOG_EVENT) << "if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, event.data.fd, &event) == -1)"
-			<< std::endl;
 		if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, it->getFd(), &event) == -1)
 		{
-			streams.print(LOG_EVENT) << "ERRNO : " << errno 
-				<< " EBADF: " << EBADF
-				<< " EINVAL" << EINVAL
-				<< " ELOOP" << ELOOP
-				<< " EPERM" << EPERM
-				<< std::endl;
 			perror("epoll_ctl: server_fd");
 			throw (std::runtime_error("ERROR"));
 		}
@@ -73,10 +65,7 @@ void	EventManager::serverAccept(void)
 	//TANT QUE accept()
 	while (1)
 	{
-		std::cout << "salut" << std::endl;
 		Request *client = new Request(server);
-		streams.print(LOG_EVENT) << "accept(getData().fd, (struct sockaddr *)&client->client_addr, &client->client_len);"
-			<< std::endl;
 		client->fd = accept(server.getFd(), (struct sockaddr *)&client->client_addr, &client->client_len);
 		if (client->fd == -1)
 		{
@@ -123,26 +112,23 @@ void	EventManager::handleClient()
 	Request &client = *(Request *)getPtr();
 	if (getEvent().events == EPOLLIN)
 	{
-		ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
-		if (count == -1)
-			throw (std::runtime_error("RECV KO"));
-		//if count == 0 check time pour client fantome
-		streams.print(LOG_EVENT) << "[RECV]" << std::endl
-			<< std::string(buffer).substr(0, count)
-			<< std::endl;
-		
-		client.appendBuffer(buffer, 0, count);
+		{
+			ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
+			if (count == -1)
+				throw (std::runtime_error("RECV KO"));
+			//if count == 0 check time pour client fantome
+			streams.print(LOG_EVENT) << "[RECV]" << std::endl
+				<< std::string(buffer).substr(0, count)
+				<< std::endl;
+			
+			client.appendBuffer(buffer, 0, count);
+		}
 		parse_buffer(&client);
 		if (client.getState() == SEND)
 		{
-			std::cout << "client state is SEND" << std::endl;
-			// streams.print(LOG_EVENT) << "[CLIENT READY FO SEND]" << std::endl
-			// 	<< client
-			// 	<< std::endl;
-			// mettre en EPOLLOUT
+			// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
 			getEvent().events = EPOLLOUT;
 			epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
-			//streams.print();
 		}
 	}
 	else
