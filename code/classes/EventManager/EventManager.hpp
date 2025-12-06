@@ -44,4 +44,4 @@ class EventManager
 		int					_it;
 };
 
-static const int	BUFFER_SIZE = 8;
+static const int	BUFFER_SIZE = 1024;

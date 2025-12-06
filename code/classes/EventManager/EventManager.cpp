@@ -127,6 +127,11 @@ void	EventManager::handleClient()
 		if (count == -1)
 			throw (std::runtime_error("RECV KO"));
 		//if count == 0 check time pour client fantome
+		// if (count == 0)
+		// {
+		// 	return ;
+		// 	//check time pour KO
+		// }
 		streams.print(LOG_EVENT) << "[RECV]" << std::endl
 			<< std::string(buffer).substr(0, count)
 			<< std::endl;
@@ -145,7 +150,7 @@ void	EventManager::handleClient()
 			//streams.print();
 		}
 	}
-	else
+	else if (getEvent().events == EPOLLOUT)
 	{
 		streams.print(LOG_EVENT) << "[ENVOI]" << std::endl
 			<< std::endl;
@@ -153,13 +158,27 @@ void	EventManager::handleClient()
 			throw (std::runtime_error("SEND"));
 		streams.print(LOG_EVENT) << "[SUCCESS]" << std::endl
 			<< std::endl;
-		// if connexion == KEEPALIVE 
-			// event == eppollin
-			// epoll_ctl(MOD EPOLLIN) 
-			//reinitialiser client ?????? C CLARA LA FOLLE
-		//else
-			// close(events[i].data.fd);
-			// epoll ctl delete
+		// if (client.getConnection() == KEEP_ALIVE)
+		// {
+		// 	std::cout << RED << "connection is KEEP ALIVE" << WHITE << std::endl;
+		// 	getEvent().events = EPOLLIN;
+		// 	client.resetRequest();
+		// 	epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
+		// 	// event == eppollin
+		// 	// epoll_ctl(MOD EPOLLIN) 
+		// 	//reinitialiser client ?????? C CLARA LA FOLLE
+		// }
+		// else
+		// {
+		// 	std::cout << RED << "connection is CLOSE" << WHITE << std::endl;
+		// 	close(client.fd);
+		// 	delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
+		// 	epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
+		// 	//else a verifier
+		//
+		// 	// close(events[i].data.fd);
+		// 	// epoll ctl delete
+		// }
 	}
 }
 
