@@ -13,12 +13,14 @@
 #include "parsing_header.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
+#include <sys/socket.h>
+
 
 // Request::Request() : _status(), _state(HEADER), _method(OTHER), _connection(1), _trailer(0)
 // {
 // }
 
-Request::Request(Server &server) : _status(), _state(HEADER), _method(OTHER), _server(server), _connection(1), _trailer(0)
+Request::Request(Server &server) :client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _connection(1), _trailer(0)
 {
 }
 

@@ -44,7 +44,7 @@ class Request
 {
 public://epollloop variable for accept
 	struct sockaddr_in client_addr;
-	static const socklen_t client_len = sizeof(sockaddr_in);
+	socklen_t client_len;
 	int fd;
 private:
 	int					_start; //pour chuncked request, pour verifier le temps

@@ -84,7 +84,7 @@ void	EventManager::serverAccept(Server &current)
 	while (1)
 	{
 		Request *client = new Request(current);
-		client->fd = accept(getData().fd, (struct sockaddr *)&client->client_addr, (socklen_t*)&client->client_len);
+		client->fd = accept(getData().fd, (struct sockaddr *)&client->client_addr, &client->client_len);
 		if (client->fd == -1)
 		{
 			perror("accept");
