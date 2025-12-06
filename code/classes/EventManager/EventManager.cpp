@@ -73,6 +73,7 @@ void	EventManager::serverAccept(void)
 	//TANT QUE accept()
 	while (1)
 	{
+		std::cout << "salut" << std::endl;
 		Request *client = new Request(server);
 		streams.print(LOG_EVENT) << "accept(getData().fd, (struct sockaddr *)&client->client_addr, &client->client_len);"
 			<< std::endl;
@@ -127,13 +128,14 @@ void	EventManager::handleClient()
 			throw (std::runtime_error("RECV KO"));
 		//if count == 0 check time pour client fantome
 		streams.print(LOG_EVENT) << "[RECV]" << std::endl
-			<< std::string(buffer).substr(0, count + 1)
+			<< std::string(buffer).substr(0, count)
 			<< std::endl;
 		
-		client.appendBuffer(buffer, 0, count + 1);
+		client.appendBuffer(buffer, 0, count);
 		parse_buffer(&client);
 		if (client.getState() == SEND)
 		{
+			std::cout << "client state is SEND" << std::endl;
 			// streams.print(LOG_EVENT) << "[CLIENT READY FO SEND]" << std::endl
 			// 	<< client
 			// 	<< std::endl;
@@ -166,8 +168,10 @@ void	EventManager::run(void)
     while (1)
 	{
 		//b.POUR CHAQUE event dans events [0,n)
+		std::cout << "Polling ..." << std::endl;
 		for (getNewEvent(); getPtr(); eventNext())
 		{
+			std::cout << "Event no " << this->_it << std::endl;
 			// 1. SI(event.fd == server_socket)
 			if (checkEvent() == SRV) // SERVER
 			{
