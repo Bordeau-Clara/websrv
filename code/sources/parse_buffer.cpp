@@ -40,6 +40,7 @@ void	parse_buffer(Request *request)
 		else
 			request->fillBody();
 	}
+	// check contentLength == bodyLength
 	std::cout << "++++++++++++++++" << std::endl;
 	std::cout << "header is :" << request->getHeader() << std::endl;
 	std::cout << "body is :" << request->getBody() << std::endl;

@@ -30,15 +30,19 @@ int	find_type(std::string str)
 	if (!str.empty())
 		str.resize(str.size() - 1);
 	std::cout << "index is " << index << " str is " << str << std::endl;
-	if (index <= 0 || index > 207)
+	if (index <= 0)
+		return -1;
+	if (index > 207)
+	{
+		std::cout << RED << "Wrong index is " << index << WHITE << std::endl;
 		return 0;
+	}
 	for (int i = 0; i < 3; i++)
 	{
 	  // std::cout << "Field at index is "<< HeaderParsing::fields[index][i] << std::endl;
 		if (!Request::fields[index][i].empty() && !Request::fields[index][i].compare(str))
 			return index + i;
 	}
-	std::cout << RED << "Wrong index is " << index << WHITE << std::endl;
 	return 0;
 	// should not return 0 if not in fct tab but in field tab so it doesnt invalidate valid headers that should not be parsed
 }

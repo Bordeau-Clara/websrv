@@ -29,6 +29,7 @@ void	Request::fillBody()
 		this->_state = SEND;
 		std::cout << "client state is SEND" << std::endl;
 	}
+	//else 400 Bad request
 }
 
 void	Request::fillChunkedBody()

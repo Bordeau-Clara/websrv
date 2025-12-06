@@ -93,6 +93,10 @@ int	Request::getField(int *type)
 	// *cursor += 1;
 	this->_header.erase(0, cursor);
 	// *cursor = this->_header.find(CRLF);
+	if (*type == 0)
+		return 1;
+	if (*type == -1)
+		return 0;
 	return *type;
 }
 

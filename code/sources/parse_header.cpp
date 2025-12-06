@@ -57,6 +57,8 @@ void	parse_header(Request *request)
 		if (!request->getField(&type) || !request->getToken(&token))
 		{
 			std::cout << RED << "Error in field or token" << WHITE << std::endl;
+			std::cout << RED << token << WHITE << std::endl;
+			std::cout << RED << type << WHITE << std::endl;
 			return; //throw error?
 			//edit status ici ou dans les fonction du if??
 		}
