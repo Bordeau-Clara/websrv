@@ -54,7 +54,10 @@ void	Request::fillBody()
 		this->_buffer.erase(0, this->_contentLength - this->_body.size());
 	}
 	if (this->_body.size() == this->_contentLength)
+	{
 		this->_state = SEND;
+		std::cout << "client state is SEND" << std::endl;
+	}
 }
 
 int	Request::getToken(std::string *token)
