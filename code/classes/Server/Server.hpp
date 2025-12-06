@@ -25,8 +25,8 @@ class	Server: public Event
 	public:
 		Server(void);
 		~Server(void);
-		// Server(const Server&);
-		// Server	operator=(const Server&);
+		Server(const Server&);
+		Server	operator=(const Server&);
 
 	// man socket
 		// The domain argument specifies a communication domain; this selects the protocol family which will be used for communication.

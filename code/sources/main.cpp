@@ -34,7 +34,7 @@ int	main(int argc, char **argv)
 	}
 	catch (std::exception	&e)
 	{
-		std::cerr << "Exception caught :"<< e.what() << std::endl;
+		std::cerr << "configParser Exception caught :"<< e.what() << std::endl;
 		return (1);
 	}
 	// try

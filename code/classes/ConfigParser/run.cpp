@@ -12,6 +12,7 @@
 #include "ConfigParser.hpp"
 #include "Server.hpp"
 #include "Location.hpp"
+#include "logfiles.hpp"
 #include "tokens.hpp"
 
 Location	ConfigParser::parseLocationLoop(Location &current)
@@ -164,5 +165,6 @@ std::vector<Server>	ConfigParser::run(void)
 				throw (std::runtime_error("Unauthorized directive in global scope :" + this->get()));
 		}
 	}
+	streams.print(LOG_CONFIGPARSER) << std::endl << "END";
 	return (servers);
 }

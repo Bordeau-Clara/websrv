@@ -30,7 +30,6 @@ class EventManager
 		void			run(void);
 	
 		void				getNewEvent(void);
-		epoll_data_t		getData(void);
 		void				*getPtr(void);
 		struct epoll_event	&getEvent(void);
 		void				eventNext(void);

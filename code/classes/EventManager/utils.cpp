@@ -33,11 +33,6 @@ void	EventManager::getNewEvent(void)
 	_it = 0;
 }
 
-epoll_data_t	EventManager::getData(void)
-{
-	return (_events[_it].data);
-}
-
 void	*EventManager::getPtr(void)
 {
 	if (_it == _nEvent)

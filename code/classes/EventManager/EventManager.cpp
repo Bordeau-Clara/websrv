@@ -48,16 +48,12 @@ EventManager::EventManager(std::vector<Server> &servers)
 		// Structure pour les événements
 		struct epoll_event event;
 		event.events = EPOLLIN;
-		event.data.fd = it->getFd();
 		event.data.ptr = &(*it);
 
 		// 3. Ajouter le socket serveur à epoll
 		streams.print(LOG_EVENT) << "if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, event.data.fd, &event) == -1)"
-			<< std::endl
-			<< "current SERVER:" << std::endl
-			<< *it
 			<< std::endl;
-		if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, event.data.fd, &event) == -1)
+		if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, it->getFd(), &event) == -1)
 		{
 			streams.print(LOG_EVENT) << "ERRNO : " << errno 
 				<< " EBADF: " << EBADF
@@ -80,7 +76,7 @@ void	EventManager::serverAccept(void)
 		Request *client = new Request(server);
 		streams.print(LOG_EVENT) << "accept(getData().fd, (struct sockaddr *)&client->client_addr, &client->client_len);"
 			<< std::endl;
-		client->fd = accept(getData().fd, (struct sockaddr *)&client->client_addr, &client->client_len);
+		client->fd = accept(server.getFd(), (struct sockaddr *)&client->client_addr, &client->client_len);
 		if (client->fd == -1)
 		{
 			perror("accept");
@@ -92,7 +88,6 @@ void	EventManager::serverAccept(void)
 		// Ajouter le socket client à epoll
 		struct epoll_event event;
 		event.events = EPOLLIN;
-		event.data.fd = client->fd;
 		event.data.ptr = client;
 		if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, client->fd, &event) == -1) 
 		{
@@ -127,7 +122,7 @@ void	EventManager::handleClient()
 	Request &client = *(Request *)getPtr();
 	if (getEvent().events == EPOLLIN)
 	{
-		ssize_t count = recv(getData().fd, buffer, sizeof(buffer), 0); // kesako
+		ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
 		if (count == -1)
 			throw (std::runtime_error("RECV KO"));
 		//if count == 0 check time pour client fantome
@@ -152,7 +147,7 @@ void	EventManager::handleClient()
 	{
 		streams.print(LOG_EVENT) << "[ENVOI]" << std::endl
 			<< std::endl;
-		if (send(getData().fd, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, World!", 48, 0) == -1)
+		if (send(client.fd, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, World!", 48, 0) == -1)
 			throw (std::runtime_error("SEND"));
 		streams.print(LOG_EVENT) << "[SUCCESS]" << std::endl
 			<< std::endl;
@@ -183,5 +178,6 @@ void	EventManager::run(void)
 				handleClient();
 			}
 		}
+		sleep(1);
     }
 }

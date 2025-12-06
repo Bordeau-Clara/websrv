@@ -33,23 +33,29 @@ Server::~Server(void)
 		close (_fd);
 }
 
-// Server::Server(const Server &copy):
-// 	_locations(copy._locations),
-// 	_port(copy.getPort()),
-// 	_interface(copy._interface),
-// 	_fd(-1)
-// {}
-//
-// Server	Server::operator=(const Server &rhs)
-// {
-// 	if (&rhs == this)
-// 		return (*this);
-// 	this->setLocationsMap(rhs.getLocations());
-// 	this->setPort(rhs.getPort());
-// 	this->setInterface(rhs.getInterface());
-// 	this->setFd(rhs.getFd());
-// 	return (*this);
-// }
+Server::Server(const Server &copy):
+	Event(SRV),
+	_locations(copy._locations),
+	_port(copy.getPort()),
+	_interface(copy._interface),
+	_fd(copy.getFd())
+{
+	if (_fd != -1)
+		throw (std::runtime_error("FD IS NOT -1"));
+}
+
+Server	Server::operator=(const Server &rhs)
+{
+	if (&rhs == this)
+		return (*this);
+	this->setLocationsMap(rhs.getLocations());
+	this->setPort(rhs.getPort());
+	this->setInterface(rhs.getInterface());
+	this->setFd(rhs.getFd());
+	if (_fd != -1)
+		throw (std::runtime_error("FD IS NOT -1"));
+	return (*this);
+}
 
 const std::map<std::string, Location>	&Server::getLocations(void) const
 {
@@ -99,6 +105,44 @@ void	Server::setFd(const int fd)
 	this->_fd = fd;
 }
 
+#include <iostream>
+#include <arpa/inet.h>
+#include <sys/socket.h> // Souvent inclus par arpa/inet.h ou netinet/in.h
+#include <netinet/in.h>
+
+std::string intToIPv4(uint32_t ip_int) {
+    // 1. Déclarer la structure pour l'adresse réseau
+    struct in_addr ip_addr;
+    
+    // 2. Assigner l'entier à la structure. 
+    // On assume que ip_int est déjà en ordre "network byte order".
+    // Si ce n'est pas le cas (i.e., si elle a été lue avec un 'htonl' manquant),
+    // il faudrait d'abord l'appeler : ip_addr.s_addr = htonl(ip_int);
+    // Mais en général, elle est déjà en ordre réseau si elle vient d'une structure socket.
+    ip_addr.s_addr = htonl(ip_int);
+
+    // 3. Buffer pour stocker la chaîne de caractères (taille max IPv4 est 16)
+    char presentation_buffer[INET_ADDRSTRLEN];
+
+    // 4. Conversion : Network To Presentation
+    const char* result = inet_ntop(
+        AF_INET,                    // Famille d'adresse : IPv4
+        &(ip_addr.s_addr),          // Pointeur vers l'adresse binaire (uint32_t)
+        presentation_buffer,        // Buffer de destination
+        INET_ADDRSTRLEN             // Taille du buffer
+    );
+
+    if (result == NULL)
+	{
+        // En cas d'erreur
+        return "Erreur de conversion";
+    }
+
+    // 5. Retourner la chaîne de caractères convertie
+    return std::string(result);
+}
+
+#include <iostream>
 void	Server::startListen(void)
 {
 
@@ -130,6 +174,7 @@ void	Server::startListen(void)
 	{
 		throw (std::runtime_error("listen"));
     }
+	std::cout << "listening " << getPort() << "on interface: " << intToIPv4(getInterface()) << std::endl;
 	streams.print(LOG_SERVER) << *this << SEPARATOR << std::endl;
 }
 
