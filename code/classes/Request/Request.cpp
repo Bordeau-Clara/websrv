@@ -20,8 +20,21 @@
 // {
 // }
 
-Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _connection(1), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _contentLength(0), _connection(KEEP_ALIVE), _trailer(0)
 {
+}
+
+void	Request::resetRequest()
+{
+	this->_body.assign("");
+	this->_status.assign("");
+	this->_state = HEADER;
+	this->_method = OTHER;
+	this->_contentLength = 0;
+	this->_connection = KEEP_ALIVE;
+	this->_trailer = 0;
+
+	//add everything that has been modified
 }
 
 void	Request::appendBuffer(std::string str, int start, int end)
@@ -39,25 +52,6 @@ void	Request::fillHeader(std::string::size_type cursor)
 	// this->_state = BODY;
 	this->_header.append(this->_buffer, 0, cursor + 2);
 	this->_buffer.erase(0, cursor + 4);
-}
-
-void	Request::fillBody()
-{
-	if ((this->_body.size() + this->_buffer.size()) <= this->_contentLength)
-	{
-		this->_body.append(this->_buffer, 0, this->_buffer.size());
-		this->_buffer.erase(0, this->_buffer.size());
-	}
-	else
-	{
-		this->_body.append(this->_buffer, 0, this->_contentLength - this->_body.size());
-		this->_buffer.erase(0, this->_contentLength - this->_body.size());
-	}
-	if (this->_body.size() == this->_contentLength)
-	{
-		this->_state = SEND;
-		std::cout << "client state is SEND" << std::endl;
-	}
 }
 
 int	Request::getToken(std::string *token)
@@ -119,50 +113,6 @@ int	Request::getField(std::string *field)
 	return 1;
 }
 
-void	Request::fillChunkedBody()
-{
-	std::string				line;
-	static unsigned long	chunk_size = 0;
-	std::string::size_type	cursor = 0;
-
-	while(1)
-	{
-		if (this->_state == CHUNK_SIZE && move_cursor(&cursor, this->_buffer, CRLF))
-		{
-			line.assign(this->_buffer.substr(0, cursor));
-			this->_buffer.erase(0, line.size() + 2);
-			chunk_size = hexToLong(line);
-			if (chunk_size == 0 && this->_trailer)
-				this->_state = TRAILERS;
-			else if (chunk_size == 0)
-				this->_state = SEND;
-			else
-				this->_state = BODY;
-			continue;
-		}
-		if (this->_state == BODY && this->_buffer.size() >= chunk_size + 2)
-		{
-			//put chunk_size octets in body
-			this->_body.append(this->_buffer, 0, chunk_size);
-			if (this->_buffer[chunk_size ] != '\r' && this->_buffer[chunk_size + 1] != '\n')
-			{
-				//trow 400 Bad request
-				std::cout << RED << "Number of octet not in adequation whith chunk size" << WHITE << std::endl;
-			}
-			//erase chunk_size octet + 2 from buffer
-			this->_buffer.erase(0, chunk_size + 2);
-			this->_state = CHUNK_SIZE;
-			continue;
-		}
-		if (this->_state == TRAILERS && move_cursor(&cursor, this->_buffer, DCRLF))
-		{
-			this->_buffer.erase(0, cursor + 3);
-			this->_state = SEND;
-			continue;
-		}
-		break;
-	}
-}
 
 void	Request::parseMethod(std::string str)
 {

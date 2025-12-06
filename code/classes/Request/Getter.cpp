@@ -36,6 +36,16 @@ bool	Request::getTransferEncoding()
 	return this->_transferEncoding;
 }
 
+bool	Request::getConnection()
+{
+	return this->_connection;
+}
+
+int	Request::getContentLength()
+{
+	return this->_contentLength;
+}
+
 method	Request::getMethod() const
 {
 	return this->_method;

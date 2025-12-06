@@ -39,6 +39,7 @@ CLASS_FILES = \
 	Request/Getter.cpp \
 	Request/HeaderTab.cpp \
 	Request/FieldsParser.cpp \
+	Request/FillBody.cpp \
 	Request/RequestUtils.cpp \
 	Cgi/Cgi.cpp \
 	\

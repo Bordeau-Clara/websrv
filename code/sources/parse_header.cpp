@@ -60,10 +60,13 @@ void	parse_header(Request *request)
 			return; //throw error?
 			//edit status ici ou dans les fonction du if??
 		}
-		if (Request::fctField[type] != NULL)
+		if (type > 0 && type < 207 && Request::fctField[type] != NULL)
 			(request->*Request::fctField[type])(token);
-		else
+		else if (type < 0)
+		{
+			//edit status 400 Bad request
 			std::cout << "Invalid index is " << type << std::endl;//not necessarly, field can be valid but no function
+		}
 		//inverser condition if else pour supprimer else pour la clarter
 	}
 	//check_complete_header(event);
@@ -85,7 +88,7 @@ void	parse_cgi_header(Request *request)
 			std::cout << "header emptied" << std::endl;
 			break;
 		}
-		if (!request->getField(&field) | !request->getToken(&token))
+		if (!request->getField(&field) || !request->getToken(&token))
 		{
 			std::cout << "invalid field or token" << std::endl;
 			return;

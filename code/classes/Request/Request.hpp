@@ -25,6 +25,8 @@ int				find_type(std::string str);
 unsigned long	hexToLong(std::string line);
 
 const bool			CHUNKED = 1;
+const bool			KEEP_ALIVE = 1;
+const bool			CLOSE = 0;
 typedef enum parsing_state
 {
 	HEADER = 0,
@@ -76,6 +78,8 @@ public:
 	static void			(Request::*fctField[210])(std::string);
 	static void			initFields();
 
+	void				resetRequest();
+
 	void				setState(parsing_state value);
 
 	std::string			getHeader();
@@ -120,6 +124,8 @@ public:
 
 	bool				getTransferEncoding();
 	bool				getTrailer();
+	int					getContentLength();
+	bool				getConnection();
 
 	void				parseHost(std::string);
 	void				parseAccept(std::string);
