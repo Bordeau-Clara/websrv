@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #include "Logger.hpp"
+std::string strTimestamp(void);
 
 // Constructeur par défaut : statut vide
 Logger::Logger(void) : _status_line(""), _stream(std::cout)
@@ -46,7 +47,7 @@ void Logger::_refreshStatusLine(void) const
     // 2. \r      : Remet le curseur au début (au cas où)
     // 3. affiche le status
     // 4. flush   : Force l'affichage sans attendre un \n
-    this->_stream << ANSI_CLEAR_LINE << ANSI_MOVE_START << _status_line << std::flush;
+    this->_stream << ANSI_CLEAR_LINE << ANSI_MOVE_START << strTimestamp() + _status_line << std::flush;
 }
 
 void Logger::editStatusLine(const String& newStatus)
@@ -61,10 +62,10 @@ void Logger::printNewLine(const String& msg) const
     this->_stream << ANSI_CLEAR_LINE << ANSI_MOVE_START;
     
     // 2. On imprime le nouveau log (qui va faire descendre l'écran d'une ligne)
-    this->_stream << msg << std::endl;
+    this->_stream << strTimestamp() + msg << std::endl;
     
     // 3. On réimprime la ligne de statut en bas
-    this->_stream << _status_line << std::flush;
+    this->_stream << strTimestamp() + _status_line << std::flush;
 }
 
 void Logger::popStatus(const String& nextStatus)
