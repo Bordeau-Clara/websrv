@@ -17,6 +17,7 @@ OBJ_DIR   = build
 # Sources listing
 SRC_FILES = \
 	main.cpp \
+	time.cpp \
 	\
 	parse_buffer.cpp \
 	parse_header.cpp \
@@ -45,6 +46,7 @@ CLASS_FILES = \
 	\
 	EventManager/EventManager.cpp \
 	EventManager/utils.cpp \
+	EventManager/monitor.cpp \
 	Logger/Logger.cpp \
 
 CLASSES = $(addprefix $(CLASS_DIR)/, $(CLASS_FILES))
