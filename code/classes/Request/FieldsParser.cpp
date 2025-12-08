@@ -108,10 +108,15 @@ void	Request::parseTransferEncoding(std::string str)
 			<< std::endl;
 		return;
 	}
-	if (str.find("chunked"))
+	if (str.find("chunked") != std::string::npos)
 		this->_transferEncoding = CHUNKED;
 	else
+	{
 		this->_status.assign(BAD_REQUEST);
+		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "Only accept chunked encoding"
+			<< std::endl;
+	}
 }
 
 void	Request::parseTrailer(std::string str)

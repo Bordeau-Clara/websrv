@@ -54,10 +54,13 @@ void	parse_buffer(Request *request)
 	}
 		streams.print(LOG_REQUEST) << "[HEADER AFTER PARSING]" << std::endl
 			<< request->getHeader() << std::endl
+			<< std::endl
 			<< "[BODY AFTER PARSING]" << std::endl
 			<< request->getBody() << std::endl
+			<< std::endl
 			<< "[BUFFER AFTER PARSING]" << std::endl
 			<< request->getBuffer() << std::endl
+			<< std::endl
 			<< "[REQUEST IS]" << std::endl
 			<< *request
 			<< std::endl;
