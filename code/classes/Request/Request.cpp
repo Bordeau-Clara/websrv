@@ -20,7 +20,7 @@
 // {
 // }
 
-Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _contentLength(0), _length(0), _transferEncoding(0), _connection(KEEP_ALIVE), _trailer(0)
 {
 }
 
@@ -32,6 +32,8 @@ void	Request::resetRequest()
 	this->_state = HEADER;
 	this->_method = OTHER;
 	this->_contentLength = 0;
+	this->_length = 0;
+	this->_transferEncoding = 0;
 	this->_connection = KEEP_ALIVE;
 	this->_trailer = 0;
 
