@@ -21,7 +21,7 @@ int main()
     file << "transfer-encoding:chunked\r\n";
     file << "\r\n"; // Fin des headers
     file << "A;foo=123;bar=xyz\r\nHelloWorld\r\n6;debug=true\r\nSalut!\r\n";
-    file << "A;foo=123;bar=xyz\r\nHelloWorld\r\n6;debug=true\r\nSalut!\r\n";
+    file << "A;foo=123;bar=xyz\r\nHelloWorld\r\n6;debug=true\r\nSalut!\r\n0\r\n\r\n";
 
     file.close();
     std::cout << "Fichier " << filename << " généré avec succès !" << std::endl;

@@ -12,3 +12,5 @@ A;foo=123;bar=xyz
 HelloWorld
 6;debug=true
 Salut!
+0
+
