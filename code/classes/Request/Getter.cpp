@@ -11,7 +11,7 @@
 
 #include "Request.hpp"
 
-std::string	Request::getHeader()
+std::string	Request::getHeader() const
 {
 	return this->_header;
 }
@@ -21,14 +21,19 @@ std::string	Request::getBody() const
 	return this->_body;
 }
 
-std::string	Request::getBuffer()
+std::string	Request::getBuffer() const
 {
 	return this->_buffer;
 }
 
-parsing_state	Request::getState()
+parsing_state	Request::getState() const
 {
 	return this->_state;
+}
+
+std::string	Request::getStatus() const
+{
+	return this->_status;
 }
 
 bool	Request::getTransferEncoding() const
@@ -41,7 +46,7 @@ bool	Request::getConnection() const
 	return this->_connection;
 }
 
-int	Request::getContentLength() const
+unsigned long	Request::getContentLength() const
 {
 	return this->_contentLength;
 }

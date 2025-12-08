@@ -20,14 +20,15 @@
 // {
 // }
 
-Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _contentLength(0), _connection(KEEP_ALIVE), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
 {
 }
 
 void	Request::resetRequest()
 {
-	this->_body.assign("");
-	this->_status.assign("");
+	this->_body.clear();
+	this->_header.clear();
+	this->_status.clear();
 	this->_state = HEADER;
 	this->_method = OTHER;
 	this->_contentLength = 0;
@@ -45,6 +46,11 @@ void	Request::appendBuffer(std::string str, int start, int end)
 void	Request::setState(parsing_state value)
 {
 	this->_state = value;
+}
+
+void	Request::setStatus(std::string code)
+{
+	this->_status.assign(code);
 }
 
 void	Request::fillHeader(std::string::size_type cursor)
@@ -69,11 +75,9 @@ int	Request::getToken(std::string *token)
 			<< "CRLF has not been find to complete token"
 			<< std::endl;
 		return 0;
-		//throw error;
 		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
 	token->assign(this->_header, Ows, cursor);
-	// std::cout << "Token after assign is " << *token << std::endl;
 	cursor += 2;
 	this->_header.erase(0, cursor);
 	return 1;
@@ -94,9 +98,7 @@ int	Request::getField(int *type)
 	cursor += 1;
 	field.assign(this->_header.substr(0, cursor));
 	*type = find_type(field);
-	// *cursor += 1;
 	this->_header.erase(0, cursor);
-	// *cursor = this->_header.find(CRLF);
 	if (*type == 0)
 		return 1;
 	if (*type == -1)
@@ -113,13 +115,10 @@ int	Request::getField(std::string *field)
 			<< "':' has not been find to complete field"
 			<< std::endl;
 		return 0;
-		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
 	cursor += 1;
 	field->assign(this->_header.substr(0, cursor));
-	// *cursor += 1;
 	this->_header.erase(0, cursor);
-	// *cursor = this->_header.find(CRLF);
 	return 1;
 }
 
@@ -134,11 +133,10 @@ void	Request::parseMethod(std::string str)
 		this->_method = DELETE;
 	else
 	{
+		this->_status = BAD_REQUEST;
 		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Bad method identified: " << str
 			<< std::endl;
-		//throw 400
-		//ou edit status
 	}
 }
 
@@ -158,17 +156,20 @@ void	Request::parseURI(std::string str)
 		this->_queryString.assign(str.substr(cursor + 1));
 		str.erase(cursor);
 	}
-	// std::cout << "uri is:" + str << std::endl;
-	// std::cout << "query is is:" + this->_queryString << std::endl;
 	
 	//resolve uri
+	//deal with errors
 	this->_uri.assign(str);
 	resolveURL();
 }
 
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 {
-	lhs << "method="
+	lhs	<< "state="
+		<< rhs.getState()
+		<< "status="
+		<< rhs.getStatus()
+		<< "method="
 		<< rhs.getMethod() << std::endl
 		<< "URI="
 		<< rhs.getUri() << std::endl

@@ -12,6 +12,7 @@
 #include "../includes/parsing_header.hpp"
 #include "../classes/Request/Request.hpp"
 #include "../classes/Cgi/Cgi.hpp"
+#include "statusCodes.hpp"
 
 // string = expr + final CRLF
 void	parse_header_type(Request *request)
@@ -20,18 +21,22 @@ void	parse_header_type(Request *request)
 
 	if (request->getHeader().empty())
 		return;
-	//cant be empty
+	//cant be empty test with empty header (just DCRLF)
 	//error if empty???
 
-	request->getToken(&token);//can't use this cause it skip ows
-	// std::cout << GREEN << "Request line is:" + token << WHITE << std::endl;
+	if (!request->getToken(&token))//can't use this cause it skip ows
+	{
+		request->setStatus(BAD_REQUEST);
+		return;
+	}
 	parse_request_line(request, token);
+	if (!request->getStatus().empty())
+		return;
 	if (request->getState() == CGI)
 		parse_cgi_header(request);
 	else
 		parse_header(request);
 		
-	//what if error in request line
 
 	//if CGI parse_header in cgi mode
 	//state CGI but same parsing function?
@@ -43,7 +48,7 @@ void	parse_header(Request *request)
 
 	if (request->getHeader().empty())
 		return;
-	//error if empty???
+	//error if empty??? can it be empty?? Is it an error?? have to test it
 	
 	int type;
 	while (1)
@@ -56,20 +61,21 @@ void	parse_header(Request *request)
 		}
 		if (!request->getField(&type) || !request->getToken(&token))
 		{
+			request->setStatus(BAD_REQUEST);
 			streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field type is :" << type << std::endl
 				<< "token after field is :" << token
 				<< std::endl;
-			return; //throw error?
-			//edit status ici ou dans les fonction du if??
+			return;
 		}
 		if (type > 0 && type < 207 && Request::fctField[type] != NULL)
 			(request->*Request::fctField[type])(token);
 		else if (type < 0)
 		{
-			//edit status 400 Bad request
-			std::cout << "Invalid index is " << type << std::endl;//not necessarly, field can be valid but no function
+			request->setStatus(BAD_REQUEST);
+		//How to deal with expect? Does errors override expect?? Does expect override body??
+		//->Put in a string and check at response construction?
 		}
 		//inverser condition if else pour supprimer else pour la clarter
 	}
@@ -94,16 +100,14 @@ void	parse_cgi_header(Request *request)
 		}
 		if (!request->getField(&field) || !request->getToken(&token))
 		{
+			request->setStatus(BAD_REQUEST);
 			streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field is :" << field << std::endl
 				<< "token after field is :" << token
 				<< std::endl;
 			return;
-			//edit status and return
 		}
-		// request->getField(&field, &cursor);//why don't getField() do the search?
-		// request->getToken(&token, &cursor);// should skip the ows qnd not parsers
 		cgi.addFields(field, token);
 	}
 	//check_complete_header(event); //if content_length absent -> add it

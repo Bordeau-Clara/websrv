@@ -12,6 +12,7 @@
 #include "../includes/parsing_header.hpp"
 #include "../classes/Request/Request.hpp"
 #include "../classes/Cgi/Cgi.hpp"
+#include "statusCodes.hpp"
 #include <iostream>
 
 
@@ -44,7 +45,11 @@ void	parse_buffer(Request *request)
 		else
 			request->fillBody();
 	}
-	// check contentLength == bodyLength
+	// check contentLength == bodyLength && SEND
+	if (request->getState() == SEND && request->getContentLength() != request->getBody().length())
+	{
+		request->setStatus(BAD_REQUEST);
+	}
 		streams.print(LOG_REQUEST) << "[HEADER AFTER PARSING]" << std::endl
 			<< request->getHeader() << std::endl
 			<< "[BODY AFTER PARSING]" << std::endl

@@ -20,6 +20,7 @@
 #include <sys/socket.h>
 #include "requestDefines.hpp"
 #include "Event.hpp"
+#include "statusCodes.hpp"
 
 //C comme ca que ca marche ???
 #include "FileStream.hpp"
@@ -86,11 +87,13 @@ public:
 	void				resetRequest();
 
 	void				setState(parsing_state value);
+	void				setStatus(std::string code);
 
-	std::string			getHeader();
+	std::string			getHeader() const;
 	std::string			getBody() const;
-	std::string			getBuffer();
-	parsing_state		getState();
+	std::string			getBuffer() const;
+	parsing_state		getState() const;
+	std::string			getStatus() const;
 
 	method				getMethod() const;
 	std::string			getUri() const;
@@ -120,6 +123,7 @@ private:
 	std::string			_contentType;
 	int					_expect;
 	unsigned long		_contentLength;
+	bool				_length;
 	bool				_transferEncoding;
 	bool				_connection;
 	bool				_ifModif;
@@ -129,7 +133,7 @@ public:
 
 	bool				getTransferEncoding() const;
 	bool				getTrailer() const;
-	int					getContentLength() const;
+	unsigned long		getContentLength() const;
 	bool				getConnection() const;
 
 	void				parseHost(std::string);
@@ -150,3 +154,5 @@ public:
 
 //faire surcharge de << pour imprimer toute la classe
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs);
+
+static const int	MAX_BODY_SIZE = 8192; //juste la le temps de le resoudre dans la config du serveur

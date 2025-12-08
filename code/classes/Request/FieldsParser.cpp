@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include "statusCodes.hpp"
 #include <iostream>
 
 std::string	skipOWS(std::string str)
@@ -109,6 +110,16 @@ void	Request::parseContentType(std::string str)
 
 void	Request::parseContentLength(std::string str)
 {
+	//if chunked and content length -> 400
+	if (this->_transferEncoding == CHUNKED)
+	{
+		this->_status.assign(BAD_REQUEST);
+		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "Cannot have Content-Length and Transfer-encoding at the same time"
+			<< std::endl;
+		return;
+	}
+	this->_length = 1;
 	str = skipOWS(str);
 }
 
@@ -130,6 +141,15 @@ void	Request::parseTransferEncoding(std::string str)
 	//pour cgi pas de VE HTTP_TRANSFER_ENCODING
 	//=> trouver la taille du body reconstitue et creer CONTNENT_LENGTH
 	str = skipOWS(str);
+	//if chunked and content length -> 400
+	if (this->_length == 1)
+	{
+		this->_status.assign(BAD_REQUEST);
+		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "Cannot have Content-Length and Transfer-encoding at the same time"
+			<< std::endl;
+		return;
+	}
 	this->_transferEncoding = CHUNKED;
 }
 
