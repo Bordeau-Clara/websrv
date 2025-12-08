@@ -177,6 +177,13 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 		<< rhs.getUri() << std::endl
 		<< "Query string="
 		<< rhs.getQueryString() << std::endl
+		<< std::endl
+		<< "Host= "
+		<< rhs.getHost() << std::endl
+		<< "Content Type="
+		<< rhs.getContentType() << std::endl
+		<< "Expect="
+		<< rhs.getExpect() << std::endl
 		<< "Content Length="
 		<< rhs.getContentLength() << std::endl
 		<< "Transfer Encoding =";
@@ -189,7 +196,8 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 		lhs << "keep-alive" << std::endl;
 	else
 		lhs << "close" << std::endl;
-	lhs << "Body="
+	lhs << std::endl
+		<< "Body="
 		<< rhs.getBody() << std::endl;
 	return (lhs);
 }

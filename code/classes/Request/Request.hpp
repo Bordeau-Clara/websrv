@@ -116,7 +116,7 @@ private:
 	std::string			_host; //inutile mais obligatoire
 	std::string			_cookies;
 	std::string			_contentType; //que utile pour POST
-	int					_expect;
+	std::string			_expect;
 	unsigned long		_contentLength;
 	bool				_length;
 	bool				_transferEncoding;
@@ -129,10 +129,13 @@ private:
 
 public:
 
-	bool				getTransferEncoding() const;
-	bool				getTrailer() const;
+	std::string			getHost() const;
+	std::string			getContentType() const;
+	std::string			getExpect() const;
 	unsigned long		getContentLength() const;
+	bool				getTransferEncoding() const;
 	bool				getConnection() const;
+	bool				getTrailer() const;
 
 	void				parseHost(std::string);
 	void				parseCookies(std::string);

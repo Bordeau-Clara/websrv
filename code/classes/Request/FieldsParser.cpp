@@ -11,9 +11,10 @@
 
 #include "Request.hpp"
 #include "statusCodes.hpp"
+#include <cstdlib>
 #include <iostream>
 
-std::string	skipOWS(std::string str)
+std::string	skipOWS(std::string str) //ne sert plus a rien??
 {
 	// int cursor = 0;
 	// while (str[cursor] && OWS.find(str[cursor]))
@@ -28,7 +29,6 @@ void	Request::parseHost(std::string str)
 {
 	//format: <host>:<port>
 	//<port> optional
-	str = skipOWS(str);
 	this->_host = str;
 }
 
@@ -38,24 +38,29 @@ void	Request::parseCookies(std::string str)
 	//(previously sent by the server with the Set-Cookie header
 	//or set in JavaSript using Document.cookie)
 	//format: name=value; name2=value2; name3=value3
-	str = skipOWS(str);
+	
+	(void)str;
+	//see what use for cookie bonus
 }
 
 void	Request::parseConnection(std::string str)
 {
 	//keep-alive ou close
 	//DEL ou pas le client apres le traitement de la requete
-	str = skipOWS(str);
+	if (!str.compare("keep-alive"))
+		this->_connection = KEEP_ALIVE;
+	if (!str.compare("close"))
+		this->_connection = CLOSE;
 }
 
 void	Request::parseExpect(std::string str)
 {
-	str = skipOWS(str);
+	this->_expect.assign(str);
 }
 
 void	Request::parseContentType(std::string str)
 {
-	str = skipOWS(str);
+	this->_contentType.assign(str);
 }
 
 void	Request::parseContentLength(std::string str)
@@ -70,7 +75,11 @@ void	Request::parseContentLength(std::string str)
 		return;
 	}
 	this->_length = 1;
-	str = skipOWS(str);
+	this->_contentLength = std::strtol(str.c_str(), NULL, 10);
+	if (this->_contentLength > MAX_BODY_SIZE)
+	{
+		this->_status.assign(BAD_REQUEST);
+	}
 }
 
 void	Request::parseTransferEncoding(std::string str)
@@ -90,7 +99,6 @@ void	Request::parseTransferEncoding(std::string str)
 	//
 	//pour cgi pas de VE HTTP_TRANSFER_ENCODING
 	//=> trouver la taille du body reconstitue et creer CONTNENT_LENGTH
-	str = skipOWS(str);
 	//if chunked and content length -> 400
 	if (this->_length == 1)
 	{
@@ -100,12 +108,15 @@ void	Request::parseTransferEncoding(std::string str)
 			<< std::endl;
 		return;
 	}
-	this->_transferEncoding = CHUNKED;
+	if (str.find("chunked"))
+		this->_transferEncoding = CHUNKED;
+	else
+		this->_status.assign(BAD_REQUEST);
 }
 
 void	Request::parseTrailer(std::string str)
 {
-	str = skipOWS(str);
+	(void)str;
 	this->_trailer = 1;
 }
 

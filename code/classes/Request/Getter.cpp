@@ -36,6 +36,21 @@ std::string	Request::getStatus() const
 	return this->_status;
 }
 
+std::string	Request::getHost() const
+{
+	return this->_host;
+}
+
+std::string	Request::getContentType() const
+{
+	return this->_contentType;
+}
+
+std::string	Request::getExpect() const
+{
+	return this->_expect;
+}
+
 bool	Request::getTransferEncoding() const
 {
 	return this->_transferEncoding;
