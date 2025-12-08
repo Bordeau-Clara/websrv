@@ -56,13 +56,13 @@ void	parse_header(Request *request)
 		//look at parse_cgi_header for amelioration
 		if (request->getHeader().empty())
 		{
-			streams.print(LOG_REQUEST) << "[HEADER EMPTIED IN PARSING]" << std::endl;
+			streams.get(LOG_REQUEST) << "[HEADER EMPTIED IN PARSING]" << std::endl;
 			break;
 		}
 		if (!request->getField(&type) || !request->getToken(&token))
 		{
 			request->setStatus(BAD_REQUEST);
-			streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field type is :" << type << std::endl
 				<< "token after field is :" << token
@@ -95,13 +95,13 @@ void	parse_cgi_header(Request *request)
 	{
 		if (request->getHeader().empty())
 		{
-			streams.print(LOG_REQUEST) << "[HEADER EMPTIED IN PARSING]" << std::endl;
+			streams.get(LOG_REQUEST) << "[HEADER EMPTIED IN PARSING]" << std::endl;
 			break;
 		}
 		if (!request->getField(&field) || !request->getToken(&token))
 		{
 			request->setStatus(BAD_REQUEST);
-			streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field is :" << field << std::endl
 				<< "token after field is :" << token

@@ -20,7 +20,7 @@ int	find_type(std::string str)
 	{
 		if (str[i] != '-' && !(str[i] >= 'A' && str[i] <= 'Z') && !(str[i] >= 'a' && str[i] <= 'z'))
 		{
-			streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "Wrong character in field :" << str[i]
 				<< std::endl;
 			return -1;
@@ -59,7 +59,7 @@ unsigned long hexToLong(std::string line)
 
 	chunk_size = std::strtoul(line.data(), semicolon ? (char**)&semicolon : NULL, 16);
 
-		streams.print(LOG_REQUEST) << "[CHUNK SIZE]" << std::endl
+		streams.get(LOG_REQUEST) << "[CHUNK SIZE]" << std::endl
 			<< "octet to read: " << chunk_size
 			<< std::endl;
 	return chunk_size;

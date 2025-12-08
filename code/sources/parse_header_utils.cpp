@@ -22,7 +22,7 @@ int	move_cursor(std::string::size_type *cursor, std::string str, std::string toF
 
 void	printRequest(Request *request)
 {
-	streams.print(LOG_REQUEST) << "[HEADER AFTER PARSING]" << std::endl
+	streams.get(LOG_REQUEST) << "[HEADER AFTER PARSING]" << std::endl
 		<< request->getHeader() << std::endl
 		<< std::endl
 		<< "[BODY AFTER PARSING]" << std::endl
@@ -35,46 +35,3 @@ void	printRequest(Request *request)
 		<< *request
 		<< std::endl;
 }
-// void	tokenize(std::string *buffer, Request *request, std::string::size_type cursor, int mode)
-// {
-// 	if (mode == 0)
-// 	{
-// 		request->set_hEnd(1);
-// 		request->appendHeader(*buffer, 0, cursor);
-// 		buffer->erase(0, cursor + 3);
-// 	}
-// 	if (mode == 1)
-// 	{
-// 		request->set_bEnd(1);
-// 		request->appendBody(*buffer, 0, cursor);
-// 		buffer->erase(0, cursor + 3);
-// 	}
-// }
-//
-// void	tokenize(std::string *buffer, Request *request, int mode)
-// {
-// 	if (mode == 0)
-// 	{
-// 		request->appendHeader(*buffer, 0, buffer->length());
-// 		buffer->erase(0, buffer->length());
-// 	}
-// 	if (mode == 1)
-// 	{
-// 		request->appendBody(*buffer, 0, buffer->length());
-// 		buffer->erase(0, buffer->length());
-// 	}
-// }
-
-// void	get_token(std::string *header, std::string *token, std::string::size_type *cursor)
-// {
-// 	*cursor = header->find(CRLF);
-// 	if (*cursor != std::string::npos)
-// 	{
-// 		token->assign(*header, 0, *cursor);
-// 		*cursor += 2;
-// 		header->erase(0, *cursor);
-// 	}
-// 	// else
-// 	// 	;
-// 		//throw error;
-// }

@@ -10,17 +10,14 @@
 /* ************************************************************************** */
 
 #include "EventManager.hpp"
-#include "parsing_header.hpp"
 #include <iostream>
-#include <string>
 #include "webserv.hpp"
 
 FileStream	streams;
 
 int	main(int argc, char **argv)
 {
-	std::vector<Server>	servers;
-	try
+	try// to open stream log file
 	{
 		streams.add(LOG_CONFIGPARSER);
 		streams.add(LOG_SERVER);
@@ -28,37 +25,51 @@ int	main(int argc, char **argv)
 		streams.add(LOG_LOCATION);
 		streams.add(LOG_EVENT);
 		streams.add(LOG_REQUEST);
+	}
+	catch (std::exception	&e)// open issue
+	{
+		std::cerr << "stream initialisation issue :"<< e.what() << std::endl;
+		return (1);
+	}
 
+	std::vector<Server>	servers;
+	try// to fill server vector with config file
+	{
 		ArgChecker::checkargs(argc);
 		ConfigParser	parser(argv[1]);
 		servers = parser.run();
 	}
-	catch (std::exception	&e)
+	catch (std::exception	&e)// parse error exception
 	{
 		std::cerr << "configParser Exception caught :"<< e.what() << std::endl;
 		return (1);
 	}
-	// try
-	// {
-	// 	servers.at(0).startListen();
-	// }
-	// catch (std::exception	&e)
-	// {
-	// 	std::cerr << "Exception caught :"<< e.what() << std::endl;
-	// 	return (1);
-	// }
 	printServerInfo(servers);
 	Request::initFields();
-
-	try
+	try// init epoll loop then run webserv
 	{
 		EventManager	Webserv(servers);
 		Webserv.run();
 	}
-	catch (std::exception &e)
+	catch (std::exception &e)// epoll system call issue or runtime issues
 	{
-		std::cerr << "WEBSERV BOBO :" << e.what() << std::endl;
+		std::cerr << "le WEBSERV BOBO :" << e.what() << std::endl;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// std::cout << "==========================" << std::endl;
 	// {

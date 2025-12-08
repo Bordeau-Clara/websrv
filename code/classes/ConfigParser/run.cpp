@@ -17,7 +17,7 @@
 
 Location	ConfigParser::parseLocationLoop(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "SCOPE LOCATION" << std::endl;
+	streams.get(LOG_DIRECTIVE) << "SCOPE LOCATION" << std::endl;
 	while (true)
 	{
 		checkDirective();
@@ -165,6 +165,6 @@ std::vector<Server>	ConfigParser::run(void)
 				throw (std::runtime_error("Unauthorized directive in global scope :" + this->get()));
 		}
 	}
-	streams.print(LOG_CONFIGPARSER) << std::endl << "END";
+	streams.get(LOG_CONFIGPARSER) << std::endl << "END";
 	return (servers);
 }

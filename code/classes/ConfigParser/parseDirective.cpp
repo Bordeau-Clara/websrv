@@ -88,7 +88,7 @@ static unsigned short	parse_port(std::string str)
 
 void	ConfigParser::parseListen(Server &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -115,12 +115,12 @@ void	ConfigParser::parseListen(Server &current)
 	next();
 	if (get() != ";")
 		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
 void	ConfigParser::parseRoot(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -130,12 +130,12 @@ void	ConfigParser::parseRoot(Location &current)
 	next();
 	if (get() != ";")
 		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
 void	ConfigParser::parseAlias(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -145,12 +145,12 @@ void	ConfigParser::parseAlias(Location &current)
 	next();
 	if (get() != ";")
 		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
 void	ConfigParser::parseClientMaxBodySize(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -171,12 +171,12 @@ void	ConfigParser::parseClientMaxBodySize(Location &current)
 	next();
 	if (get() != ";")
 		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
 void	ConfigParser::parseCgi(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -190,12 +190,12 @@ void	ConfigParser::parseCgi(Location &current)
 	if (end())
 		throw (std::runtime_error("Unclosed directive CGI \n-->edit"));
 	current.setCgiSuffixSet(suffixes);
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
 void	ConfigParser::parseAllowedMethods(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -221,12 +221,12 @@ void	ConfigParser::parseAllowedMethods(Location &current)
 	if (end())
 		throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
 	current.setMethods(methods);
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
 void	ConfigParser::parseReturn(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -237,12 +237,12 @@ void	ConfigParser::parseReturn(Location &current)
 	next();
 	if (get() != ";")
 		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
 void	ConfigParser::parseAutoIndex(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -257,12 +257,12 @@ void	ConfigParser::parseAutoIndex(Location &current)
 	next();
 	if (get() != ";")
 		throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
 void	ConfigParser::parseErrorPages(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -283,7 +283,7 @@ void	ConfigParser::parseErrorPages(Location &current)
 			throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
 		if (size < 2)
 			throw (std::runtime_error("Directive" + DIRECTIVE[ERROR_PAGE] + "need at least 2 arguments\n-->" + *(--_token_it)));
-		streams.print(LOG_DIRECTIVE) << size - 1 << " page to fill" << std::endl;
+		streams.get(LOG_DIRECTIVE) << size - 1 << " page to fill" << std::endl;
 	}
 
 	// for each token until page
@@ -309,17 +309,17 @@ void	ConfigParser::parseErrorPages(Location &current)
 			if (codes[i] == nb)
 			{
 				current.setErrorPage(nb, *page);
-				streams.print(LOG_DIRECTIVE) << nb << ": " + *page << std::endl;
+				streams.get(LOG_DIRECTIVE) << nb << ": " + *page << std::endl;
 				break ;
 			}
 		}
 	}
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
 void	ConfigParser::parsePostLocation(Location &current)
 {
-	streams.print(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
@@ -329,5 +329,5 @@ void	ConfigParser::parsePostLocation(Location &current)
 	next();
 	if (get() != ";")
 		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
-	streams.print(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }

@@ -24,7 +24,7 @@ static std::string	extractStr(const char *file)
 
 	std::ostringstream	ostrs;
 	ostrs	<< fs.rdbuf();
-	/**/streams.print(LOG_CONFIGPARSER) << SEPARATOR + "VV Extracted str VV" << std::endl << ostrs.str() << std::endl;
+	/**/streams.get(LOG_CONFIGPARSER) << SEPARATOR + "VV Extracted str VV" << std::endl << ostrs.str() << std::endl;
 	return (ostrs.str());
 }
 

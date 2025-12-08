@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "Logger.hpp"
 #include <string>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -19,7 +20,10 @@
 #define MAX_EVENTS 10
 #include <sys/epoll.h>
 
-class	Location;
+#include "FileStream.hpp"
+extern FileStream	streams;
+
+class	Logger;
 
 class	Server;
 class EventManager
@@ -37,6 +41,9 @@ class EventManager
 
 		void			serverAccept(void);
 		void			handleClient(void);
+		Logger			Monitor;
+		void			monitorNewEvent(ssize_t);
+		void			monitorEventRecv(ssize_t, String);
 	private:
 		int					_fd;
 		struct epoll_event	_events[MAX_EVENTS];

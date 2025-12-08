@@ -34,7 +34,7 @@ void	Request::fillBody()
 	if (this->_body.size() == this->_contentLength)
 	{
 		this->_state = SEND;
-		streams.print(LOG_REQUEST) << "[STATE]" << std::endl
+		streams.get(LOG_REQUEST) << "[STATE]" << std::endl
 			<< "Client state has been put in SEND mode"
 			<< std::endl;
 	}
@@ -68,7 +68,7 @@ void	Request::fillChunkedBody()
 				this->_buffer.erase(0, 2);
 				this->_state = SEND;
 				this->_contentLength = this->_body.size();
-				streams.print(LOG_REQUEST) << "[STATE]" << std::endl
+				streams.get(LOG_REQUEST) << "[STATE]" << std::endl
 					<< "Client state has been put in SEND mode"
 					<< std::endl;
 				return;
@@ -83,7 +83,7 @@ void	Request::fillChunkedBody()
 			if (this->_buffer[chunk_size ] != '\r' && this->_buffer[chunk_size + 1] != '\n')
 			{
 				this->_status = BAD_REQUEST;
-				streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+				streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 					<< "Number of octet till CRLF is not equal to the number of octet to read"
 					<< std::endl;
 				return;
@@ -99,7 +99,7 @@ void	Request::fillChunkedBody()
 			this->_buffer.erase(0, cursor + 3);
 			this->_state = SEND;
 			this->_contentLength = this->_body.size();
-			streams.print(LOG_REQUEST) << "[STATE]" << std::endl
+			streams.get(LOG_REQUEST) << "[STATE]" << std::endl
 				<< "Client state has been put in SEND mode"
 				<< std::endl;
 			return;

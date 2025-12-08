@@ -11,7 +11,7 @@
 
 #include "FileStream.hpp"
 
-std::ofstream	&FileStream::print(const std::string &file)
+std::ofstream	&FileStream::get(const std::string &file)
 {
     return (*this->_outfile.at(file));
 }

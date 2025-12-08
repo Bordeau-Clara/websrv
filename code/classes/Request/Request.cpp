@@ -73,7 +73,7 @@ int	Request::getToken(std::string *token)
 
 	if (!move_cursor(&cursor, this->_header, CRLF))
 	{
-		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "CRLF has not been find to complete token"
 			<< std::endl;
 		return 0;
@@ -91,7 +91,7 @@ int	Request::getField(int *type)
 	std::string::size_type	cursor = 0;
 	if (!move_cursor(&cursor, this->_header, ":"))
 	{
-		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "':' has not been find to complete field"
 			<< std::endl;
 		return 0;
@@ -113,7 +113,7 @@ int	Request::getField(std::string *field)
 	std::string::size_type	cursor = 0;
 	if (!move_cursor(&cursor, this->_header, ":"))
 	{
-		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "':' has not been find to complete field"
 			<< std::endl;
 		return 0;
@@ -136,7 +136,7 @@ void	Request::parseMethod(std::string str)
 	else
 	{
 		this->_status = BAD_REQUEST;
-		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Bad method identified: " << str
 			<< std::endl;
 	}

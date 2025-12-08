@@ -23,7 +23,7 @@
 
 void	EventManager::getNewEvent(void)
 {
-	//a.n = epoll_wait
+	Monitor.popStatus("Polling...");
 	_nEvent = epoll_wait(this->_fd, this->_events, MAX_EVENTS, -1);
 	if (_nEvent == -1)
 	{
@@ -31,6 +31,7 @@ void	EventManager::getNewEvent(void)
 		throw (std::runtime_error("ERROR"));
 	}
 	_it = 0;
+	monitorNewEvent(_nEvent);
 }
 
 void	*EventManager::getPtr(void)
@@ -42,6 +43,7 @@ void	*EventManager::getPtr(void)
 
 void	EventManager::eventNext(void)
 {
+	Monitor.printNewLine("next event");
 	_it++;
 }
 

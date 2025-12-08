@@ -179,7 +179,7 @@ void	Server::startListen(void)
 	// Configurer le socket server en non-bloquant
 	fcntl(this->_fd, F_SETFL, O_NONBLOCK);
 	std::cout << "listening " << getPort() << "on interface: " << intToIPv4(getInterface()) << std::endl;
-	streams.print(LOG_SERVER) << *this << SEPARATOR << std::endl;
+	streams.get(LOG_SERVER) << *this << SEPARATOR << std::endl;
 }
 
 std::ostream	&operator<<(std::ostream &lhs, const Server &rhs)
@@ -211,6 +211,6 @@ void	printServerInfo(const std::vector<Server> &servers)
 	int	i = 0;
 	for (std::vector<Server>::const_iterator it = servers.begin(); it != servers.end(); it++)
 	{
-		streams.print(LOG_SERVER) << "SERVER " << i << ":" << std::endl << *it << std::endl;
+		streams.get(LOG_SERVER) << "SERVER " << i << ":" << std::endl << *it << std::endl;
 	}
 }

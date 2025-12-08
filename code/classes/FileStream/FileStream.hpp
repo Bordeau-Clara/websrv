@@ -25,7 +25,7 @@ class	FileStream
 		FileStream(){};
 		~FileStream();
 		void					add(const std::string&);
-		std::ofstream		&print(const std::string&);
+		std::ofstream		&get(const std::string&);
 	private:
 		std::map<std::string, std::ofstream*>	_outfile;
 };

@@ -18,7 +18,7 @@
 
 void	parse_buffer(Request *request)
 {
-		streams.print(LOG_REQUEST) << "[BUFFER BEFORE PARSING]" << std::endl
+		streams.get(LOG_REQUEST) << "[BUFFER BEFORE PARSING]" << std::endl
 			<< request->getBuffer()
 			<< std::endl;
 	//can a \r or \n be alone in header???
