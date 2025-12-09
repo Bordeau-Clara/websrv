@@ -108,7 +108,6 @@ void	EventManager::handleClient()
 			{
 				Monitor.printNewLine(RED + "connection is CLOSE" + WHITE);
 				epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
-				close(client.fd);
 				delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
 				return ;
 			}
@@ -144,9 +143,8 @@ void	EventManager::handleClient()
 		}
 		else
 		{
-			std::cout << RED << "connection is CLOSE" << WHITE << std::endl;
+			Monitor.printNewLine(RED + "connection is CLOSE" + WHITE);
 			epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
-			close(client.fd);
 			delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
 			//else a verifier
 
