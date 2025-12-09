@@ -106,7 +106,7 @@ void	EventManager::handleClient()
 				throw (std::runtime_error("RECV KO"));
 			if (count == 0) // gerer client deconecte
 			{
-				std::cout << RED << "connection is CLOSE" << WHITE << std::endl;
+				Monitor.printNewLine(RED + "connection is CLOSE" + WHITE);
 				epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
 				close(client.fd);
 				delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
@@ -127,14 +127,14 @@ void	EventManager::handleClient()
 	{
 		streams.get(LOG_EVENT) << "[ENVOI]" << std::endl
 			<< std::endl;
-		std::string toSend = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:keep-alive\r\n\r\nHello, World!";
+		std::string toSend = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:close\r\n\r\nHello, World!";
 		if (send(client.fd, toSend.c_str(), toSend.length(), 0) == -1)
 			throw (std::runtime_error("SEND"));
 		streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl
 			<< std::endl;
 		if (client.getConnection() == KEEP_ALIVE)
 		{
-			std::cout << RED << "connection is KEEP ALIVE" << WHITE << std::endl;
+			Monitor.printNewLine(RED + "connection is KEEP ALIVE" + WHITE);
 			getEvent().events = EPOLLIN;
 			client.resetRequest();
 			epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());

@@ -27,8 +27,8 @@ void	EventManager::monitorNewEvent(ssize_t nEvent)
 void	EventManager::monitorEventRecv(ssize_t count, String recv)
 {
 	std::stringstream ss;
-	ss << "recv de "<< count << " bytes";
+	ss << " " << count << " bytes recv";
 	Monitor.printNewLine(ss.str());
-	streams.get(LOG_EVENT) << "recv de " << count << "bytes" << std::endl
+	streams.get(LOG_EVENT) << " " << count << " bytes recv" << std::endl
 	<< recv << std::endl; 
 }

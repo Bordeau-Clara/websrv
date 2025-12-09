@@ -43,8 +43,9 @@ void	*EventManager::getPtr(void)
 
 void	EventManager::eventNext(void)
 {
-	Monitor.printNewLine("next event");
 	_it++;
+	if (getPtr())
+		Monitor.printNewLine("next event");
 }
 
 struct epoll_event	&EventManager::getEvent(void)
