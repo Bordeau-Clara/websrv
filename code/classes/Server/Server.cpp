@@ -178,7 +178,7 @@ void	Server::startListen(void)
 
 	// Configurer le socket server en non-bloquant
 	fcntl(this->_fd, F_SETFL, O_NONBLOCK);
-	std::cout << "listening " << getPort() << "on interface: " << intToIPv4(getInterface()) << std::endl;
+	std::cout << "listening " << getPort() << " on interface: " << intToIPv4(getInterface()) << std::endl;
 	streams.get(LOG_SERVER) << *this << SEPARATOR << std::endl;
 }
 
