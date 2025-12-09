@@ -47,10 +47,19 @@ void	Request::parseConnection(std::string str)
 {
 	//keep-alive ou close
 	//DEL ou pas le client apres le traitement de la requete
+	streams.get(LOG_REQUEST) << "parseConnection<" + str + ">" << std::endl;
 	if (!str.compare("keep-alive"))
+	{
+		streams.get(LOG_REQUEST) << "[connection is keep alive]" << std::endl
+			<< std::endl;
 		this->_connection = KEEP_ALIVE;
+	}
 	if (!str.compare("close"))
+	{
+		streams.get(LOG_REQUEST) << "[connection is close]" << std::endl
+			<< std::endl;
 		this->_connection = CLOSE;
+	}
 }
 
 void	Request::parseExpect(std::string str)

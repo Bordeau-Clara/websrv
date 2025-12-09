@@ -76,7 +76,7 @@ void	Request::fillHeader(std::string::size_type cursor)
 
 int	Request::getToken(std::string *token)
 {
-	// std::cout << "Token  before assign is " << *token << std::endl;
+	streams.get(LOG_REQUEST) << "Token before assign is " << *token << std::endl;
 	int	Ows = 0;
 	std::string::size_type	cursor = 0;
 
@@ -91,9 +91,10 @@ int	Request::getToken(std::string *token)
 		return 0;
 		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
-	token->assign(this->_header, Ows, cursor);
+	token->assign(this->_header, Ows, cursor - Ows);
 	cursor += 2;
 	this->_header.erase(0, cursor);
+	streams.get(LOG_REQUEST) <<"header=" << _header << std::endl;
 	return 1;
 }
 
