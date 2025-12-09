@@ -79,6 +79,7 @@ private:
 	Request();
 public:
 	Request(Server&);
+	~Request(void);
 
 	static std::string	fields[207][3];
 	static void			(Request::*fctField[210])(std::string);

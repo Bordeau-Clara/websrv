@@ -20,8 +20,20 @@
 // {
 // }
 
-Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _contentLength(0), _length(0), _transferEncoding(0), _connection(KEEP_ALIVE), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _state(HEADER), _method(OTHER), _server(server), _contentLength(0), _length(0), _transferEncoding(0), _connection(KEEP_ALIVE), _trailer(0)
 {
+	this->fd = accept(server.getFd(), (struct sockaddr *)&this->client_addr, &this->client_len);
+	if (this->fd == -1)
+	{
+		throw(std::runtime_error("Accept failed !"));
+	}
+}
+
+#include <unistd.h>
+Request::~Request(void)
+{
+	if (this->fd != -1)
+		close(this->fd);
 }
 
 void	Request::resetRequest()
