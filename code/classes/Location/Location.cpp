@@ -19,6 +19,7 @@ Location::Location(void):
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
 	_redirect(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
+	_index(DEFAULT_LOCATION_INDEX),
 	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
 {
 	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PYTHON);
@@ -35,6 +36,7 @@ Location::Location(const std::string &name):
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
 	_redirect(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
+	_index(DEFAULT_LOCATION_INDEX),
 	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
 {
 	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PYTHON);
@@ -53,6 +55,7 @@ Location::Location(const Location &copy):
 	_cgi_suffix(copy._cgi_suffix),
 	_redirect(copy._redirect),
 	_autoindex(copy._autoindex),
+	_index(copy._index),
 	_error_page(copy._error_page),
 	_post_directory(copy._post_directory)
 {
@@ -75,11 +78,13 @@ Location	&Location::operator=(const Location &copy)
 	this->_cgi_suffix = copy._cgi_suffix;
 	this->_redirect = copy._redirect;
 	this->_autoindex = copy._autoindex;
+	this->_index = copy._index,
 	this->_error_page = copy._error_page;
 	this->_post_directory = copy._post_directory;
 	this->_methods[GET] = copy._methods[GET];
 	this->_methods[POST] = copy._methods[POST];
 	this->_methods[DELETE] = copy._methods[DELETE];
+
 	return (*this);
 }
 
@@ -176,6 +181,17 @@ bool	Location::getAutoindex(void) const
 void	Location::setAutoindex(bool autoindex)
 {
 	this->_autoindex = autoindex;
+}
+
+//root
+void	Location::setIndex(std::string  index)
+{
+	this->_index = index;
+}
+
+const std::string	Location::getIndex(void) const
+{
+	return (this->_index);
 }
 
 // error_page

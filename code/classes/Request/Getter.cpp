@@ -80,11 +80,6 @@ std::string	Request::getExpect() const
 	return this->_expect;
 }
 
-bool	Request::getTransferEncoding() const
-{
-	return this->_transferEncoding;
-}
-
 bool	Request::getConnection() const
 {
 	return this->_connection;
