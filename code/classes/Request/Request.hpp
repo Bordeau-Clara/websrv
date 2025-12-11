@@ -124,6 +124,7 @@ public:
 
 	void	generateResponse();
 	void	buildErrorResponse();
+	void	isCGI(void);
 
 private:
 	std::string			_host; //inutile mais obligatoire
@@ -132,7 +133,6 @@ private:
 	std::string			_expect;
 	unsigned long		_contentLength;
 	bool				_length;
-	bool				_transferEncoding;
 	bool				_connection;
 	bool				_trailer;
 	// std::string			_authorization;

@@ -15,7 +15,7 @@
 #include <sys/socket.h>
 
 
-Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _transferEncoding(0), _connection(KEEP_ALIVE), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
 {
 	this->fd = accept(server.getFd(), (struct sockaddr *)&this->client_addr, &this->client_len);
 	if (this->fd == -1)
@@ -40,7 +40,6 @@ void	Request::resetRequest()
 	this->_method = OTHER;
 	this->_contentLength = 0;
 	this->_length = 0;
-	this->_transferEncoding = 0;
 	this->_connection = KEEP_ALIVE;
 	this->_trailer = 0;
 
@@ -144,6 +143,15 @@ void	Request::parseMethod(std::string str)
 	}
 }
 
+void	Request::isCGI(void)
+{
+	const std::set<std::string>	&CgiSuffixes = _location->getCgiSuffix();
+	for (std::set<std::string>::const_iterator it = CgiSuffixes.begin(); it != CgiSuffixes.end(); it++)
+	{
+		;
+	}
+}
+
 void	Request::parseURI(std::string str)
 {
 	std::string::size_type cursor = 0;
@@ -164,6 +172,17 @@ void	Request::parseURI(std::string str)
 		this->_status = "404";
 	}
 	this->_url.assign(str);
+	// si rien ou slash sans rien alors verifier index
+		// access -->file (index)
+	// sinon verifier CGI
+		// si CGI
+			// access --> executable
+		// sinon
+			// access --> file
+	// fusionner root + alias + URL pour access
+	// access reussie passe a la suite
+	// sinon 404
+	this->isCGI();
 }
 
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
