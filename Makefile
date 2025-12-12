@@ -29,3 +29,7 @@ request:
 test:
 	bash netcat.sh
 .PHONY: test
+
+debug:
+	valgrind $(PROJECT_DIR)/$(BIN) $(CONFIG)
+.PHONY: debug
