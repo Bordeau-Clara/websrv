@@ -12,7 +12,7 @@
 #include "Cgi.hpp"
 #include "Request.hpp"
 
-Cgi::Cgi(): _env(CGI_HEADER), _contentLength(0)
+Cgi::Cgi(Request &request): _env(CGI_HEADER), _contentLength(0), _client(request)
 {
 }
 

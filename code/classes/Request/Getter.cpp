@@ -109,3 +109,8 @@ std::string	Request::getQueryString() const
 {
 	return this->_queryString;
 }
+
+Cgi&	Request::getCgi()
+{
+	return *(this->_cgi);
+}
