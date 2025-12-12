@@ -34,13 +34,11 @@ CLASS_FILES = \
 	\
 	Request/Request.cpp \
 	Request/Getter.cpp \
-	Request/HeaderTab.cpp \
 	Request/FieldsParser.cpp \
 	Request/FillBody.cpp \
 	Request/RequestUtils.cpp \
 	Request/parseBuffer.cpp \
 	Request/parseHeader.cpp \
-	Request/parseRequestLine.cpp \
 	Request/parseHeaderUtils.cpp \
 	Request/stateMachine.cpp \
 	Cgi/Cgi.cpp \

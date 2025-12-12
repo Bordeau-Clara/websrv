@@ -30,7 +30,6 @@ void	Request::parseBuffer(void)
 			<< std::endl;
 		this->fillHeader(cursor);
 		parseHeaderType();
-		// if (!this->getStatus().empty())
 		if (isState(ERROR))
 		{
 			printRequest(this);

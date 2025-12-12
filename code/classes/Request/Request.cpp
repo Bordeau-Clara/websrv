@@ -10,10 +10,8 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
-#include "Location.hpp"
 #include "Server.hpp"
 #include <sys/socket.h>
-
 
 Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
 {
@@ -124,65 +122,37 @@ int	Request::getField(std::string *field)
 	return 1;
 }
 
+std::string Request::fields[207][3] = {};
+void (Request::*Request::fctField[210])(std::string) = {NULL};
 
-void	Request::parseMethod(std::string str)
+void Request::initFields()
 {
-	if (str == "GET")
-		this->_method = GET;
-	else if (str == "POST")
-		this->_method = POST;
-	else if (str == "DELETE")
-		this->_method = DELETE;
-	else
-	{
-		this->_status = BAD_REQUEST;
-		this->setState(ERROR);
-		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-			<< "Bad method identified: " << str
-			<< std::endl;
-	}
-}
+	Request::fields[40][0] = "range";
+	Request::fields[42][0] = "accept";
+	Request::fields[58][0] = "host";
+	Request::fields[66][0] = "origin";
+	Request::fields[67][0] = "expect";
+	Request::fields[70][0] = "cookies";
+	Request::fields[76][0] = "trailer";
+	Request::fields[102][0] = "connection";
+	Request::fields[147][0] = "accept-language";
+	Request::fields[150][0] = "accept-encoding";
+	Request::fields[150][1] = "cache-control";
+	Request::fields[164][0] = "authorization";
+	Request::fields[187][0] = "if-none-match";
+	Request::fields[189][0] = "content-length";
+	Request::fields[191][0] = "content-type";
+	Request::fields[201][0] = "transfer-encoding";
+	Request::fields[205][0] = "if-modified-since";
 
-void	Request::isCGI(void)
-{
-	const std::set<std::string>	&CgiSuffixes = _location->getCgiSuffix();
-	for (std::set<std::string>::const_iterator it = CgiSuffixes.begin(); it != CgiSuffixes.end(); it++)
-	{
-		;
-	}
-}
-
-void	Request::parseURI(std::string str)
-{
-	std::string::size_type cursor = 0;
-	//or # anchor???
-	if (moveCursor(&cursor, str, "?"))
-	{
-		this->_queryString.assign(str.substr(cursor + 1));
-		str.erase(cursor);
-	}
-	
-	this->_uri.assign(str);
-	//resolve uri
-	this->_location = this->_server.urlSolver(str);
-	//deal with errors
-	if (!this->_location)
-	{
-		this->setState(ERROR);
-		this->_status = "404";
-	}
-	this->_url.assign(str);
-	// si rien ou slash sans rien alors verifier index
-		// access -->file (index)
-	// sinon verifier CGI
-		// si CGI
-			// access --> executable
-		// sinon
-			// access --> file
-	// fusionner root + alias + URL pour access
-	// access reussie passe a la suite
-	// sinon 404
-	this->isCGI();
+	Request::fctField[58] = &Request::parseHost;
+	Request::fctField[67] = &Request::parseExpect;
+	Request::fctField[70] = &Request::parseCookies;
+	Request::fctField[76] = &Request::parseTrailer;
+	Request::fctField[102] = &Request::parseConnection;
+	Request::fctField[189] = &Request::parseContentLength;
+	Request::fctField[191] = &Request::parseContentType;
+	Request::fctField[201] = &Request::parseTransferEncoding;
 }
 
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
