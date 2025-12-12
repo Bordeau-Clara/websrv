@@ -81,8 +81,9 @@ void	Request::parseHeader(void)
 
 void	Request::parseCgiHeader(void)
 {
-	std::string				token;
-	std::string				field;
+	std::string	token;
+	std::string	field;
+	int			type;
 
 	this->_cgi = new Cgi(*this);
 
@@ -96,7 +97,7 @@ void	Request::parseCgiHeader(void)
 			streams.get(LOG_REQUEST) << "[HEADER EMPTIED IN PARSING]" << std::endl;
 			break;
 		}
-		if (!this->getField(&field) || !this->getToken(&token))
+		if (!this->getField(&field, &type) || !this->getToken(&token))
 		{
 			this->setStatus(BAD_REQUEST);
 			this->setState(ERROR);
@@ -107,14 +108,20 @@ void	Request::parseCgiHeader(void)
 				<< std::endl;
 			return;
 		}
-		//need to add fct tab cause should also add info to Request just in case
-		this->_cgi->addFields(field, token);
+		if (type > 0 && type < 207 && Request::fctField[type] != NULL)
+			(this->*Request::fctField[type])(token);
+		else if (type < 0)
+		{
+			this->setStatus(BAD_REQUEST);
+			this->setState(ERROR);
+		//How to deal with expect? Does errors override expect?? Does expect override body??
+		//->Put in a string and check at response construction?
+		}
+		if (!field.empty())
+			this->_cgi->addFields(field, token);
 	}
 	//check_complete_header(event); //if content_length absent -> add it
 }
-//class request devient client et request est le constructeur de client (clien herite de request)
-//les fonctions de parsing vont dans request pour la lisibilite
-//
 //construction reponse:
 //si cgi -> recuperer header + body => comment savoir si cgi? Encore une variable? Peut pas avec state car passe en send quand cgi a fini
 //state "SEND_CGI"? Et donc va check la class cgi qui ce trouve dan client?

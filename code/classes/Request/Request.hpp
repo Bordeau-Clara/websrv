@@ -83,7 +83,7 @@ public:
 	void					parseCgiHeader(void);
 	int						getToken(std::string *header);
 	int						getField(int *type);
-	int						getField(std::string *field);
+	int						getField(std::string *field, int *type);
 
 private:
 	std::string		_body;
