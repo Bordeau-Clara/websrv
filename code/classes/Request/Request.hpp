@@ -56,113 +56,121 @@ public://epollloop variable for accept
 	struct sockaddr_in client_addr;
 	socklen_t client_len;
 	int fd;
-private:
-	int					_start; //pour chuncked request, pour verifier le temps
-	std::string			_status; //to put in response
-	
-	std::string			_header;
-	std::string			_body;
-	std::string			_buffer;
-
-	std::string			_response;
-
-	uint8_t				_state;
-
-	method 				_method;
-	std::string			_uri;
-	std::string			_url;//need to keep the URI for the CGI so put the full file path here
-	std::string			_queryString;
-
-	Cgi*				_cgi;
-
-	const Location*		_location;
-	Server&				_server;
-
-	Request(Request&);
-	Request();
 public:
 	Request(Server&);
 	~Request(void);
 
 	static std::string	fields[207][3];
 	static void			(Request::*fctField[210])(std::string);
-	static void			initFields();
+	static void				initFields();
 
-	void				resetRequest();
-
-	void				setState(parsing_state new_state);
-	bool				isState(parsing_state new_state) const;
-	void				setStatus(std::string code);
-
-	std::string			getHeader() const;
-	std::string			getBody() const;
-	std::string			getBuffer() const;
-	std::string			getState() const;
-	std::string			getStatus() const;
-
-	method				getMethod() const;
-	std::string			getUri() const;
-	std::string			getQueryString() const;
-	Cgi&				getCgi();
-
-	void				fillHeader(std::string::size_type cursor);
-	void				fillBody();
-	void				fillChunkedBody();
-	void				appendBuffer(std::string, int start, int end);
-
-	void				parseMethod(std::string);
-	void				parseURI(std::string);
-
-	int					getToken(std::string *header);
-	int					getField(int *type);
-	int					getField(std::string *field);
-
-	void	parseBuffer(void);
-	void	parseHeaderType(void);
-	void	parseHeader(void);
-	void	parseCgiHeader(void);
-	void	parseRequestLine(std::string token);
-
-	void	generateResponse();
-	void	buildErrorResponse();
+	void					resetRequest();
+private:
+	int				_start; //pour chuncked request, pour verifier le temps
+private:
+	std::string		_status; //to put in response
+public:
+	void					setStatus(std::string code);
+	std::string				getStatus() const;
+	
+private:
+	std::string		_header;
+public:
+	std::string				getHeader() const;
+	void					fillHeader(std::string::size_type cursor);
+	void					parseHeaderType(void);
+	void					parseHeader(void);
+	void					parseCgiHeader(void);
+	int						getToken(std::string *header);
+	int						getField(int *type);
+	int						getField(std::string *field);
 
 private:
-	std::string			_host; //inutile mais obligatoire
-	std::string			_cookies;
-	std::string			_contentType; //que utile pour POST
-	std::string			_expect;
-	unsigned long		_contentLength;
-	bool				_length;
-	bool				_transferEncoding;
-	bool				_connection;
-	bool				_trailer;
-	// std::string			_authorization;
-	// std::string			_accept; //ignorable ou 406
-	// std::string			_ifModifiedSince;
-	// bool				_ifModif;
+	std::string		_body;
+public:
+	std::string				getBody() const;
+	void					fillBody();
+	void					fillChunkedBody();
+
+private:
+	std::string		_buffer;
+public:
+	std::string				getBuffer() const;
+	void					appendBuffer(std::string, int start, int end);
+	void					parseBuffer(void);
+
+private:
+	std::string		_response;
+public:
+	void					generateResponse();
+	void					buildErrorResponse();
+
+private:
+	uint8_t			_state;
+public:
+	void					setState(parsing_state new_state);
+	bool					isState(parsing_state new_state) const;
+	std::string				getState() const;
+
+private:
+	method 			_method;
+	std::string		_uri;
+	std::string		_url;//need to keep the URI for the CGI so put the full file path here
+	std::string		_queryString;
+public:
+	void					parseRequestLine(std::string token);
+	method					getMethod() const;
+	std::string				getUri() const;
+	std::string				getQueryString() const;
+	void					parseMethod(std::string);
+	void					parseURI(std::string);
+
+private:
+	Cgi*			_cgi;
+public:
+	Cgi&					getCgi();
+
+	const Location*	_location;
+	Server&			_server;
+
+	Request(Request&);
+	Request();
+
+private:
+	std::string		_host; //inutile mais obligatoire
+	std::string		_cookies;
+	std::string		_contentType; //que utile pour POST
+	std::string		_expect;
+	unsigned long	_contentLength;
+	bool			_length;
+	bool			_transferEncoding;
+	bool			_connection;
+	bool			_trailer;
+	// std::string	_authorization;
+	// std::string	_accept; //ignorable ou 406
+	// std::string	_ifModifiedSince;
+	// bool			_ifModif;
 
 public:
+	std::string				getHost() const;
+	std::string				getContentType() const;
+	std::string				getExpect() const;
+	unsigned long			getContentLength() const;
+	bool					getTransferEncoding() const;
+	bool					getConnection() const;
+	bool					getTrailer() const;
 
-	std::string			getHost() const;
-	std::string			getContentType() const;
-	std::string			getExpect() const;
-	unsigned long		getContentLength() const;
-	bool				getTransferEncoding() const;
-	bool				getConnection() const;
-	bool				getTrailer() const;
-
-	void				parseHost(std::string);
-	void				parseCookies(std::string);
-	void				parseConnection(std::string);
-	void				parseExpect(std::string);
-	void				parseContentType(std::string);
-	void				parseContentLength(std::string);
-	void				parseTransferEncoding(std::string);
-	void				parseTrailer(std::string);
-	// void				parseAuthorization(std::string);
-	// void				parseIfModifiedSince(std::string);
+	void					parseHost(std::string);
+	void					parseCookies(std::string);
+	void					parseConnection(std::string);
+	void					parseExpect(std::string);
+	void					parseContentType(std::string);
+	void					parseContentLength(std::string);
+	void					parseTransferEncoding(std::string);
+	void					parseTrailer(std::string);
+	// void					parseAuthorization(std::string);
+	// void					parseIfModifiedSince(std::string);
 };
-
 
 //faire surcharge de << pour imprimer toute la classe
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs);
