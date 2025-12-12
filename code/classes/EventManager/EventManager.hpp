@@ -28,28 +28,40 @@ class	Logger;
 
 class	Server;
 class	Request;
+
 class EventManager
 {
 	public:
 		EventManager(std::vector<Server>&);
 		~EventManager(void);
 		void			run(void);
+
+		// server EPOLLIN
+		void			serverAccept(void);
+		Request			&requestAdd(Server&);
+		// client
+		void			handleClient(void);
+		// EPOLLIN
+		bool			recvFromClient(Request&);
+		// CGI ?
+		void			handlePipe(void);
 	
+		// Logger
+		Logger			Monitor;
+		void			monitorNewEvent(ssize_t);
+		void			monitorEventRecv(ssize_t, String);
+
+		// utils
 		void				getNewEvent(void);
 		void				*getPtr(void);
 		struct epoll_event	&getEvent(void);
 		void				eventNext(void);
 		bool				checkEvent(void);
-		void				EventAdd(uint32_t, int, void*);
-
-		void			serverAccept(void);
-		void			handleClient(void);
-		void			handlePipe(void);
-		Request			&requestAdd(Server&);
-		Logger			Monitor;
-		void			monitorNewEvent(ssize_t);
-		void			monitorEventRecv(ssize_t, String);
-
+		// Epoll encapsulation
+		void				EventAdd(int, uint32_t, void*);
+		void				EventModify(int, uint32_t, void*);
+		void				EventDelete(int);
+		// allocated request vector
 		std::list<Request*>	requests;
 	private:
 		int					_fd;

@@ -44,6 +44,7 @@ CLASS_FILES = \
 	Cgi/Cgi.cpp \
 	\
 	EventManager/EventManager.cpp \
+	EventManager/handleEvent.cpp \
 	EventManager/utils.cpp \
 	EventManager/monitor.cpp \
 	Logger/Logger.cpp \

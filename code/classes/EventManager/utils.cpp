@@ -23,15 +23,15 @@
 
 void	EventManager::getNewEvent(void)
 {
-	Monitor.popStatus("Polling...");
-	_nEvent = epoll_wait(this->_fd, this->_events, MAX_EVENTS, -1);
+	Monitor.editStatusLine("Polling...");
+	_nEvent = epoll_wait(this->_fd, this->_events, MAX_EVENTS, 1000);
 	if (_nEvent == -1)
 	{
 		perror("epoll_wait");
 		throw (std::runtime_error("ERROR"));
 	}
 	_it = 0;
-	monitorNewEvent(_nEvent);
+	// monitorNewEvent(_nEvent);
 }
 
 void	*EventManager::getPtr(void)
@@ -59,15 +59,40 @@ bool	EventManager::checkEvent()
 	return (static_cast<Event*>(getPtr())->_type);
 }
 
-void	EventManager::EventAdd(uint32_t event_mode, int event_fd, void *event_ptr)
+void	EventManager::EventAdd(int event_fd, uint32_t event_mode, void *event_ptr)
 {
+		// Structure pour les événements
 		struct epoll_event event;
 		event.events = event_mode;
 		event.data.ptr = event_ptr;
 
 		if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, event_fd, &event) == -1)
 		{
-			perror("epoll_ctl: server_fd");
+			perror("epoll_ctl: ADD");
+			throw (std::runtime_error("ERROR"));
+		}
+}
+
+void	EventManager::EventModify(int event_fd, uint32_t event_mode, void *event_ptr)
+{
+		// Structure pour les événements
+		struct epoll_event event;
+		event.events = event_mode;
+		event.data.ptr = event_ptr;
+
+		if (epoll_ctl(this->_fd, EPOLL_CTL_MOD, event_fd, &event) == -1)
+		{
+			perror("epoll_ctl: MOD");
+			throw (std::runtime_error("ERROR"));
+		}
+}
+
+void	EventManager::EventDelete(int event_fd)
+{
+		// Structure pour les événements
+		if (epoll_ctl(this->_fd, EPOLL_CTL_DEL, event_fd, NULL) == -1)
+		{
+			perror("epoll_ctl: DEL");
 			throw (std::runtime_error("ERROR"));
 		}
 }
