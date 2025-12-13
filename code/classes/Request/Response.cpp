@@ -59,12 +59,19 @@ void	Request::generateResponse()
 	{
 		//si GET
 			//open file from url
-			//in header: status line (200 OK ou Expect), content-length, content-type
+			//in header: status line (200 OK ou Expect), content-length, content-type (if body)
 		//si POST
-			//
+			//c la merde
 			//
 		//si DELETE
 			//open file from url
-			//in header: status line (200 OK ou Expect), content-length, content-type
+			//in header: status line (200 OK ou Expect)
+			//if DELETE autorise dans la location && url est un fichier
+				//if fichier existe
+					//supprimer fichier -> 204 No Content
+				//else
+					//404 Not Found
+			//if DELETE pas autorise ou url est un dossier
+				//403 Forbidden
 	}
 }
