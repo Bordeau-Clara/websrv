@@ -64,47 +64,65 @@ bool	EventManager::recvFromClient(Request &client)
 void	EventManager::handleClient()
 {
 	Request &client = *(Request *)getPtr();
+	// si reception
 	if (getEvent().events & EPOLLIN)
 	{
-		if (recvFromClient(client))
-			client.parseBuffer();
+		// si aucun element est recu
+		// CECI n'est pas tres propre
+		if (!recvFromClient(client))
+			return ;
+		client.parseBuffer();
+		// si parsing est fini
 		if (client.isState(SEND) || client.isState(ERROR))
 		{
 			// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
-			if (client.isState(CGI))
+
+			// checke si la reponse attendue est celle dune cgi
+			if (client.isState(CGI))// && !client.isState(ERROR)
 			{
-				//put 1 << 1 a 1 pour running_cgi -> inutile
 				//mettre l'event en dormant (EPOLLONESHOT) faut il d'abord le mettre en EPOLLOUT?
 				//-> .events = 0 est plus propre car EPOLLONESHOT est fais pour bloquer apres la reception d'un event
 				//comme client va etre mis dans l'event de la cgi(ou inversement) on aura le fd pour le reactiver
 				//lancer cgi et add l'event en EPOLLIN
 				//quand cgi finit on le met dans la rep du client et on le reactive et on le passe en EPOLLOUT
-
-				struct epoll_event cgi;
-				cgi.data.ptr = &client.getCgi();
-				Cgi& CGI = *(Cgi*)cgi.data.ptr;
+				//
+				//client.startCgi();
 				//create pipe fork and send optional body through new pipe and fork here??
-				epoll_ctl(this->_fd, EPOLL_CTL_MOD, CGI._responsePipe[1], &cgi);//bon cote du pipe??
-				getEvent().events = 0;
-				epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
+
+				// ecoute le pipe cgi
+				EventAdd(client.getCgi()._responsePipe[1], EPOLLIN, &client.getCgi());
+				// mute les envois clients
+				EventModify(client.fd, 0, &client);
 			}
 			else
 			{
+				// passe en emission
 				EventModify(client.fd, EPOLLOUT, &client);
 			}
 		}
 	}
+	// si on est en emission
 	else if (getEvent().events & EPOLLOUT)
 	{
-		streams.get(LOG_EVENT) << "[ENVOI]" << std::endl
-			<< std::endl;
+		/**/streams.get(LOG_EVENT) << "[ENVOI]" << std::endl
+			/**/<< std::endl;
+
 		//have to send by small buffers to not exceed the socket's buffer
-		std::string toSend = "HTTP/1.1 " + (client.getStatus().empty() ? "200 OK" : client.getStatus());
-		toSend.append("\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:close\r\n\r\nHello, World!");
-		if (send(client.fd, toSend.c_str(), toSend.length(), 0) == -1)
-			throw (std::runtime_error("SEND"));
-		streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl
-			<< std::endl;
+		{// Send to client function
+			std::string toSend = "HTTP/1.1 " + (client.getStatus().empty() ? "200 OK" : client.getStatus());
+			toSend.append("\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:close\r\n\r\nHello, World!");
+			if (send(client.fd, toSend.c_str(), toSend.length(), 0) == -1)
+				throw (std::runtime_error("SEND"));
+		}
+		/**/streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl
+			/**/<< std::endl;
+
+		// Close pas la connexion et garde en ecoute le socket client pour les prochaines requetes
+		/* /!\ ATTENTION /!\
+		 * le buffer peut contenir une ou plusieurs requete entiere apres la premiere reponse
+		 * ce qui ferait que epoll ne rapellera jamais ce client
+		 * sauf si il demande une enieme requete (ultra sale)
+		*/
 		if (client.getConnection() == KEEP_ALIVE)
 		{
 			Monitor.printNewLine(RED + "connection is KEEP ALIVE" + WHITE);
