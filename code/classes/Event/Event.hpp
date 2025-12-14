@@ -14,7 +14,8 @@
 typedef enum e_type
 {
 	SRV = 0,
-	CLIENT
+	CLIENT,
+	PIPE
 } type;
 
 struct Event

@@ -48,13 +48,18 @@ void	EventManager::eventNext(void)
 		Monitor.printNewLine("next event");
 }
 
+bool	EventManager::eventIs(uint32_t mode)
+{
+	return (getEvent().events & mode);
+}
+
 struct epoll_event	&EventManager::getEvent(void)
 {
 	return(_events[_it]);
 }
 
 // check if it's a server or client
-bool	EventManager::checkEvent()
+int	EventManager::checkEvent()
 {
 	return (static_cast<Event*>(getPtr())->_type);
 }

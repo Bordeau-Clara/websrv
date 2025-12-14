@@ -31,20 +31,22 @@ class	Request;
 
 class EventManager
 {
+
 	public:
 		EventManager(std::vector<Server>&);
 		~EventManager(void);
 		void			run(void);
 
-		// server EPOLLIN
-		void			serverAccept(void);
+	private: // all computation of webserv is in this class
+
 		Request			&requestAdd(Server&);
-		// client
-		void			handleClient(void);
+		// EPOLLOUT
+		void			sendToClient(void);
 		// EPOLLIN
-		bool			recvFromClient(Request&);
-		// CGI ?
+		void			recvFromClient(void);
+			bool			recvBuffer(Request&);
 		void			handlePipe(void);
+		void			serverAcceptClient(void);
 	
 		// Logger
 		Logger			Monitor;
@@ -56,14 +58,15 @@ class EventManager
 		void				*getPtr(void);
 		struct epoll_event	&getEvent(void);
 		void				eventNext(void);
-		bool				checkEvent(void);
+		int					checkEvent(void);
+		bool				eventIs(uint32_t);
 		// Epoll encapsulation
 		void				EventAdd(int, uint32_t, void*);
 		void				EventModify(int, uint32_t, void*);
 		void				EventDelete(int);
 		// allocated request vector
 		std::list<Request*>	requests;
-	private:
+		void(EventManager::*epollinHandler[3])(void);// jumptable
 		int					_fd;
 		struct epoll_event	_events[MAX_EVENTS];
 		int					_nEvent;

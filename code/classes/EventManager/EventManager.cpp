@@ -47,6 +47,10 @@ EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START)
 		EventAdd(it->getFd(), EPOLLIN, &*it);
 		Monitor.printNewLine("Adding listening socket to epoll Succeed !");
 	}
+	// building jumptable thx to gemini
+	epollinHandler[0] = &EventManager::serverAcceptClient;
+	epollinHandler[1] = &EventManager::recvFromClient;
+	epollinHandler[2] = &EventManager::handlePipe;
 }
 
 EventManager::~EventManager(void)
@@ -63,22 +67,13 @@ void	EventManager::run(void)
 	Monitor.popStatus("STARTING ..");
     while (1)
 	{
-		//b.POUR CHAQUE event dans events [0,n)
+		// for each events
 		for (getNewEvent(); getPtr(); eventNext())
 		{
-			// 1. SI(event.fd == server_socket)
-			if (checkEvent() == SRV) // SERVER
-			{
-				serverAccept();
-			}
-			else if (checkEvent() == CLIENT)// CLIENT
-			{
-				handleClient();
-			}
-			else //pipe
-			{
-				handlePipe();
-			}
+			if (eventIs(EPOLLIN)) // retriving which func it will call in th ejumptable epollinHandler
+				(this->*epollinHandler[checkEvent()])();
+			else // EPOLLOUT can only be for client send queue
+				sendToClient();
 		}
 		Monitor.printNewLine("");
     }
