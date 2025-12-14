@@ -42,6 +42,7 @@ class EventManager
 		Request			&requestAdd(Server&);
 		// EPOLLOUT
 		void			sendToClient(void);
+			void			sendBuffer(Request&);
 		// EPOLLIN
 		void			recvFromClient(void);
 			bool			recvBuffer(Request&);

@@ -44,7 +44,10 @@ CLASS_FILES = \
 	Cgi/Cgi.cpp \
 	\
 	EventManager/EventManager.cpp \
-	EventManager/handleEvent.cpp \
+	EventManager/event_handlers/serverAcceptClient.cpp \
+	EventManager/event_handlers/recvFromClient.cpp \
+	EventManager/event_handlers/sendToClient.cpp \
+	EventManager/event_handlers/handlePipe.cpp \
 	EventManager/utils.cpp \
 	EventManager/monitor.cpp \
 	Logger/Logger.cpp \
