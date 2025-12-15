@@ -44,7 +44,7 @@ class	Location
 	private:
 	unsigned int				_client_max_body_size;
 
-	public:
+	public:// upgrade it to pair string suffix string interpretater
 	void							setCgiSuffixSet(const std::set<std::string>&);
 	void							addCgiSuffix(const std::string&);
 	const std::set<std::string>		&getCgiSuffix(void) const;
