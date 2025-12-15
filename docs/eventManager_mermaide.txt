@@ -1,0 +1,14 @@
+flowchart TD
+EpollEventManager -->|start| EventLoop
+EventLoop --> ?[EPOLLIN/EPOLLOUT?]
+    ? -->|EPOLLOUT| SendToClient
+    ? --> |EPOLLIN| E?[wich Event is it ?]
+        E? --> |server| S[serverAcceptClient]
+        E? --> |request| C[recvFromClient] 
+        E? --> |pipe| P[handlePipe]
+
+S-->NR[New Request EPOLLIN]
+C -->state[which state ?]
+state-->|requestline|parseRequestLine
+state-->|header|parseHeaders
+state-->|body|fillBody
