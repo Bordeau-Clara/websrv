@@ -60,6 +60,7 @@ void	Request::parseBuffer(void)
 	{
 		this->setStatus(BAD_REQUEST);
 		this->setState(ERROR);
+		this->setState(SEND);
 	}
 	printRequest(this);
 }

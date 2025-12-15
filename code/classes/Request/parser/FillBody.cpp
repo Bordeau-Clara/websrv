@@ -23,6 +23,7 @@ void	Request::fillBody()
 		{
 			this->_status.assign(LENGTH_REQUIRED);
 			this->setState(ERROR);
+			this->setState(SEND);
 			return;
 		}
 	}
@@ -62,6 +63,7 @@ void	Request::fillChunkedBody()
 		{
 			this->_status.assign(PAYLOAD_TOO_LARGE);
 			this->setState(ERROR);
+			this->setState(SEND);
 			return;
 		}
 		if (this->isState(CHUNK_SIZE))
@@ -96,6 +98,7 @@ void	Request::fillChunkedBody()
 			{
 				this->_status = BAD_REQUEST;
 				this->setState(ERROR);
+				this->setState(SEND);
 				streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 					<< "Number of octet till CRLF is not equal to the number of octet to read"
 					<< std::endl;
