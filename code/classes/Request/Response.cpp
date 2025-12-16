@@ -44,15 +44,7 @@ void	Request::buildErrorResponse()
 	//appendbody
 }
 
-#include <sstream>
-std::string	nbrToString(size_t nbr)
-{
-	std::ostringstream oss;
-	oss << nbr;
-	std::string str = oss.str();
-	return str;
-}
-
+#include "helpers.hpp"
 #include <sys/stat.h>
 void	Request::buildGetResponse()
 {
