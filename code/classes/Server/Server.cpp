@@ -215,16 +215,18 @@ void	printServerInfo(const std::vector<Server> &servers)
 	}
 }
 
-// reverse iterate on locations of this server
-// return the first location that url own
+// reverse iterate on locations of this server from longer to shorter
+// return the first location that own url AND url is equal location or remainder starts with '/'
 // trunc location key from url
+// if no match return NULL
 const Location	*Server::urlSolver(std::string &url)
 {
 	const std::map<std::string, Location> &locations = getLocations();
 	for (std::map<std::string, Location>::const_reverse_iterator it = locations.rbegin();
 	it == locations.rend(); it++)
 	{
-		if (url.find(it->first) == 0)
+		if (url.find(it->first) == 0 &&
+			(url.length() == it->first.length() || url[it->first.length()] == '/'))
 		{
 			url.erase(0, it->first.length());
 			return (&it->second);
