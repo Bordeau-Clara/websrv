@@ -19,7 +19,7 @@ void	Request::setState(parsing_state new_state)
 		case READ:
 			this->_state &= ~BIT_RW;
 			break;
-		case SEND:
+		case EXEC:
 			this->_state |= BIT_RW;
 			break;
 
@@ -65,7 +65,7 @@ bool	Request::isState(parsing_state new_state) const
 	{
 		case READ:
 			return !(this->_state & BIT_RW);
-		case SEND:
+		case EXEC:
 			return (this->_state & BIT_RW);
 
 		case CGI:

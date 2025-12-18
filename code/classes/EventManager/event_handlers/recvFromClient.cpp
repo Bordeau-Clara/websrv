@@ -44,7 +44,7 @@ void	EventManager::recvFromClient(void)
 	client.parseBuffer();
 	// si parsing est fini
 	// (should be only send because error is send)
-	if (client.isState(SEND) || client.isState(ERROR))
+	if (client.isState(EXEC))
 	{
 		// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
 
@@ -67,6 +67,7 @@ void	EventManager::recvFromClient(void)
 		}
 		else // passe en emission
 		{
+			client.generateResponse();
 			EventModify(client.fd, EPOLLOUT, &client);
 		}
 	}

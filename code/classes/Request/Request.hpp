@@ -104,6 +104,9 @@ private:
 public:
 	void					generateResponse();
 	void					buildErrorResponse();
+	void					buildGetResponse();
+	void					buildPostResponse();
+	void					buildDeleteResponse();
 
 private:
 	uint8_t			_state;

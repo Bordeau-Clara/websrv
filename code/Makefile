@@ -35,6 +35,7 @@ CLASS_FILES = \
 	Request/Request.cpp \
 		Request/Getter.cpp \
 		Request/RequestUtils.cpp \
+		Request/Response.cpp \
 			Request/parser/FieldsParser.cpp \
 			Request/parser/FillBody.cpp \
 			Request/parser/parseBuffer.cpp \

@@ -26,7 +26,7 @@ typedef enum ParsingBits
 typedef enum parsing_state
 {
 	READ = 0,
-	SEND,
+	EXEC,
 
 	CGI,
 

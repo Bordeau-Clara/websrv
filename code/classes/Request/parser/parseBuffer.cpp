@@ -36,9 +36,9 @@ void	Request::parseBuffer(void)
 			return;
 		}
 		//requete sans body
-		if (this->getContentLength() == 0 && !this->isState(CHUNKED))
+		if (this->getContentLength() == 0 && this->_length == 0 && !this->isState(CHUNKED))
 		{
-			this->setState(SEND);
+			this->setState(EXEC);
 			printRequest(this);
 			return;
 		}
@@ -56,10 +56,11 @@ void	Request::parseBuffer(void)
 		else
 			this->fillBody();
 	}
-	if (this->isState(SEND) && this->getContentLength() != this->getBody().length())
+	if (this->isState(EXEC) && this->getContentLength() != this->getBody().length())
 	{
 		this->setStatus(BAD_REQUEST);
 		this->setState(ERROR);
+		this->setState(EXEC);
 	}
 	printRequest(this);
 }

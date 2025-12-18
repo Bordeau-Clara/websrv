@@ -30,8 +30,8 @@ std::string	Request::getBuffer() const
 std::string	Request::getState() const
 {
 	std::string state;
-	if (this->isState(SEND))
-		state.append("SEND");
+	if (this->isState(EXEC))
+		state.append("EXEC");
 	else
 		state.append("READ");
 

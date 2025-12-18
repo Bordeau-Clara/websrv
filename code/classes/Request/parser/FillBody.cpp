@@ -23,6 +23,7 @@ void	Request::fillBody()
 		{
 			this->_status.assign(LENGTH_REQUIRED);
 			this->setState(ERROR);
+			this->setState(EXEC);
 			return;
 		}
 	}
@@ -40,7 +41,7 @@ void	Request::fillBody()
 	}
 	if (this->_body.size() == this->_contentLength)
 	{
-		this->setState(SEND);
+		this->setState(EXEC);
 		streams.get(LOG_REQUEST) << "[STATE]" << std::endl
 			<< "Client state has been put in SEND mode"
 			<< std::endl;
@@ -62,6 +63,7 @@ void	Request::fillChunkedBody()
 		{
 			this->_status.assign(PAYLOAD_TOO_LARGE);
 			this->setState(ERROR);
+			this->setState(EXEC);
 			return;
 		}
 		if (this->isState(CHUNK_SIZE))
@@ -76,7 +78,7 @@ void	Request::fillChunkedBody()
 			else if (chunk_size == 0)
 			{
 				this->_buffer.erase(0, 2);
-				this->setState(SEND);
+				this->setState(EXEC);
 				this->_contentLength = this->_body.size();
 				streams.get(LOG_REQUEST) << "[STATE]" << std::endl
 					<< "Client state has been put in SEND mode (1)"
@@ -96,6 +98,7 @@ void	Request::fillChunkedBody()
 			{
 				this->_status = BAD_REQUEST;
 				this->setState(ERROR);
+				this->setState(EXEC);
 				streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 					<< "Number of octet till CRLF is not equal to the number of octet to read"
 					<< std::endl;
@@ -110,7 +113,7 @@ void	Request::fillChunkedBody()
 			if (!moveCursor(&cursor, this->_buffer, DCRLF))
 				break;
 			this->_buffer.erase(0, cursor + 3);
-			this->setState(SEND);
+			this->setState(EXEC);
 			this->_contentLength = this->_body.size();
 			streams.get(LOG_REQUEST) << "[STATE]" << std::endl
 				<< "Client state has been put in SEND mode (2)"
