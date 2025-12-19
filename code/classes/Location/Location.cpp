@@ -14,8 +14,8 @@
 
 Location::Location(void):
 	// _name(DEFAULT_LOCATION_NAME),
-	_root(DEFAULT_LOCATION_ROOT),
 	_alias(DEFAULT_LOCATION_ALIAS),
+	_root(DEFAULT_LOCATION_ROOT),
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
 	_redirect(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
@@ -31,8 +31,8 @@ Location::Location(void):
 }
 
 Location::Location(const std::string &name):
-	_root(DEFAULT_LOCATION_ROOT),
 	_alias(name),
+	_root(DEFAULT_LOCATION_ROOT),
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
 	_redirect(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
@@ -47,22 +47,22 @@ Location::Location(const std::string &name):
 	this->_methods[DELETE] = DEFAULT_LOCATION_DELETE;
 }
 
-Location::Location(const Location &copy):
-	// _name(copy._name),
-	_root(copy._root),
-	_alias(copy._alias),
-	_client_max_body_size(copy._client_max_body_size),
-	_cgi_suffix(copy._cgi_suffix),
-	_redirect(copy._redirect),
-	_autoindex(copy._autoindex),
-	_index(copy._index),
-	_error_page(copy._error_page),
-	_post_directory(copy._post_directory)
-{
-	this->_methods[GET] = copy._methods[GET];
-	this->_methods[POST] = copy._methods[POST];
-	this->_methods[DELETE] = copy._methods[DELETE];
-}
+// Location::Location(const Location &copy):
+// 	// _name(copy._name),
+// 	_root(copy._root),
+// 	_alias(copy._alias),
+// 	_client_max_body_size(copy._client_max_body_size),
+// 	_cgi_suffix(copy._cgi_suffix),
+// 	_redirect(copy._redirect),
+// 	_autoindex(copy._autoindex),
+// 	_index(copy._index),
+// 	_error_page(copy._error_page),
+// 	_post_directory(copy._post_directory)
+// {
+// 	this->_methods[GET] = copy._methods[GET];
+// 	this->_methods[POST] = copy._methods[POST];
+// 	this->_methods[DELETE] = copy._methods[DELETE];
+// }
 
 Location::~Location(void)
 {

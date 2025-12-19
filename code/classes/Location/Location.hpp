@@ -27,16 +27,16 @@ class	Location
 	Location(void);
 
 	public:
-	void							setRoot(const std::string&);
-	const std::string				&getRoot(void) const;
-	private:
-	std::string					_root;
-
-	public:
 	void							setAlias(const std::string&);
 	const std::string				&getAlias(void) const;
 	private:
 	std::string					_alias;
+
+	public:
+	void							setRoot(const std::string&);
+	const std::string				&getRoot(void) const;
+	private:
+	std::string					_root;
 
 	public:
 	void							setClientMaxBodySize(unsigned int);
