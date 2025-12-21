@@ -16,6 +16,7 @@
 #include "statusCodes.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
+#include <unistd.h>
 
 // string = expr + final CRLF
 void	Request::parseHeaderType(void)
@@ -125,6 +126,7 @@ void	Request::parseURI(std::string str)
 		// 404 not found
 		if (!this->_location)
 		{
+			this->setState(EXEC);
 			this->setState(ERROR);
 			this->_status = NOT_FOUND;
 			this->_connection = CLOSE;
@@ -133,6 +135,7 @@ void	Request::parseURI(std::string str)
 		// 400 bad request (not authorized request)
 		if (!this->_location->getMethods()[this->getMethod()])
 		{
+			this->setState(EXEC);
 			this->setState(ERROR);
 			this->_status = BAD_REQUEST;
 			this->_connection = CLOSE;
@@ -142,19 +145,41 @@ void	Request::parseURI(std::string str)
 			return ;
 		}
 	}
-	// si rien ou slash sans rien alors verifier index
-		// access -->file (index)
-	if ((str.empty() || str == "/"))
-		;
-	// sinon verifier CGI
+
+	// fusionner root + alias + URL pour access
+
+	// verifier CGI
 		// si CGI
 			// access --> executable
-		// sinon
-			// access --> file
-	// fusionner root + alias + URL pour access
-	// access reussie passe a la suite
-	// sinon 404
-	// this->isCGI();
+	{
+		// si rien ou slash sans rien alors verifier index
+		// access -->file (index)
+		if ((str.empty() || str == "/"))
+		{
+			if (access(std::string(_location->getRoot() + _location->getAlias() + "index.html").c_str(), R_OK))// if index not found
+			{
+				this->setState(EXEC);
+				this->setState(ERROR);
+				this->_status = NOT_FOUND;
+				this->_connection = CLOSE;
+				return ;
+			}
+		}
+		// access --> file
+		else
+		{
+			if (access(std::string(_location->getRoot() + _location->getAlias() + str).c_str(), R_OK))// if index not found
+			{
+				this->setState(EXEC);
+				this->setState(ERROR);
+				this->_status = NOT_FOUND;
+				this->_connection = CLOSE;
+				return ;
+			}
+		}
+	}
+
+
 }
 
 // void	Request::buildIndex()
