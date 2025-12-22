@@ -121,7 +121,7 @@ void	Request::parseURI(std::string str)
 	this->_location = this->_server.urlSolver(str);
 	streams.get(LOG_REQUEST) << "[urlSolver]" << "end" << std::endl;
 
-	//deal with errors
+	//deal with location errors
 	{
 		// 404 not found
 		if (!this->_location)
@@ -146,36 +146,35 @@ void	Request::parseURI(std::string str)
 		}
 	}
 
-	// fusionner root + alias + URL pour access
+//Todo:
+// verifier CGI
+	// si CGI
+		// access --> executable
 
-	// verifier CGI
-		// si CGI
-			// access --> executable
-	{
+	{// fusionner root + alias + remainder pour access
 		// si rien ou slash sans rien alors verifier index
-		// access -->file (index)
-		if ((str.empty() || str == "/"))
+		if ((str.empty() || str == "/")) // index ressource
 		{
-			if (access(std::string(_location->getRoot() + _location->getAlias() + "index.html").c_str(), R_OK))// if index not found
-			{
-				this->setState(EXEC);
-				this->setState(ERROR);
-				this->_status = NOT_FOUND;
-				this->_connection = CLOSE;
-				return ;
-			}
+			// should manage auto index and real indexfile
+			// for yet it return error
+			this->setState(EXEC);
+			this->setState(ERROR);
+			this->_status = NOT_FOUND;
+			this->_connection = CLOSE;
+			return ;
+			// _requestedRessource = _location->getRoot() + _location->getAlias() + "index.html";
 		}
-		// access --> file
-		else
+		else // regular file
 		{
-			if (access(std::string(_location->getRoot() + _location->getAlias() + str).c_str(), R_OK))// if index not found
-			{
-				this->setState(EXEC);
-				this->setState(ERROR);
-				this->_status = NOT_FOUND;
-				this->_connection = CLOSE;
-				return ;
-			}
+			_requestedRessource = _location->getRoot() + _location->getAlias() + str;
+		}
+		if (access(_requestedRessource.c_str(), R_OK))// if ressource cannot be read
+		{
+			this->setState(EXEC);
+			this->setState(ERROR);
+			this->_status = NOT_FOUND;
+			this->_connection = CLOSE;
+			return ;
 		}
 	}
 

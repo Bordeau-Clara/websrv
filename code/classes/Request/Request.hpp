@@ -119,6 +119,7 @@ private:
 	method 			_method;
 	std::string		_uri;
 	std::string		_url;//need to keep the URI for the CGI so put the full file path here
+	std::string		_requestedRessource;
 	std::string		_queryString;
 public:
 	void					parseRequestLine(std::string token);
