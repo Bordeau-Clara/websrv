@@ -15,6 +15,7 @@
 #include "statusCodes.hpp"
 #include <cstddef>
 #include <fcntl.h>
+#include <fstream>
 
 void	Request::buildErrorResponse()
 {
@@ -62,10 +63,14 @@ void	Request::buildGetResponse()
 	{
 
 	}
-	// should open ifstream _requestedRessource
-	//open(this->_url);
-	//read() in a buffer and append to this->_response
-	//close(this->_url);
+	std::string		body;
+	{
+		// should open ifstream _requestedRessource
+		std::ifstream	ifs(_requestedRessource.c_str(), std::ifstream::in);
+		//read() in a buffer and append to this->_response
+		ifs >> body;
+	}
+	this->_response.append(body);
 }
 
 void	Request::buildPostResponse()
