@@ -177,8 +177,6 @@ void	Request::parseURI(std::string str)
 			return ;
 		}
 	}
-
-
 }
 
 // void	Request::buildIndex()

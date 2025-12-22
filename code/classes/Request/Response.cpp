@@ -52,13 +52,17 @@ void	Request::buildGetResponse()
 	//in header: status line (200 OK ou Expect), content-length, content-type, date
 	
 	struct stat fileStat;
-	if (stat(this->_url.c_str(), &fileStat) == 0)
+	if (stat(this->_requestedRessource.c_str(), &fileStat) == 0)
 	{
 		this->_response.append(CON_LEN + nbrToString(fileStat.st_size) + CRLF);
 	}
 	//add Content-type
 	//add Date ??
 	this->_response.append(CRLF);
+	{
+
+	}
+	// should open ifstream _requestedRessource
 	//open(this->_url);
 	//read() in a buffer and append to this->_response
 	//close(this->_url);
