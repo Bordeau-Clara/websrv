@@ -53,7 +53,21 @@ class Cgi;
 struct Response
 {
 	std::string				str;
-	size_t					cursor;
+	std::string::size_type	cursor;
+	Response(void): str(), cursor(0){}
+	// get next str to send
+	// move cursor
+	const std::string		get(std::string::size_type size)
+	{
+		std::string sub = this->str.substr(this->cursor, size);
+		cursor += sub.size();
+		return (sub);
+	}
+	// check if cursor reach size of str to transmitt
+	bool	transmissionComplete(void) const
+	{
+		return (this->str.size() == cursor);
+	}
 };
 
 class Request: public Event

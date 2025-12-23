@@ -13,17 +13,13 @@
 #include "Request.hpp"
 #include "Cgi.hpp"
 
-void	EventManager::sendBuffer(Request &client)
-{// Send to client function
-	//have to send by small buffers to not exceed the socket's buffer
-	//Should send buffer size byte of respone and increment response cursor by buffersize.
-	//return false if request not fully sent true if fully sent
-	/**/streams.get(LOG_EVENT) << "[ENVOI]" << std::endl
-		/**/<< std::endl;
-	std::string toSend = "HTTP/1.1 " + (client.getStatus().empty() ? "200 OK" : client.getStatus());
-	toSend.append("\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:close\r\n\r\nHello, World!");
-	if (send(client.fd, toSend.c_str(), toSend.length(), 0) == -1)
+bool	EventManager::sendBuffer(Request &client)
+{
+	std::string toSend = client._response.get(BUFFER_SIZE);
+
+	if (send(client.fd, toSend.c_str(), toSend.size(), 0) == -1)
 		throw (std::runtime_error("SEND"));
+	return (client._response.transmissionComplete());
 }
 
 void	EventManager::sendToClient(void)

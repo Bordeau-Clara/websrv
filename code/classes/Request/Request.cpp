@@ -13,7 +13,7 @@
 #include "Server.hpp"
 #include <sys/socket.h>
 
-Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _response(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
 {
 	this->fd = accept(server.getFd(), (struct sockaddr *)&this->client_addr, &this->client_len);
 	if (this->fd == -1)
@@ -35,7 +35,6 @@ void	Request::resetRequest()
 	this->_header.clear();
 	this->_status.clear();
 
-	// this->_responseCursor = 0;
 	this->_requestedRessource.clear();
 	this->_url.clear();
 	this->_uri.clear();

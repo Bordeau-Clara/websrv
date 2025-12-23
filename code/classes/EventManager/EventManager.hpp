@@ -42,7 +42,11 @@ class EventManager
 		Request			&requestAdd(Server&);
 		// EPOLLOUT
 		void			sendToClient(void);
-			void			sendBuffer(Request&);
+		// Send to client function
+			//have to send by small buffers to not exceed the socket's buffer
+			//Should send buffer size byte of respone and increment response cursor by buffersize.
+			//return false if request not fully sent true if fully sent
+			bool			sendBuffer(Request&);
 		// EPOLLIN
 		void			recvFromClient(void);
 			bool			recvBuffer(Request&);

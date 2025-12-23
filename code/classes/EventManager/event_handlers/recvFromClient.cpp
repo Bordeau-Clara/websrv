@@ -16,7 +16,7 @@
 
 bool	EventManager::recvBuffer(Request &client)
 {
-	static char buffer[BUFFER_SIZE + 1] = {0};
+	static char buffer[BUFFER_SIZE] = {0};
 
 	ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
 	if (count == -1)
