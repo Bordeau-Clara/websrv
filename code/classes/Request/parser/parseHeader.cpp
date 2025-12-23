@@ -59,9 +59,9 @@ void	Request::parseRequestLine(std::string token)
 		return;
 	}
 	this->parseMethod(token.substr(0, cursor));
-	token.erase(0, cursor + 1);
 	if (isState(ERROR))
 		return;
+	token.erase(0, cursor + 1);
 	if (!moveCursor(&cursor, token, " "))
 	{
 		this->setStatus(BAD_REQUEST);
@@ -70,9 +70,9 @@ void	Request::parseRequestLine(std::string token)
 		return;
 	}
 	this->parseURI(token.substr(0, cursor));
-	token.erase(0, cursor + 1);
 	if (isState(ERROR))
 		return;
+	token.erase(0, cursor + 1);
 	if (token.compare("HTTP/1.1"))
 	{
 		this->setStatus(BAD_REQUEST);
