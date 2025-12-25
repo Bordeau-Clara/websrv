@@ -104,6 +104,7 @@ void	Request::parseMethod(std::string str)
 	}
 }
 
+void	trimSlash(std::string &str);
 void	Request::parseURI(std::string str)
 {
 	std::string::size_type cursor = 0;
@@ -167,6 +168,7 @@ void	Request::parseURI(std::string str)
 		else // regular file
 		{
 			_requestedRessource = _location->getRoot() + _location->getAlias() + str;
+			trimSlash(_requestedRessource);
 		}
 		if (access(_requestedRessource.c_str(), R_OK))// if ressource cannot be read
 		{
