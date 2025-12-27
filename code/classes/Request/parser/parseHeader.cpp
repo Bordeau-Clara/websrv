@@ -122,6 +122,7 @@ void	Request::parseURI(std::string str)
 	this->_location = this->_server.urlSolver(str);
 	streams.get(LOG_REQUEST) << "[urlSolver]" << "end" << std::endl;
 
+	streams.get(LOG_EVENT) << "Okay" << std::endl;
 	//deal with location errors
 	{
 		// 404 not found
@@ -152,6 +153,7 @@ void	Request::parseURI(std::string str)
 	// si CGI
 		// access --> executable
 
+	streams.get(LOG_EVENT) << "Okay" << std::endl;
 	{// fusionner root + alias + remainder pour access
 		// si rien ou slash sans rien alors verifier index
 		if ((str.empty() || str == "/")) // index ressource
@@ -170,6 +172,7 @@ void	Request::parseURI(std::string str)
 			_requestedRessource = _location->getRoot() + _location->getAlias() + str;
 			trimSlash(_requestedRessource);
 		}
+		streams.get(LOG_EVENT) << "file: " << _requestedRessource << std::endl;
 		if (access(_requestedRessource.c_str(), R_OK))// if ressource cannot be read
 		{
 			this->setState(EXEC);
