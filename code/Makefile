@@ -17,10 +17,11 @@ OBJ_DIR   = build
 # Sources files listing
 SRC_FILES = \
 	main.cpp \
-	time.cpp \
-	nbrToString.cpp \
-	hexToLong.cpp \
-	trimSlash.cpp \
+		utils/strTimestamp.cpp \
+		utils/nbrToString.cpp \
+		utils/hexToLong.cpp \
+		utils/trimSlash.cpp \
+		utils/extractStr.cpp \
 	\
 
 # Classes files listing

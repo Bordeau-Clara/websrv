@@ -47,6 +47,8 @@ void	Request::buildErrorResponse()
 
 #include "helpers.hpp"
 #include <sys/stat.h>
+std::string	extractStr(const char *file);
+
 void	Request::buildGetResponse()
 {
 	//open file from url
@@ -60,16 +62,7 @@ void	Request::buildGetResponse()
 	//add Content-type
 	//add Date ??
 	this->_response.str.append(CRLF);
-	{
-
-	}
-	std::string		body;
-	{
-		// should open ifstream _requestedRessource
-		std::ifstream	ifs(_requestedRessource.c_str(), std::ifstream::in);
-		//read() in a buffer and append to this->_response
-		ifs >> body;
-	}
+	std::string		body = extractStr(_requestedRessource.c_str());
 	this->_response.str.append(body);
 	// this->_responseCursor = 0;
 }
