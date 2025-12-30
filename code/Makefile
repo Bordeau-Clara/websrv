@@ -17,11 +17,11 @@ OBJ_DIR   = build
 # Sources files listing
 SRC_FILES = \
 	main.cpp \
-		utils/strTimestamp.cpp \
-		utils/nbrToString.cpp \
-		utils/hexToLong.cpp \
-		utils/trimSlash.cpp \
-		utils/extractStr.cpp \
+	utils/strTimestamp.cpp \
+	utils/nbrToString.cpp \
+	utils/hexToLong.cpp \
+	utils/trimSlash.cpp \
+	utils/extractStr.cpp \
 	\
 
 # Classes files listing
@@ -35,7 +35,6 @@ CLASS_FILES = \
 	FileStream/FileStream.cpp \
 	Location/Location.cpp \
 	Server/Server.cpp \
-	\
 	Request/Request.cpp \
 		Request/Getter.cpp \
 		Request/RequestUtils.cpp \
@@ -47,7 +46,6 @@ CLASS_FILES = \
 			Request/parser/parseHeaderUtils.cpp \
 			Request/parser/stateMachine.cpp \
 	Cgi/Cgi.cpp \
-	\
 	EventManager/EventManager.cpp \
 		EventManager/event_handlers/serverAcceptClient.cpp \
 		EventManager/event_handlers/recvFromClient.cpp \
@@ -62,18 +60,18 @@ SOURCES = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
 
 # include directories
 INC_DIR = \
-		  includes \
-		  $(CLASS_DIR)/ArgChecker \
-		  $(CLASS_DIR)/ConfigParser \
-		  $(CLASS_DIR)/FileStream \
-		  $(CLASS_DIR)/Location \
-		  $(CLASS_DIR)/Server \
-		  $(CLASS_DIR)/Request \
-		  $(CLASS_DIR)/Request/parser \
-		  $(CLASS_DIR)/Cgi \
-		  $(CLASS_DIR)/EventManager \
-		  $(CLASS_DIR)/Event \
-		  $(CLASS_DIR)/Logger \
+	includes \
+		$(CLASS_DIR)/ArgChecker \
+		$(CLASS_DIR)/ConfigParser \
+		$(CLASS_DIR)/FileStream \
+		$(CLASS_DIR)/Location \
+		$(CLASS_DIR)/Server \
+		$(CLASS_DIR)/Request \
+			$(CLASS_DIR)/Request/parser \
+		$(CLASS_DIR)/Cgi \
+		$(CLASS_DIR)/EventManager \
+		$(CLASS_DIR)/Event \
+		$(CLASS_DIR)/Logger \
 
 ##################################################################################
 #compilation
