@@ -10,7 +10,7 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
-#include "Server.hpp"
+#include "Location.hpp"
 #include "requestDefines.hpp"
 #include "stateMachine.hpp"
 #include "statusCodes.hpp"
@@ -18,6 +18,7 @@
 #include <fcntl.h>
 #include <fstream>
 
+#include "helpers.hpp"
 void	Request::buildErrorResponse()
 {
 	this->_response.str.assign(TEXT_HTML_TYPE);
@@ -43,13 +44,21 @@ void	Request::buildErrorResponse()
 		//et insert Content-length a response.find(CRLF) donc apres la status line
 	}
 	this->_response.str.append(CRLF);
-	// if (_server.[_status.code])
-	//appendbody
+	if (!this->_location)
+	{
+		this->_response.str.append("No location");
+		return ;
+	}
+	const std::map<int, std::string>	ErrorPages = this->_location->getErrorPages();
+	if (ErrorPages.find(_status.code) == ErrorPages.end())
+	{
+		this->_response.str.append("Error" + nbrToString(_status.code));
+		return ;
+	}
+	this->_response.str.append(extractStr(_requestedRessource.c_str()));
 }
 
-#include "helpers.hpp"
 #include <sys/stat.h>
-std::string	extractStr(const char *file);
 
 void	Request::buildGetResponse()
 {
