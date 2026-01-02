@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include "Server.hpp"
 #include "requestDefines.hpp"
 #include "stateMachine.hpp"
 #include "statusCodes.hpp"
@@ -42,6 +43,7 @@ void	Request::buildErrorResponse()
 		//et insert Content-length a response.find(CRLF) donc apres la status line
 	}
 	this->_response.str.append(CRLF);
+	// if (_server.[_status.code])
 	//appendbody
 }
 
