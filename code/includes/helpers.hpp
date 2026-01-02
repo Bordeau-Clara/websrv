@@ -13,3 +13,4 @@
 
 #include <sstream>
 std::string	nbrToString(size_t nbr);
+std::string	extractStr(const char *file);
