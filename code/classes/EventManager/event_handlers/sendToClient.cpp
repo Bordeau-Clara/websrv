@@ -12,6 +12,7 @@
 #include "EventManager.hpp"
 #include "Request.hpp"
 #include "Cgi.hpp"
+#include "helpers.hpp"
 
 bool	EventManager::sendBuffer(Request &client)
 {
@@ -19,6 +20,7 @@ bool	EventManager::sendBuffer(Request &client)
 
 	if (send(client.fd, toSend.c_str(), toSend.size(), 0) == -1)
 		throw (std::runtime_error("SEND"));
+	Monitor.printNewLine("SEND TO "+client.ip_str+ ": " + nbrToString(toSend.size())+" bytes");
 	return (client._response.transmissionComplete());
 }
 
@@ -41,13 +43,13 @@ void	EventManager::sendToClient(void)
 	*/
 	if (client.getConnection() == KEEP_ALIVE)
 	{
-		Monitor.printNewLine(RED + "FROM "+client.ip_str+" KEEPALIVE (end of the request)"  + WHITE);
+		Monitor.printNewLine(RED + "FROM "+client.ip_str+" connection:KEEPALIVE (end of the request)"  + WHITE);
 		client.resetRequest();
 		EventModify(client.fd, EPOLLIN, &client);
 	}
 	else
 	{
-		Monitor.printNewLine(RED + "FROM "+client.ip_str+" CLOSE (end of the request)"  + WHITE);
+		Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (end of the request)"  + WHITE);
 		EventDelete(client.fd);
 		delete (Request *)getPtr();
 	}

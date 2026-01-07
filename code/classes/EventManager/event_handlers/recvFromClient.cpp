@@ -23,7 +23,7 @@ bool	EventManager::recvBuffer(Request &client)
 		throw (std::runtime_error("RECV KO"));
 	if (count == 0)
 	{
-		Monitor.printNewLine(RED + "[END] FROM "+client.ip_str+" CLOSE (client disconnected)"  + WHITE);
+		Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (client disconnected)"  + WHITE);
 		EventDelete(client.fd);
 		delete (Request *)getPtr();
 		return (false);
