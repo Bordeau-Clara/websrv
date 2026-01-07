@@ -154,6 +154,7 @@ void	Request::parseURI(std::string str)
 		// access --> executable
 
 	streams.get(LOG_EVENT) << "Okay" << std::endl;
+	if (this->_method == GET)
 	{// fusionner root + alias + remainder pour access
 		// si rien ou slash sans rien alors verifier index
 		if ((str.empty() || str == "/")) // index ressource
@@ -181,6 +182,17 @@ void	Request::parseURI(std::string str)
 			this->_connection = CLOSE;
 			return ;
 		}
+	}
+	if (this->_method == POST)
+	// _requested ressource will be post location + remainder
+	// then try to see if we can open file (create or append)
+	{
+		// WORK IN PROGRESS
+	}
+	if (this->_method == DELETE)
+	// _requested ressource will be post location + remainder
+	// TBD
+	{
 	}
 }
 
