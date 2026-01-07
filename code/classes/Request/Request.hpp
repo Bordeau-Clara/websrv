@@ -82,6 +82,7 @@ class Request: public Event
 public://epollloop variable for accept
 	struct sockaddr_in client_addr;
 	socklen_t client_len;
+	std::string	ip_str;
 	int fd;
 public:
 	Request(Server&);

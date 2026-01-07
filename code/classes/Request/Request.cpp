@@ -11,7 +11,9 @@
 
 #include "Request.hpp"
 #include "Server.hpp"
+#include "helpers.hpp"
 #include <sys/socket.h>
+#include <sstream>
 
 Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(Status(OK, 200)), _response(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
 {
@@ -20,6 +22,15 @@ Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in))
 	{
 		throw(std::runtime_error("Accept failed !"));
 	}
+	// extract ipv4 big endian
+	uint32_t ip = ntohl(this->client_addr.sin_addr.s_addr);
+	
+	//each byte 
+	this->ip_str = nbrToString((ip >> 24) & 0xFF) + "."
+		+ nbrToString((ip >> 16) & 0xFF) + "."
+		+ nbrToString((ip >> 8) & 0xFF) + "."
+		+ nbrToString(ip & 0xFF) + "/"
+		+ nbrToString(ntohs(this->client_addr.sin_port));
 }
 
 #include <unistd.h>
