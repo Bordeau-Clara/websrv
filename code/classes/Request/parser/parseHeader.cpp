@@ -159,14 +159,28 @@ void	Request::parseURI(std::string str)
 		// si rien ou slash sans rien alors verifier index
 		if ((str.empty() || str == "/")) // index ressource
 		{
-			// should manage auto index and real indexfile
-			// for yet it return error
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(NOT_FOUND, 404));
-			this->_connection = CLOSE;
-			return ;
-			// _requestedRessource = _location->getRoot() + _location->getAlias() + "index.html";
+			_requestedRessource = _location->getRoot() + _location->getAlias() + "/" + _location->getIndex();
+			trimSlash(_requestedRessource);
+			streams.get(LOG_REQUEST) << " Empty remainder, testing index:" + _requestedRessource<< std::endl;
+			if (access(_requestedRessource.c_str(), R_OK))// if no index no auto index
+			{
+				streams.get(LOG_REQUEST) << " index missing, testing auto index "<< std::endl;
+				if (_location->getAutoindex() == false)
+				{
+					this->setState(EXEC);
+					this->setState(ERROR);
+					this->setStatus(Status(NOT_FOUND, 404));
+					this->_connection = CLOSE;
+					return ;
+				}
+				// should handle auto index here
+					this->setState(EXEC);
+					this->setState(ERROR);
+					this->setStatus(Status(NOT_FOUND, 404));
+					this->_connection = CLOSE;
+					return ;
+				//
+			}
 		}
 		else // regular file
 		{
