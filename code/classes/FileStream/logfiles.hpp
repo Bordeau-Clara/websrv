@@ -14,10 +14,10 @@
 #include <string>
 
 
-static const std::string	LOG_CONFIGPARSER = "ConfigParser.log";
-static const std::string	LOG_DIRECTIVE = "Directive.log";
-static const std::string	LOG_LOCATION = "Location.log";
-static const std::string	LOG_SERVER = "Server.log";
-static const std::string	LOG_EVENT = "Event.log";
+static const std::string	LOG_CONFIGPARSER = "log/ConfigParser.log";
+static const std::string	LOG_DIRECTIVE = "log/Directive.log";
+static const std::string	LOG_LOCATION = "log/Location.log";
+static const std::string	LOG_SERVER = "log/Server.log";
+static const std::string	LOG_EVENT = "log/Event.log";
 
-static const std::string	LOG_REQUEST = "Request.log";
+static const std::string	LOG_REQUEST = "log/Request.log";
