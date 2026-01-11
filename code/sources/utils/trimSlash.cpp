@@ -17,6 +17,6 @@ void	trimSlash(std::string &str)
     while ((pos = str.find("//", pos)) != std::string::npos)
 	{
         str.replace(pos, 2, "/");
-        pos += 1;
+        // pos += 1;
     }
 }
