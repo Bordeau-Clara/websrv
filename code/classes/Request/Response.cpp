@@ -55,7 +55,7 @@ void	Request::buildErrorResponse()
 		this->_response.str.append("Error" + nbrToString(_status.code));
 		return ;
 	}
-	this->_response.str.append(extractStr(_requestedRessource.c_str()));
+	// this->_response.str.append(extractStr(_requestedRessource.c_str()));
 }
 
 #include <sys/stat.h>
