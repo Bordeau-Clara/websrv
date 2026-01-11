@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gemini.cpp                                         :+:      :+:    :+:   */
+/*   recursiveReaddir.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 08:21:10 by aykrifa           #+#    #+#             */
-/*   Updated: 2026/01/11 09:05:53 by aykrifa          ###   ########.fr       */
+/*   Updated: 2026/01/11 10:25:13 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	recursiveReaddir(const std::string &path, std::string &target)
 		{
 			// : append dans body;
 			// to do ajouter les balises link
-			target.append(dir_or_file);
+			target.append(dir_or_file + "\n");
 		}
     }
     closedir(dir);

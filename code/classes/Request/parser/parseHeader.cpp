@@ -177,6 +177,7 @@ void	Request::parseURI(std::string str)
 				}
 				// should handle auto index here
 				_requestedRessource = _location->getRoot() + _location->getAlias();
+				trimSlash(_requestedRessource);
 				streams.get(LOG_REQUEST) << "building auto index"<< std::endl;
 				if (!recursiveReaddir(_requestedRessource, _response.body))
 				{
