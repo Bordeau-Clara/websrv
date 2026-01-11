@@ -52,9 +52,10 @@ class Cgi;
 
 struct Response
 {
+	std::string				body;
 	std::string				str;
 	std::string::size_type	cursor;
-	Response(void): str(), cursor(0){}
+	Response(void): body(), str(), cursor(0){}
 	// get next str to send
 	// move cursor
 	const std::string		get(std::string::size_type size)

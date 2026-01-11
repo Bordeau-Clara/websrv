@@ -57,6 +57,7 @@ void	Request::resetRequest()
 	this->_connection = KEEP_ALIVE;
 	this->_trailer = 0;
 
+	this->_response = Response();
 	//add everything that has been modified
 }
 
