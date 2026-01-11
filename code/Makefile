@@ -22,6 +22,7 @@ SRC_FILES = \
 	utils/hexToLong.cpp \
 	utils/trimSlash.cpp \
 	utils/extractStr.cpp \
+	utils/recursiveReaddir.cpp \
 	\
 
 # Classes files listing

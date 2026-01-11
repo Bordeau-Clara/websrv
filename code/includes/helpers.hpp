@@ -14,3 +14,5 @@
 #include <sstream>
 std::string	nbrToString(size_t nbr);
 std::string	extractStr(const char *file);
+void		trimSlash(std::string &str);
+bool		recursiveReaddir(const std::string &path, std::string &target);
