@@ -168,6 +168,7 @@ void	Request::parseURI(std::string str)
 				streams.get(LOG_REQUEST) << " index missing, testing auto index "<< std::endl;
 				if (_location->getAutoindex() == false)
 				{
+					streams.get(LOG_REQUEST) << "error no auto index"<< std::endl;
 					this->setState(EXEC);
 					this->setState(ERROR);
 					this->setStatus(Status(NOT_FOUND, 404));
@@ -176,14 +177,17 @@ void	Request::parseURI(std::string str)
 				}
 				// should handle auto index here
 				_requestedRessource = _location->getRoot() + _location->getAlias();
-				if (!recursiveReaddir(_requestedRessource, _body))
+				streams.get(LOG_REQUEST) << "building auto index"<< std::endl;
+				if (!recursiveReaddir(_requestedRessource, _response.body))
 				{
+					streams.get(LOG_REQUEST) << "error auto index failed"<< std::endl;
 					this->setState(EXEC);
 					this->setState(ERROR);
 					this->setStatus(Status(NOT_FOUND, 404));
 					this->_connection = CLOSE;
 					return ;
 				}
+				streams.get(LOG_REQUEST) << "auto index :<" + _response.body + ">" << std::endl;
 				//
 			}
 		}
