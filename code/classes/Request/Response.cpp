@@ -21,7 +21,7 @@
 #include "helpers.hpp"
 void	Request::buildErrorResponse()
 {
-	this->_response.str.assign(TEXT_HTML_TYPE);
+	this->_response.str.append(TEXT_HTML_TYPE);
 	if (_status.code == 404)
 	{
 		if (this->_connection == KEEP_ALIVE)
