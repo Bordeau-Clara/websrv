@@ -131,7 +131,6 @@ void	Request::parseURI(std::string str)
 			this->setState(EXEC);
 			this->setState(ERROR);
 			this->setStatus(Status(NOT_FOUND, 404));
-			this->_connection = CLOSE;
 			return ;
 		}
 		// 400 bad request (not authorized request)
@@ -140,7 +139,6 @@ void	Request::parseURI(std::string str)
 			this->setState(EXEC);
 			this->setState(ERROR);
 			this->setStatus(Status(BAD_REQUEST, 400));
-			this->_connection = CLOSE;
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "un authorized method " + METHODS[getMethod()] + " in location " + this->_uri
 				<< std::endl;
@@ -174,7 +172,6 @@ void	Request::parseURI(std::string str)
 					this->setState(EXEC);
 					this->setState(ERROR);
 					this->setStatus(Status(NOT_FOUND, 404));
-					this->_connection = CLOSE;
 					return ;
 				}
 				// should handle auto index here
@@ -187,7 +184,6 @@ void	Request::parseURI(std::string str)
 					this->setState(EXEC);
 					this->setState(ERROR);
 					this->setStatus(Status(NOT_FOUND, 404));
-					this->_connection = CLOSE;
 					return ;
 				}
 				streams.get(LOG_REQUEST) << "auto index :<" + _response.body + ">" << std::endl;
@@ -204,7 +200,6 @@ void	Request::parseURI(std::string str)
 				this->setState(EXEC);
 				this->setState(ERROR);
 				this->setStatus(Status(NOT_FOUND, 404));
-				this->_connection = CLOSE;
 				return ;
 			}
 		}

@@ -43,19 +43,20 @@ void	Request::buildErrorResponse()
 		//ou compter la taille du body qui est direct append a la reponse
 		//et insert Content-length a response.find(CRLF) donc apres la status line
 	}
-	this->_response.str.append(CRLF);
 	if (!this->_location)
 	{
 		this->_response.str.append("No location");
 		return ;
 	}
 	const std::map<int, std::string>	ErrorPages = this->_location->getErrorPages();
-	if (ErrorPages.find(_status.code) == ErrorPages.end())
+	if (ErrorPages.find(_status.code) != ErrorPages.end())
 	{
-		this->_response.str.append("Error" + nbrToString(_status.code));
-		return ;
+		this->_response.body.append("Error " + nbrToString(_status.code));
+		this->_response.str.append(CON_LEN + nbrToString(_response.body.length()) + CRLF);
 	}
 	// this->_response.str.append(extractStr(_requestedRessource.c_str()));
+	this->_response.str.append(CRLF);
+	this->_response.str.append(_response.body);
 }
 
 #include <sys/stat.h>
@@ -101,6 +102,7 @@ void	Request::generateResponse()
 {
 	//3 reponses possible -> erreur, normal(get, post, delete), cgi
 	
+	this->_response.str.append("HTTP/1.1 " + getStatus().str + CRLF);
 	//errors
 	if (this->isState(ERROR))
 		buildErrorResponse();
@@ -120,7 +122,6 @@ void	Request::generateResponse()
 				//for open fail should we access() in parseUri() to check rights???
 
 		//attention -> pas le meme code pour post (201 Created) et delete (204 No Content), 3xx pour redirections
-		this->_response.str.append("HTTP/1.1 " + getStatus().str + CRLF);
 		if (this->_connection == KEEP_ALIVE)
 			this->_response.str.append(CON_KEEP_ALIVE);
 		else
