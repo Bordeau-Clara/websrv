@@ -28,6 +28,7 @@ class	Server: public Event
 		Server(const Server&);
 		Server	operator=(const Server&);
 
+
 	// man socket
 		// The domain argument specifies a communication domain; this selects the protocol family which will be used for communication.
 		static const int				socket_adress_family = AF_INET;
