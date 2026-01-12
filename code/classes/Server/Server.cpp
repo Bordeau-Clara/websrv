@@ -240,13 +240,14 @@ const Location	*Server::urlSolver(std::string &url)
 	{
 		streams.get(LOG_REQUEST) << url << " =? " << it->first << std::endl;
 		if (url.find(it->first) == 0)
-		if (url.length() == it->first.length() || url[it->first.length()] == '/')
+		if (url.length() == it->first.length() || url[it->first.length()] == '/' || url[it->first.length() - 1])
 		{
 			url.erase(0, it->first.length());
 			streams.get(LOG_REQUEST) << "location<"<< it->second._name <<">match, remainder: <" << url << ">" << std::endl;
 			return (&it->second);
 		}
 	}
+
 	streams.get(LOG_REQUEST) << "No Locations match 404 !" << std::endl;
 	return (NULL);
 }
