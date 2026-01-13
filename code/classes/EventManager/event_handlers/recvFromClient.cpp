@@ -26,6 +26,7 @@ bool	EventManager::recvBuffer(Request &client)
 		Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (client disconnected)"  + RESET);
 		EventDelete(client.fd);
 		delete (Request *)getPtr();
+		this->requests.remove((Request *)getPtr());
 		return (false);
 	}
 	monitorEventRecv(count, String(buffer).substr(0, count), client);

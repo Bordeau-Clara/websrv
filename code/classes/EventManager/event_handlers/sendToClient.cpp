@@ -51,6 +51,7 @@ void	EventManager::sendToClient(void)
 	{
 		Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (end of the request)"  + WHITE);
 		EventDelete(client.fd);
+		this->requests.remove((Request *)getPtr());
 		delete (Request *)getPtr();
 	}
 }
