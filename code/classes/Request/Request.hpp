@@ -107,9 +107,9 @@ private:
 public:
 	std::string				getHeader() const;
 	void					fillHeader(std::string::size_type cursor);
-	void					parseHeaderType(void);
 	void					parseHeader(void);
-	void					parseCgiHeader(void);
+	void					parseHeaderRegular(void);
+	void					parseHeaderCgi(void);
 	int						getToken(std::string *header);
 	int						getField(int *type);
 	int						getField(std::string *field, int *type);

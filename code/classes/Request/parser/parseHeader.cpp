@@ -20,7 +20,7 @@
 #include "helpers.hpp"
 
 // string = expr + final CRLF
-void	Request::parseHeaderType(void)
+void	Request::parseHeader(void)
 {
 	std::string				token;
 
@@ -36,9 +36,9 @@ void	Request::parseHeaderType(void)
 	if (this->isState(ERROR))
 		return;
 	if (this->isState(CGI))
-		parseCgiHeader();
+		parseHeaderCgi();
 	else
-		parseHeader();
+		parseHeaderRegular();
 		
 
 	//if CGI parse_header in cgi mode
@@ -230,7 +230,7 @@ void	Request::isCGI(void)
 	}
 }
 
-void	Request::parseHeader(void)
+void	Request::parseHeaderRegular(void)
 {
 	std::string				token;
 
@@ -274,7 +274,7 @@ void	Request::parseHeader(void)
 	//check_complete_header(event);
 }
 
-void	Request::parseCgiHeader(void)
+void	Request::parseHeaderCgi(void)
 {
 	std::string	token;
 	std::string	field;

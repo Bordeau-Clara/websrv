@@ -29,7 +29,7 @@ void	Request::parseBuffer(void)
 		streams.get(LOG_REQUEST) << "[PARSING HEADER]" << std::endl
 			<< std::endl;
 		this->fillHeader(cursor);
-		parseHeaderType();
+		parseHeader();
 		if (isState(ERROR))
 		{
 			printRequest(this);
