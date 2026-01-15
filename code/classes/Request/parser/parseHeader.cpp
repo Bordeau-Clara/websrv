@@ -155,8 +155,12 @@ void	Request::parseURI(std::string str)
 	streams.get(LOG_EVENT) << "Solving remainder "<< "<"+str+">" << std::endl;
 	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+str+">" << std::endl;
 	if (this->_method == GET)
-	{// fusionner root + alias + remainder pour access
+	{
+		// fusionner root + alias + remainder pour access
+		// ERRATUM > il fau pas access mais stat en premier
 		// si rien ou slash sans rien alors verifier index
+		// ERRATUM SI STAT RENVOIE DIR VERIFIER INDEX
+		// _requestedRessource = _location->getRoot() + _location->getAlias() + "/" + str;
 		if ((str.empty() || str == "/")) // index ressource
 		{
 			_requestedRessource = _location->getRoot() + _location->getAlias() + "/" + _location->getIndex();
