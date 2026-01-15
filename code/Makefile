@@ -23,6 +23,7 @@ SRC_FILES = \
 	utils/trimSlash.cpp \
 	utils/extractStr.cpp \
 	utils/buildIpPortStr.cpp \
+	utils/trimTwoDots.cpp \
 	\
 
 # Classes files listing

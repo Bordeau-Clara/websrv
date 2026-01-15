@@ -119,6 +119,7 @@ void	Request::parseURI(std::string str)
 	}
 	
 
+	trimTwoDots(str);
 	//resolve uri
 	this->_uri.assign(str);
 	streams.get(LOG_REQUEST) << "[urlSolver]" << "start with:<" << str + '>' << std::endl;
