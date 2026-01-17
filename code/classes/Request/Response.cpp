@@ -73,6 +73,10 @@ void	Request::buildGetResponse()
 
 	// size of body
 	this->_response.str.append(CON_LEN + nbrToString(_response.body.size()) + CRLF);
+	if (this->_connection == KEEP_ALIVE)
+		this->_response.str.append(CON_KEEP_ALIVE);
+	else
+		this->_response.str.append(CON_CLOSE);
 	//add Content-type
 	//add Date ??
 	this->_response.str.append(CRLF);
@@ -115,6 +119,17 @@ void	Request::generateResponse()
 	// else if (isState(CGI))
 	// {
 	// }
+	else if (this->_location->getReturn().code)
+	{
+		//buildRedir();
+		_response.str.append("Location:" + this->_location->getReturn().str + CRLF);
+		this->_response.str.append(CON_LEN + "0" + CRLF);
+		if (this->_connection == KEEP_ALIVE)
+			this->_response.str.append(CON_KEEP_ALIVE);
+		else
+			this->_response.str.append(CON_CLOSE);
+		this->_response.str.append(CRLF);
+	}
 	// static request
 	else
 	{
