@@ -24,12 +24,7 @@ void	trimTwoDots(std::string &str)
 		if (next == std::string::npos)
 			next = str.size();
 		size_t len = next - pos;
-		if (len != 2)
-		{
-			pos += len;
-			continue ;
-		}
-		if (str.substr(pos, len) == "..")
+		if (len == 2 && str.substr(pos, len) == "..")
 			str.erase(pos, len);
 		else
 			pos += len;
