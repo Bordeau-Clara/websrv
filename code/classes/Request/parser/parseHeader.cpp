@@ -146,8 +146,8 @@ void	Request::parseURI(std::string str)
 	}
 }
 	streams.get(LOG_EVENT) << "Location found, method authorized" << std::endl;
-	if (0) // redirection
-		;
+	if (this->_location->getReturn().code) // redirection
+		this->setStatus(Status(nbrToString(this->_location->getReturn().code) + " See Other", this->_location->getReturn().code));
 	else
 		checkURI(str);
 }
