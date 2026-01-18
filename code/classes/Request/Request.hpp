@@ -127,11 +127,15 @@ public:
 public:
 	bool					recursiveReaddir(std::string);
 	void					generateResponse();
-	void					buildErrorResponse();
-		bool				findErrorPage();
-	void					buildGetResponse();
-	void					buildPostResponse();
-	void					buildDeleteResponse();
+		void					buildErrorResponse();
+			bool					findErrorPage();
+		void					buildGetResponse();
+		void					buildPostResponse();
+		void					buildDeleteResponse();
+// utils
+		void					generateRequestLine();
+		void					appendConnection(void);
+		void					headerEnd(void);
 
 private:
 	uint8_t			_state;

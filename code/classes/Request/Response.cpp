@@ -21,18 +21,6 @@
 
 #include "helpers.hpp"
 
-bool	Request::findErrorPage(void)
-{
-	std::map<int, std::string>::const_iterator	errorPage = this->_location->getErrorPages().find(_status.code);
-
-	if (errorPage == this->_location->getErrorPages().end())
-		return (false);
-	if (access(errorPage->second.c_str(), R_OK))
-		return (false);
-	_response.body = extractStr(errorPage->second.c_str());
-	return (true);
-}
-
 void	Request::buildErrorResponse()
 {
 	//ne pas oublier DCRLF a la fin du header
@@ -40,12 +28,10 @@ void	Request::buildErrorResponse()
 	//pour pouvoir connaitre sa longueur et l'ajouter au header
 	//ou compter la taille du body qui est direct append a la reponse
 	//et insert Content-length a response.find(CRLF) donc apres la status line
+	generateRequestLine();
 	this->_response.str.append(TEXT_HTML_TYPE);
 	if (_status.code == 404)
-		if (this->_connection == KEEP_ALIVE)
-			this->_response.str.append(CON_KEEP_ALIVE);
-		else
-			this->_response.str.append(CON_CLOSE);
+		appendConnection();
 	else
 		this->_response.str.append(CON_CLOSE);
 	// check if error page exists
@@ -71,12 +57,10 @@ void	Request::buildGetResponse()
 	if (_response.body.empty())
 		_response.body = extractStr(_requestedRessource.c_str());
 
+	generateRequestLine();
 	// size of body
 	this->_response.str.append(CON_LEN + nbrToString(_response.body.size()) + CRLF);
-	if (this->_connection == KEEP_ALIVE)
-		this->_response.str.append(CON_KEEP_ALIVE);
-	else
-		this->_response.str.append(CON_CLOSE);
+	appendConnection();
 	//add Content-type
 	//add Date ??
 	this->_response.str.append(CRLF);
@@ -87,11 +71,29 @@ void	Request::buildPostResponse()
 {
 	//error : method not allowed
 	//c la merde
-	//si dossier -> 400 Bad Request
-	//else si fichier existe deja -> truncate; ;ettre body dans fichier
-	//else -> open dans le dossier upload de la config, mettre body dans fichier
-	//if success -> 201 created
+	if (!canBuildOnDir(_requestedRessource))
+	{
+		this->setState(EXEC);
+		this->setState(ERROR);
+		this->setStatus(Status(FORBIDDEN, 403));
+		buildErrorResponse();
+		return ;
+	}
+	std::ofstream	postFile(_requestedRessource.c_str());
+
+	if (!postFile.is_open())
+	{
+		this->setState(EXEC);
+		this->setState(ERROR);
+		this->setStatus(Status(INTERNAL_SERVER_ERROR, 500));
+		buildErrorResponse();
+		return ;
+	}
+	postFile << this->_body;
+	this->setStatus(Status("201 Created", 201));
 	//+ Location header field that provides an identifier for the primary ressource created
+	generateRequestLine();
+	appendConnection();
 }
 
 void	Request::buildDeleteResponse()
@@ -114,8 +116,6 @@ void	Request::buildDeleteResponse()
 void	Request::generateResponse()
 {
 	//3 reponses possible -> erreur, normal(get, post, delete), cgi
-	
-	this->_response.str.append("HTTP/1.1 " + getStatus().str + CRLF);
 	//errors
 	if (this->isState(ERROR))
 		buildErrorResponse();
@@ -126,14 +126,12 @@ void	Request::generateResponse()
 	// }
 	else if (this->_location->getReturn().code)
 	{
+		generateRequestLine();
 		//buildRedir();
 		_response.str.append("Location:" + this->_location->getReturn().str + CRLF);
 		this->_response.str.append(CON_LEN + "0" + CRLF);
-		if (this->_connection == KEEP_ALIVE)
-			this->_response.str.append(CON_KEEP_ALIVE);
-		else
-			this->_response.str.append(CON_CLOSE);
-		this->_response.str.append(CRLF);
+		appendConnection();
+		headerEnd();
 	}
 	// static request
 	else
@@ -146,10 +144,6 @@ void	Request::generateResponse()
 				//for open fail should we access() in parseUri() to check rights???
 
 		//attention -> pas le meme code pour post (201 Created) et delete (204 No Content), 3xx pour redirections
-		if (this->_connection == KEEP_ALIVE)
-			this->_response.str.append(CON_KEEP_ALIVE);
-		else
-			this->_response.str.append(CON_CLOSE);
 		switch(this->_method)
 		{
 			case GET:
