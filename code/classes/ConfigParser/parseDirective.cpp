@@ -358,8 +358,6 @@ void	ConfigParser::parsePostLocation(Location &current)
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
-	if (get().at(0) != '/')
-		throw (std::runtime_error("post_location must be a valid path syntax\n-->" + get()));
 	current.setRoot(get());
 	next();
 	if (get() != ";")
