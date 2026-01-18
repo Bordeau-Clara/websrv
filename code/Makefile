@@ -42,6 +42,7 @@ CLASS_FILES = \
 		Request/Getter.cpp \
 		Request/RequestUtils.cpp \
 		Request/Response.cpp \
+		Request/ResponseUtils.cpp \
 		Request/recursiveReaddir.cpp \
 			Request/parser/FieldsParser.cpp \
 			Request/parser/FillBody.cpp \
