@@ -17,3 +17,4 @@ std::string	extractStr(const char *file);
 void		trimSlash(std::string &str);
 void	trimTwoDots(std::string &str);
 std::string	buildIpPortStr(unsigned int	ip, unsigned short int port);
+bool	canBuildOnDir(std::string &str);
