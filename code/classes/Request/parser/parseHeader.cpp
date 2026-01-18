@@ -231,7 +231,14 @@ void	Request::checkURI(std::string	&remainder)
 	// _requested ressource will be post location + remainder
 	// then try to see if we can open file (create or append)
 	{
-		// WORK IN PROGRESS
+		_requestedRessource = this->_location->getPostDirectory() + remainder;
+		if(!canBuildOnDir(_requestedRessource))
+		{
+			this->setState(EXEC);
+			this->setState(ERROR);
+			this->setStatus(Status(FORBIDDEN, 403));
+			return ;
+		}
 	}
 	if (this->_method == DELETE)
 	// _requested ressource will be post location + remainder
