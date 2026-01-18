@@ -1,0 +1,12 @@
+client 1
+{
+	name: ayoub;
+	intra: aykrifa;
+	aka: beau gosse;
+}
+client 2
+{
+	name: clara;
+	intra: cbordeau;
+	aka: betarde;
+}
