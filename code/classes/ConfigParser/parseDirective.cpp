@@ -358,7 +358,7 @@ void	ConfigParser::parsePostLocation(Location &current)
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
-	current.setRoot(get());
+	current.setPostDirectory(get());
 	next();
 	if (get() != ";")
 		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));

@@ -13,6 +13,8 @@
 #include <string>
 #include <unistd.h>
 
+#include "Request.hpp"
+
 
 std::string	getParentDir(std::string &str)
 /*
@@ -34,15 +36,25 @@ sinon
 
 	lastSlash = str.find_last_of("/");
 	if (lastSlash == std::string::npos)
+	{
+		streams.get(LOG_REQUEST) << "[GET PARENT DIR]" << std::endl
+			<< "no slash" << std::endl
+			<< std::endl;
 		return ("");
+	}
 	if (lastSlash != str.size() - 1) // something else behind / ie parentDir = str[0 to lastslash]
 		return (str.substr(0, lastSlash));
 
 	size_t	cursor = lastSlash;
-	while (str.at(cursor) == '/' && cursor != 0)
+	while (str.at(cursor) == '/' && cursor != 0)//ca skip pas du tous au dossier d'avant, ca skip juste si il y a plusiuers / a la fin
 		cursor--;
-	if (cursor == 0 && str.at(cursor) != '/')
-		return (str.substr(0, cursor));
+	lastSlash = str.find_last_not_of("/" , cursor);
+	if (lastSlash != 0)
+		return (str.substr(0, cursor + 1));
+
+	streams.get(LOG_REQUEST) << "[GET PARENT DIR]" << std::endl
+		<< "no directory" << std::endl
+		<< std::endl;
 	return ("");
 }
 
