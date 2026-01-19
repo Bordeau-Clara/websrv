@@ -31,7 +31,7 @@ void	Request::buildErrorResponse()
 	generateRequestLine();
 	this->_response.str.append(TEXT_HTML_TYPE);
 	if (_status.code == 404)
-		appendConnection();
+		this->appendConnection();
 	else
 		this->_response.str.append(CON_CLOSE);
 	// check if error page exists
@@ -57,13 +57,13 @@ void	Request::buildGetResponse()
 	if (_response.body.empty())
 		_response.body = extractStr(_requestedRessource.c_str());
 
-	generateRequestLine();
+	this->generateRequestLine();
 	// size of body
 	this->_response.str.append(CON_LEN + nbrToString(_response.body.size()) + CRLF);
-	appendConnection();
+	this->appendConnection();
 	//add Content-type
 	//add Date ??
-	this->_response.str.append(CRLF);
+	this->headerEnd();
 	this->_response.str.append(_response.body);
 }
 
@@ -76,7 +76,7 @@ void	Request::buildPostResponse()
 		this->setState(EXEC);
 		this->setState(ERROR);
 		this->setStatus(Status(FORBIDDEN, 403));
-		buildErrorResponse();
+		this->buildErrorResponse();
 		return ;
 	}
 	std::ofstream	postFile(_requestedRessource.c_str());
@@ -86,14 +86,15 @@ void	Request::buildPostResponse()
 		this->setState(EXEC);
 		this->setState(ERROR);
 		this->setStatus(Status(INTERNAL_SERVER_ERROR, 500));
-		buildErrorResponse();
+		this->buildErrorResponse();
 		return ;
 	}
 	postFile << this->_body;
 	this->setStatus(Status("201 Created", 201));
 	//+ Location header field that provides an identifier for the primary ressource created
-	generateRequestLine();
-	appendConnection();
+	this->generateRequestLine();
+	this->appendConnection();
+	this->headerEnd();
 }
 
 void	Request::buildDeleteResponse()
@@ -118,7 +119,7 @@ void	Request::generateResponse()
 	//3 reponses possible -> erreur, normal(get, post, delete), cgi
 	//errors
 	if (this->isState(ERROR))
-		buildErrorResponse();
+		this->buildErrorResponse();
 	//CGI because we will fill response dynamically as soon as we recv in pipe and treat what we receive
 	// else if (!this->_response.empty())
 	// else if (isState(CGI))
@@ -126,12 +127,12 @@ void	Request::generateResponse()
 	// }
 	else if (this->_location->getReturn().code)
 	{
-		generateRequestLine();
+		this->generateRequestLine();
 		//buildRedir();
 		_response.str.append("Location:" + this->_location->getReturn().str + CRLF);
 		this->_response.str.append(CON_LEN + "0" + CRLF);
-		appendConnection();
-		headerEnd();
+		this->appendConnection();
+		this->headerEnd();
 	}
 	// static request
 	else
@@ -147,13 +148,13 @@ void	Request::generateResponse()
 		switch(this->_method)
 		{
 			case GET:
-				buildGetResponse();
+				this->buildGetResponse();
 				break;
 			case POST:
-				buildPostResponse();
+				this->buildPostResponse();
 				break;
 			case DELETE:
-				buildDeleteResponse();
+				this->buildDeleteResponse();
 				break;
 			default:
 				break;

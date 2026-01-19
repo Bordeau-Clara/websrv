@@ -47,6 +47,11 @@ void	Request::parseBuffer(void)
 			this->setState(CHUNK_SIZE);
 	}
 
+	if (isState(ERROR))
+	{
+		printRequest(this);
+		return;
+	}
 	if (this->isState(BODY))
 	{
 		streams.get(LOG_REQUEST) << "[PARSING BODY]" << std::endl

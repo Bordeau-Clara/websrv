@@ -34,8 +34,8 @@ void	Request::parseHeader(void)
 		return;
 	}
 	parseRequestLine(token);
-	if (this->isState(ERROR))
-		return;
+	// if (this->isState(ERROR))
+	// 	return;
 	if (this->isState(CGI))
 		parseHeaderCgi();
 	else
@@ -232,6 +232,9 @@ void	Request::checkURI(std::string	&remainder)
 	// then try to see if we can open file (create or append)
 	{
 		_requestedRessource = this->_location->getPostDirectory() + remainder;
+			streams.get(LOG_REQUEST) << "[REQUESTED RESSOURCE]" << std::endl
+				<< _requestedRessource << std::endl
+				<< std::endl;
 		if(!canBuildOnDir(_requestedRessource))
 		{
 			this->setState(EXEC);
