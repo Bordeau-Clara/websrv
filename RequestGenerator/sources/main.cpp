@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 int main(int argc, char **argv)
 {
@@ -20,43 +21,59 @@ int main(int argc, char **argv)
         return 1;
 	}
 	//Rempli le header
+	const std::string CRLF = "\r\n";
+	// ouvre le header
+	char *filename = argv[1];
+	std::ifstream file(filename, std::ios::in | std::ios::binary);
+	if (!file)
 	{
-		const std::string CRLF = "\r\n";
-		// ouvre le header
-		char *filename = argv[1];
-		std::ifstream file(filename, std::ios::in | std::ios::binary);
-		if (!file)
-		{
-			std::cerr << "Erreur : impossible d'ouvrir le fichier " << filename << std::endl;
-			return 1;
-		}
-		// ligne par ligne a chaque fin de ligne ou il ya quelquechose (pas de ligne vide) je met un CRLF
-		std::string line;
-		while (std::getline(file, line))
-		{
-			if (line.empty())
-				continue ;
-			std::cout << line << CRLF;
-		}
+		std::cerr << "Erreur : impossible d'ouvrir le fichier " << filename << std::endl;
+		return 1;
+	}
+	// ligne par ligne a chaque fin de ligne ou il ya quelquechose (pas de ligne vide) je met un CRLF
+	std::string line;
+	while (std::getline(file, line))
+	{
+		if (line.empty())
+			continue ;
+		std::cout << line << CRLF;
+	}
+
+	if (argc == 2)
+	{
 		// fin du fichier j'en net un supplementaire
 		std::cout << CRLF;
-	}
-	if (argc == 2)
 		return (0);
-	//Rempli le body
-	{
-		//ouvre le body
-		char *filename = argv[2];
-		std::ifstream file(filename, std::ios::in | std::ios::binary);
-		if (!file)
-		{
-			std::cerr << "Erreur : impossible d'ouvrir le fichier " << filename << std::endl;
-			return 1;
-		}
-		// fout tout le body dans std cout
-		std::cout << file.rdbuf();
 	}
-    return 0;
+	//Rempli le body
+	//ouvre le body
+	// ... (partie header identique)
+
+	// Rempli le body
+	filename = argv[2];
+	std::ifstream bodyFile(filename, std::ios::in | std::ios::binary); // On utilise ifstream
+
+	if (!bodyFile) // On vérifie le bon flux
+	{
+		std::cerr << "Erreur : impossible d'ouvrir le fichier " << filename << std::endl;
+		return 1;
+	}
+
+	// On lit tout le contenu dans un stringstream pour calculer la taille facilement
+	std::stringstream bodyContent;
+	bodyContent << bodyFile.rdbuf();
+	std::string content = bodyContent.str();
+
+	// On affiche le Content-Length
+	std::cout << "Content-Length: " << content.size() << CRLF;
+
+	// Fin du header (ligne vide entre header et body)
+	std::cout << CRLF;
+
+	// On affiche le contenu du body
+	std::cout << content;
+
+	return 0;
 }
 
 	// std::cout << "==========================" << std::endl;

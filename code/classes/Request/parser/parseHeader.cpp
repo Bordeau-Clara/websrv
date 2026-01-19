@@ -138,7 +138,7 @@ void	Request::parseURI(std::string str)
 	{
 		this->setState(EXEC);
 		this->setState(ERROR);
-		this->setStatus(Status(BAD_REQUEST, 400));
+		this->setStatus(Status(NOT_ALLOWED, 405));
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "un authorized method " + METHODS[getMethod()] + " in location " + this->_uri
 			<< std::endl;
@@ -247,6 +247,21 @@ void	Request::checkURI(std::string	&remainder)
 	// _requested ressource will be post location + remainder
 	// TBD
 	{
+		_requestedRessource = this->_location->getPostDirectory() + remainder;
+		if (access(_requestedRessource.c_str(), F_OK))// if ressource does not exist
+		{
+			this->setState(EXEC);
+			this->setState(ERROR);
+			this->setStatus(Status(NOT_FOUND, 404));
+			return ;
+		}
+		if (access(_requestedRessource.c_str(), W_OK))// if ressource cannot be wrote
+		{
+			this->setState(EXEC);
+			this->setState(ERROR);
+			this->setStatus(Status(FORBIDDEN, 403));
+			return ;
+		}
 	}
 }
 

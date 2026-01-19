@@ -101,19 +101,25 @@ void	Request::buildPostResponse()
 
 void	Request::buildDeleteResponse()
 {
-	//error : method not allowed
-	//open file from url
-	//if DELETE autorise dans la location && url est un fichier
-		//if fichier existe
-			//supprimer fichier -> 204 No Content
-			//comment?? -> std::remove??
-		//else
-			//404 Not Found
-	//else if DELETE pas autorise ou url est un dossier
-		//403 Forbidden
-	
-
-	//faire une cgi (script bash) qui delete un fichier
+	if (access(_requestedRessource.c_str(), F_OK))// if ressource does not exist
+	{
+		this->setState(EXEC);
+		this->setState(ERROR);
+		this->setStatus(Status(NOT_FOUND, 404));
+		return ;
+	}
+	if (access(_requestedRessource.c_str(), W_OK))// if ressource cannot be wrote
+	{
+		this->setState(EXEC);
+		this->setState(ERROR);
+		this->setStatus(Status(FORBIDDEN, 403));
+		return ;
+	}
+	std::remove(_requestedRessource.c_str());
+	this->setStatus(Status(NO_CONT, 204));
+	this->generateRequestLine();
+	this->appendConnection();
+	this->headerEnd();
 }
 
 void	Request::generateResponse()
