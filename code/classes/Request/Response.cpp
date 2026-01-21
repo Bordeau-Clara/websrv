@@ -64,7 +64,7 @@ void	Request::buildGetResponse()
 	//add Content-type
 	//add Date ??
 	this->headerEnd();
-	this->_response.str.append(_response.body);
+	this->_response.str.append(_response.body.data(), _response.body.size());
 }
 
 void	Request::buildPostResponse()
@@ -89,7 +89,7 @@ void	Request::buildPostResponse()
 		this->buildErrorResponse();
 		return ;
 	}
-	postFile << this->_body;
+	postFile.write(this->_body.data(), this->_body.size());
 	this->setStatus(Status("201 Created", 201));
 	//+ Location header field that provides an identifier for the primary ressource created
 	this->generateRequestLine();

@@ -33,7 +33,7 @@ extern FileStream	streams;
 
 std::string extractStr(const char *file)
 {
-    std::ifstream ifs(file);
+    std::ifstream ifs(file, std::ios::binary);
     if (ifs.fail())
         throw (std::runtime_error("Cannot open '" + std::string(file) + '\''));
 	// constructor range
