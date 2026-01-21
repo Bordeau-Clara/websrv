@@ -119,7 +119,7 @@ private:
 	std::string		_buffer;
 public:
 	std::string				getBuffer() const;
-	void					appendBuffer(std::string, int start, int end);
+	void					appendBuffer(char *, int start, int end);
 	void					parseBuffer(void);
 
 public:

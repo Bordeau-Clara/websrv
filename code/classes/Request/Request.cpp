@@ -61,7 +61,7 @@ void	Request::resetRequest()
 	//add everything that has been modified
 }
 
-void	Request::appendBuffer(std::string str, int start, int end)
+void	Request::appendBuffer(char * str, int start, int end)
 {
 	this->_buffer.append(str, start, end);
 }
