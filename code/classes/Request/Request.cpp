@@ -61,9 +61,11 @@ void	Request::resetRequest()
 	//add everything that has been modified
 }
 
-void	Request::appendBuffer(char * str, int start, int end)
+void	Request::appendBuffer(char * str, int size)
 {
-	this->_buffer.append(str, start, end);
+	this->_buffer.append(str, size);
+	streams.get(LOG_REQUEST) << "Request Buffer SIZE:"<< this->_buffer.size() << std::endl;
+	streams.get(LOG_REQUEST) << "while we read:"<< size << std::endl;
 }
 
 void	Request::setStatus(const Status &status)

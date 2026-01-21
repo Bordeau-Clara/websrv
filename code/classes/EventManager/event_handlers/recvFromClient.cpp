@@ -30,7 +30,7 @@ bool	EventManager::recvBuffer(Request &client)
 		return (false);
 	}
 	monitorEventRecv(count, String(buffer).substr(0, count), client);
-	client.appendBuffer(buffer, 0, count);
+	client.appendBuffer(buffer, count);
 	return (true);
 }
 
