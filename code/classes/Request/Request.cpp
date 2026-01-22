@@ -75,6 +75,13 @@ void	Request::setStatus(const Status &status)
 		this->_status = status;
 }
 
+void	Request::setError(const Status &status)
+{
+		this->setStatus(status);
+		this->setState(ERROR);
+		this->setState(EXEC);
+}
+
 void	Request::fillHeader(std::string::size_type cursor)
 {
 	// this->_state = BODY;

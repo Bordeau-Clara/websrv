@@ -95,6 +95,7 @@ private:
 public:
 	void			setStatus(const Status &);
 	const Status			&getStatus() const;
+	void			setError(const Status &);
 	
 private:
 	std::string		_header;

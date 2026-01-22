@@ -27,10 +27,7 @@ void	Request::parseHeader(void)
 
 	if (!this->getToken(&token))//can't use this cause it skip ows
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		// buildErrorResponse();
-		this->setState(ERROR);
-		this->setState(EXEC);
+		this->setError(Status(BAD_REQUEST, 400));
 		return;
 	}
 	parseRequestLine(token);
@@ -55,9 +52,7 @@ void	Request::parseRequestLine(std::string token)
 
 	if (!moveCursor(&cursor, token, " "))
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(ERROR);
-		this->setState(EXEC);
+		this->setError(Status(BAD_REQUEST, 400));
 		return;
 	}
 	this->parseMethod(token.substr(0, cursor));
@@ -66,9 +61,7 @@ void	Request::parseRequestLine(std::string token)
 	token.erase(0, cursor + 1);
 	if (!moveCursor(&cursor, token, " "))
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(ERROR);
-		this->setState(EXEC);
+		this->setError(Status(BAD_REQUEST, 400));
 		return;
 	}
 	this->parseURI(token.substr(0, cursor));
@@ -77,9 +70,7 @@ void	Request::parseRequestLine(std::string token)
 	token.erase(0, cursor + 1);
 	if (token.compare("HTTP/1.1"))
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(ERROR);
-		this->setState(EXEC);
+		this->setError(Status(BAD_REQUEST, 400));
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Wrong HTTP protocol:" << token
 			<< std::endl;
@@ -97,9 +88,7 @@ void	Request::parseMethod(std::string str)
 		this->_method = DELETE;
 	else
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(ERROR);
-		this->setState(EXEC);
+		this->setError(Status(BAD_REQUEST, 400));
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Bad method identified: " << str
 			<< std::endl;
@@ -128,17 +117,13 @@ void	Request::parseURI(std::string str)
 	// 404 not found
 	if (!this->_location)
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(NOT_FOUND, 404));
+		this->setError(Status(NOT_FOUND, 404));
 		return ;
 	}
 	// 400 bad request (not authorized request)
 	if (!this->_location->getMethods()[this->getMethod()])
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(NOT_ALLOWED, 405));
+		this->setError(Status(NOT_ALLOWED, 405));
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "un authorized method " + METHODS[getMethod()] + " in location " + this->_uri
 			<< std::endl;
@@ -172,9 +157,7 @@ void	Request::checkURI(std::string	&remainder)
 		struct stat	statbuf;
 		if (stat(_requestedRessource.c_str(), &statbuf) == -1) // does not exist
 		{
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(NOT_FOUND, 404));
+			this->setError(Status(NOT_FOUND, 404));
 			return ;
 		}
 		if ((statbuf.st_mode & S_IFMT) == S_IFDIR) // path is a directory
@@ -188,9 +171,7 @@ void	Request::checkURI(std::string	&remainder)
 				if (_location->getAutoindex() == false) // if no auto index error
 				{
 					streams.get(LOG_REQUEST) << "error no auto index"<< std::endl;
-					this->setState(EXEC);
-					this->setState(ERROR);
-					this->setStatus(Status(NOT_FOUND, 404));
+					this->setError(Status(NOT_FOUND, 404));
 					return ;
 				}
 				_requestedRessource = _location->getRoot() + "/" + _location->getAlias() + "/" + remainder;
@@ -199,9 +180,7 @@ void	Request::checkURI(std::string	&remainder)
 				if (!recursiveReaddir(""))
 				{
 					streams.get(LOG_REQUEST) << "error auto index failed"<< std::endl;
-					this->setState(EXEC);
-					this->setState(ERROR);
-					this->setStatus(Status(NOT_FOUND, 404));
+					this->setError(Status(NOT_FOUND, 404));
 					return ;
 				}
 				streams.get(LOG_REQUEST) << "auto index :<" + _response.body + ">" << std::endl;
@@ -213,17 +192,13 @@ void	Request::checkURI(std::string	&remainder)
 			streams.get(LOG_EVENT) << "file: " << _requestedRessource << std::endl;
 			if (access(_requestedRessource.c_str(), R_OK))// if ressource cannot be read
 			{
-				this->setState(EXEC);
-				this->setState(ERROR);
-				this->setStatus(Status(NOT_FOUND, 404));
+				this->setError(Status(NOT_FOUND, 404));
 				return ;
 			}
 		}
 		else // bad request not dir or reg
 		{
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(NOT_FOUND, 404));
+			this->setError(Status(NOT_FOUND, 404));
 			return ;
 		}
 	}
@@ -237,9 +212,7 @@ void	Request::checkURI(std::string	&remainder)
 				<< std::endl;
 		if(!canBuildOnDir(_requestedRessource))
 		{
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(FORBIDDEN, 403));
+			this->setError(Status(FORBIDDEN, 403));
 			return ;
 		}
 	}
@@ -251,23 +224,17 @@ void	Request::checkURI(std::string	&remainder)
 		struct stat	statbuf;
 		if (stat(_requestedRessource.c_str(), &statbuf) == -1) // does not exist
 		{
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(NOT_FOUND, 404));
+			this->setError(Status(NOT_FOUND, 404));
 			return ;
 		}
 		if ((statbuf.st_mode & S_IFMT) == S_IFDIR) // path is a directory
 		{
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(FORBIDDEN, 403));
+			this->setError(Status(FORBIDDEN, 403));
 			return ;
 		}
 		if (access(_requestedRessource.c_str(), W_OK))// if ressource cannot be wrote
 		{
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(FORBIDDEN, 403));
+			this->setError(Status(FORBIDDEN, 403));
 			return ;
 		}
 	}
@@ -305,9 +272,7 @@ void	Request::parseHeaderRegular(void)
 		}
 		if (!this->getField(&type) || !this->getToken(&token))
 		{
-			this->setStatus(Status(BAD_REQUEST, 400));
-			this->setState(ERROR);
-			this->setState(EXEC);
+			this->setError(Status(BAD_REQUEST, 400));
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field type is :" << type << std::endl
@@ -319,9 +284,7 @@ void	Request::parseHeaderRegular(void)
 			(this->*Request::fctField[type])(token);
 		else if (type < 0)
 		{
-			this->setStatus(Status(BAD_REQUEST, 400));
-			this->setState(ERROR);
-			this->setState(EXEC);
+			this->setError(Status(BAD_REQUEST, 400));
 		//How to deal with expect? Does errors override expect?? Does expect override body??
 		//->Put in a string and check at response construction?
 		}
@@ -350,9 +313,7 @@ void	Request::parseHeaderCgi(void)
 		}
 		if (!this->getField(&field, &type) || !this->getToken(&token))
 		{
-			this->setStatus(Status(BAD_REQUEST, 400));
-			this->setState(ERROR);
-			this->setState(EXEC);
+			this->setError(Status(BAD_REQUEST, 400));
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field is :" << field << std::endl
@@ -364,9 +325,7 @@ void	Request::parseHeaderCgi(void)
 			(this->*Request::fctField[type])(token);
 		else if (type < 0)
 		{
-			this->setStatus(Status(BAD_REQUEST, 400));
-			this->setState(ERROR);
-			this->setState(EXEC);
+			this->setError(Status(BAD_REQUEST, 400));
 		//How to deal with expect? Does errors override expect?? Does expect override body??
 		//->Put in a string and check at response construction?
 		}

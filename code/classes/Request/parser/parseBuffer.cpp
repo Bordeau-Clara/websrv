@@ -63,9 +63,7 @@ void	Request::parseBuffer(void)
 	}
 	if (this->isState(EXEC) && this->getContentLength() != this->getBody().length())
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(ERROR);
-		this->setState(EXEC);
+		this->setError(Status(BAD_REQUEST, 400));
 	}
 	printRequest(this);
 }

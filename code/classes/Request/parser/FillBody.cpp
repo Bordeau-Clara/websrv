@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include "Location.hpp"
 #include "stateMachine.hpp"
 #include "statusCodes.hpp"
 
@@ -21,9 +22,7 @@ void	Request::fillBody()
 	{ //a quel moment ceci est possible?? length = 1 que si Content-type trouve
 		if (this->_length == false)
 		{
-			this->setStatus(Status(LENGTH_REQUIRED, 411));
-			this->setState(ERROR);
-			this->setState(EXEC);
+			this->setError(Status(LENGTH_REQUIRED, 411));
 			return;
 		}
 	}
@@ -59,11 +58,9 @@ void	Request::fillChunkedBody()
 
 	while(1)
 	{
-		if (this->_body.size() > MAX_BODY_SIZE)
+		if (this->_body.size() > this->_location->getClientMaxBodySize())
 		{
-			this->setStatus(Status(PAYLOAD_TOO_LARGE, 413));
-			this->setState(ERROR);
-			this->setState(EXEC);
+			this->setError(Status(PAYLOAD_TOO_LARGE, 413));
 			return;
 		}
 		if (this->isState(CHUNK_SIZE))
@@ -96,9 +93,7 @@ void	Request::fillChunkedBody()
 			this->_body.append(this->_buffer, 0, chunk_size);
 			if (this->_buffer[chunk_size ] != '\r' && this->_buffer[chunk_size + 1] != '\n')
 			{
-				this->setStatus(Status(BAD_REQUEST, 400));
-				this->setState(ERROR);
-				this->setState(EXEC);
+				this->setError(Status(BAD_REQUEST, 400));
 				streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 					<< "Number of octet till CRLF is not equal to the number of octet to read"
 					<< std::endl;

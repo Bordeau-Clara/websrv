@@ -73,9 +73,7 @@ void	Request::buildPostResponse()
 	//c la merde
 	if (!canBuildOnDir(_requestedRessource))
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(FORBIDDEN, 403));
+		this->setError(Status(FORBIDDEN, 403));
 		this->buildErrorResponse();
 		return ;
 	}
@@ -83,9 +81,7 @@ void	Request::buildPostResponse()
 
 	if (!postFile.is_open())
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(INTERNAL_SERVER_ERROR, 500));
+		this->setError(Status(INTERNAL_SERVER_ERROR, 500));
 		this->buildErrorResponse();
 		return ;
 	}
@@ -103,16 +99,12 @@ void	Request::buildDeleteResponse()
 {
 	if (access(_requestedRessource.c_str(), F_OK))// if ressource does not exist
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(NOT_FOUND, 404));
+		this->setError(Status(NOT_FOUND, 404));
 		return ;
 	}
 	if (access(_requestedRessource.c_str(), W_OK))// if ressource cannot be wrote
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(FORBIDDEN, 403));
+		this->setError(Status(FORBIDDEN, 403));
 		return ;
 	}
 	std::remove(_requestedRessource.c_str());
