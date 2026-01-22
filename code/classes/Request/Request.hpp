@@ -124,6 +124,7 @@ public:
 	std::string				getBody() const;
 	void					fillBody();
 	void					fillChunkedBody();
+	unsigned long					getChunkLength(std::string::size_type cursor);
 
 private:
 	std::string		_buffer;

@@ -44,7 +44,6 @@ void	Request::fillChunkedBody()
 {
 		streams.get(LOG_REQUEST) << "[PARSING CHUNKED BODY]" << std::endl
 			<< std::endl;
-	std::string				line;
 	static unsigned long	chunk_size = 0;
 	std::string::size_type	cursor = 0;
 
@@ -59,20 +58,9 @@ void	Request::fillChunkedBody()
 		{
 			if (!moveCursor(&cursor, this->_buffer, CRLF))
 				break;
-			line.assign(this->_buffer.substr(0, cursor));
-			this->_buffer.erase(0, line.size() + 2);
-			chunk_size = hexToLong(line);
-			if (chunk_size == 0 && this->_trailer)
-				this->setState(TRAILERS);
-			else if (chunk_size == 0)
-			{
-				this->_buffer.erase(0, 2);
-				this->setState(EXEC);
-				this->_contentLength = this->_body.size();
+			chunk_size = getChunkLength(cursor);
+			if (isState(EXEC))
 				return;
-			}
-			else
-				this->setState(OCTET);
 			continue;
 		}
 		if (this->isState(OCTET) && this->_buffer.size() >= chunk_size + 2)
@@ -98,6 +86,28 @@ void	Request::fillChunkedBody()
 		}
 		break;
 	}
+}
+
+unsigned long	Request::getChunkLength(std::string::size_type cursor)
+{
+	std::string				line;
+	unsigned long	chunk_size = 0;
+
+	line.assign(this->_buffer.substr(0, cursor));
+	this->_buffer.erase(0, line.size() + 2);
+	chunk_size = hexToLong(line);
+	if (chunk_size == 0 && this->_trailer)
+		this->setState(TRAILERS);
+	else if (chunk_size == 0)
+	{
+		this->_buffer.erase(0, 2);
+		this->setState(EXEC);
+		this->_contentLength = this->_body.size();
+		return CHUNK_SIZE;
+	}
+	else
+		this->setState(OCTET);
+	return CHUNK_SIZE;
 }
 
 //version with logger
