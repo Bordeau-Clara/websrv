@@ -74,7 +74,6 @@ void	Request::parseContentLength(std::string str)
 	}
 	this->_length = 1;
 	this->_contentLength = std::strtol(str.c_str(), NULL, 10);
-	// if (this->_contentLength > MAX_BODY_SIZE)
 	if (this->_contentLength > this->_location->getClientMaxBodySize())
 	{
 		this->setError(Status(PAYLOAD_TOO_LARGE, 413));

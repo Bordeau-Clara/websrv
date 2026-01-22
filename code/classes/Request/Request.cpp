@@ -15,7 +15,7 @@
 #include <sys/socket.h>
 #include <sstream>
 
-Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(Status(OK, 200)), _response(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _state(0), _status(Status(OK, 200)), _response(), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
 {
 	this->fd = accept(server.getFd(), (struct sockaddr *)&this->client_addr, &this->client_len);
 	if (this->fd == -1)

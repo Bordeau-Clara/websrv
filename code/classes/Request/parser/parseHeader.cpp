@@ -291,6 +291,7 @@ void	Request::parseHeaderRegular(void)
 		//inverser condition if else pour supprimer else pour la clarter
 	}
 	//check_complete_header(event);
+	//if POST ->Content Length obligatoire ->411
 }
 
 void	Request::parseHeaderCgi(void)
