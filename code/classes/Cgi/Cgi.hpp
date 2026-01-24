@@ -20,8 +20,9 @@ class Cgi
 {
 private:
 	std::vector<std::string>	_env;
-	bool						_contentLength;
 	std::vector<std::string>	_arg;
+	std::vector<std::string>	_exec;
+	bool						_contentLength;
 
 	std::string					_buffer;
 	Request&					_client;
@@ -30,6 +31,7 @@ private:
 public:
 	Cgi();
 	int							_responsePipe[2];
+	int							_bodyPipe[2];
 	Cgi(Request&); //prendre adresse de request
 
 	void						createBasicEnv();

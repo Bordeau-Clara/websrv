@@ -177,6 +177,7 @@ private:
 public:
 	Cgi&					getCgi();
 
+//faire une classe de header
 private:
 	std::string		_host; //inutile mais obligatoire
 	std::string		_cookies;
