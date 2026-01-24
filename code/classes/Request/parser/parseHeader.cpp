@@ -136,14 +136,24 @@ void	Request::parseURI(std::string str)
 	else
 		checkURI(str);
 }
+
+void	Request::checkURI(std::string	&remainder)
+{
 //Todo:
 // verifier CGI
 	// si CGI
 		// access --> executable
-
-
-void	Request::checkURI(std::string	&remainder)
-{
+	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+remainder+">" << std::endl;
+	for (std::set<std::string>::const_iterator it = this->_location->getCgiSuffix().begin();
+		it != this->_location->getCgiSuffix().end(); it++)
+	{
+		if (remainder.rfind(*it) == remainder.size() - 1)
+		{
+			this->_cgi = new Cgi(this);
+			this->_cgi->_exec = "/usr/bin/python3";
+			setState(CGI);
+		}
+	}
 	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+remainder+">" << std::endl;
 	if (this->_method == GET)
 	{

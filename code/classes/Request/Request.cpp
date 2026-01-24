@@ -38,6 +38,11 @@ Request::~Request(void)
 {
 	if (this->fd != -1)
 		close(this->fd);
+	if (this->_cgi)
+	{
+		delete _cgi;
+		_cgi = NULL;
+	}
 }
 
 void	Request::resetRequest()
@@ -59,6 +64,11 @@ void	Request::resetRequest()
 
 	this->_response = Response();
 	//add everything that has been modified
+	if (this->_cgi)
+	{
+		delete _cgi;
+		_cgi = NULL;
+	}
 }
 
 void	Request::appendBuffer(char * str, int size)

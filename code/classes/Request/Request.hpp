@@ -49,7 +49,8 @@ const bool			CLOSE = false;
 
 class Location;
 class Server;
-class Cgi;
+// class Cgi;
+#include "Cgi.hpp"
 
 struct Response
 {
@@ -173,9 +174,9 @@ public:
 	void					isCGI(void);
 
 private:
-	Cgi*			_cgi;
+	Cgi					*_cgi;
 public:
-	Cgi&					getCgi();
+	Cgi						*getCgi();
 
 //faire une classe de header
 private:
