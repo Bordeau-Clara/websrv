@@ -51,7 +51,6 @@ void	Request::setState(parsing_state new_state)
 
 		case ERROR:
 			this->_state |= BIT_ERROR;
-			this->_state |= BIT_RW;
 			break;
 
 		default:
@@ -96,4 +95,23 @@ bool	Request::isState(parsing_state new_state) const
 			return 0;
 			break;
 	}
+}
+
+void	Request::setEndOfHeaderState()
+{
+	if (isState(ERROR))
+	{
+		printRequest(this);
+		return;
+	}
+	//requete sans body
+	if (this->getContentLength() == 0 && this->_length == 0 && !this->isState(CHUNKED))
+	{
+		this->setState(EXEC);
+		printRequest(this);
+		return;
+	}
+	this->setState(BODY);
+	if (this->isState(CHUNKED))
+		this->setState(CHUNK_SIZE);
 }

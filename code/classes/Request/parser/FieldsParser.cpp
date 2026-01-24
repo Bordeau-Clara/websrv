@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include "Location.hpp"
 #include "stateMachine.hpp"
 #include "statusCodes.hpp"
 #include <cstdlib>
@@ -65,9 +66,7 @@ void	Request::parseContentLength(std::string str)
 	//if chunked and content length -> 400
 	if (isState(CHUNKED))
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(EXEC);
-		this->setState(ERROR);
+		this->setError(Status(BAD_REQUEST, 400));
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Cannot have Content-Length and Transfer-encoding at the same time"
 			<< std::endl;
@@ -75,11 +74,9 @@ void	Request::parseContentLength(std::string str)
 	}
 	this->_length = 1;
 	this->_contentLength = std::strtol(str.c_str(), NULL, 10);
-	if (this->_contentLength > MAX_BODY_SIZE)
+	if (this->_contentLength > this->_location->getClientMaxBodySize())
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(EXEC);
-		this->setState(ERROR);
+		this->setError(Status(PAYLOAD_TOO_LARGE, 413));
 	}
 }
 
@@ -103,9 +100,7 @@ void	Request::parseTransferEncoding(std::string str)
 	//if chunked and content length -> 400
 	if (this->_length == 1)
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(EXEC);
-		this->setState(ERROR);
+		this->setError(Status(BAD_REQUEST, 400));
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Cannot have Content-Length and Transfer-encoding at the same time"
 			<< std::endl;
@@ -117,9 +112,7 @@ void	Request::parseTransferEncoding(std::string str)
 	}
 	else
 	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(EXEC);
-		this->setState(ERROR);
+		this->setError(Status(BAD_REQUEST, 400));
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Only accept chunked encoding"
 			<< std::endl;

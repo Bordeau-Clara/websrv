@@ -21,6 +21,54 @@
 
 #include "helpers.hpp"
 
+void	Request::generateResponse()
+{
+	//3 reponses possible -> erreur, normal(get, post, delete), cgi
+	//errors
+	if (this->isState(ERROR))
+		this->buildErrorResponse();
+	//CGI because we will fill response dynamically as soon as we recv in pipe and treat what we receive
+	// else if (!this->_response.empty())
+	// else if (isState(CGI))
+	// {
+	// }
+	else if (this->_location->getReturn().code)
+	{
+		this->generateRequestLine();
+		//buildRedir();
+		_response.str.append("Location:" + this->_location->getReturn().str + CRLF);
+		this->_response.str.append(CON_LEN + "0" + CRLF);
+		this->appendConnection();
+		this->headerEnd();
+	}
+	// static request
+	else
+	{
+		//first have to exec to see if no error
+		//-> is there error possible for these method??
+		//GET -> open fail?? throw + stop server, method not allowed + bad uri?? delt with in parseUri()
+		//POST -> open fail?? throw + stop server, method not allowed + bad uri?? delt with in parseUri()
+		//DELETE -> open fail?? throw + stop server, method not allowed + bad uri?? delt with in parseUri()
+				//for open fail should we access() in parseUri() to check rights???
+
+		//attention -> pas le meme code pour post (201 Created) et delete (204 No Content), 3xx pour redirections
+		switch(this->_method)
+		{
+			case GET:
+				this->buildGetResponse();
+				break;
+			case POST:
+				this->buildPostResponse();
+				break;
+			case DELETE:
+				this->buildDeleteResponse();
+				break;
+			default:
+				break;
+		}
+	}
+}
+
 void	Request::buildErrorResponse()
 {
 	//ne pas oublier DCRLF a la fin du header
@@ -73,9 +121,7 @@ void	Request::buildPostResponse()
 	//c la merde
 	if (!canBuildOnDir(_requestedRessource))
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(FORBIDDEN, 403));
+		this->setError(Status(FORBIDDEN, 403));
 		this->buildErrorResponse();
 		return ;
 	}
@@ -83,9 +129,7 @@ void	Request::buildPostResponse()
 
 	if (!postFile.is_open())
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(INTERNAL_SERVER_ERROR, 500));
+		this->setError(Status(INTERNAL_SERVER_ERROR, 500));
 		this->buildErrorResponse();
 		return ;
 	}
@@ -103,16 +147,12 @@ void	Request::buildDeleteResponse()
 {
 	if (access(_requestedRessource.c_str(), F_OK))// if ressource does not exist
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(NOT_FOUND, 404));
+		this->setError(Status(NOT_FOUND, 404));
 		return ;
 	}
 	if (access(_requestedRessource.c_str(), W_OK))// if ressource cannot be wrote
 	{
-		this->setState(EXEC);
-		this->setState(ERROR);
-		this->setStatus(Status(FORBIDDEN, 403));
+		this->setError(Status(FORBIDDEN, 403));
 		return ;
 	}
 	std::remove(_requestedRessource.c_str());
@@ -120,52 +160,4 @@ void	Request::buildDeleteResponse()
 	this->generateRequestLine();
 	this->appendConnection();
 	this->headerEnd();
-}
-
-void	Request::generateResponse()
-{
-	//3 reponses possible -> erreur, normal(get, post, delete), cgi
-	//errors
-	if (this->isState(ERROR))
-		this->buildErrorResponse();
-	//CGI because we will fill response dynamically as soon as we recv in pipe and treat what we receive
-	// else if (!this->_response.empty())
-	// else if (isState(CGI))
-	// {
-	// }
-	else if (this->_location->getReturn().code)
-	{
-		this->generateRequestLine();
-		//buildRedir();
-		_response.str.append("Location:" + this->_location->getReturn().str + CRLF);
-		this->_response.str.append(CON_LEN + "0" + CRLF);
-		this->appendConnection();
-		this->headerEnd();
-	}
-	// static request
-	else
-	{
-		//first have to exec to see if no error
-		//-> is there error possible for these method??
-		//GET -> open fail?? throw + stop server, method not allowed + bad uri?? delt with in parseUri()
-		//POST -> open fail?? throw + stop server, method not allowed + bad uri?? delt with in parseUri()
-		//DELETE -> open fail?? throw + stop server, method not allowed + bad uri?? delt with in parseUri()
-				//for open fail should we access() in parseUri() to check rights???
-
-		//attention -> pas le meme code pour post (201 Created) et delete (204 No Content), 3xx pour redirections
-		switch(this->_method)
-		{
-			case GET:
-				this->buildGetResponse();
-				break;
-			case POST:
-				this->buildPostResponse();
-				break;
-			case DELETE:
-				this->buildDeleteResponse();
-				break;
-			default:
-				break;
-		}
-	}
 }

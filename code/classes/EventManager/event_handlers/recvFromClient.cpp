@@ -57,7 +57,7 @@ void	EventManager::recvFromClient(void)
 		//lancer cgi et add l'event en EPOLLIN
 		//quand cgi finit on le met dans la rep du client et on le reactive et on le passe en EPOLLOUT
 		//
-		//client.startCgi();
+		//client.cgi.start();
 		//create pipe fork and send optional body through new pipe and fork here??
 
 		// ecoute le pipe cgi

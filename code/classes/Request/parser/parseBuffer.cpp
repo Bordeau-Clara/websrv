@@ -23,35 +23,17 @@ void	Request::parseBuffer(void)
 	//can a \r or \n be alone in header???
 	std::string::size_type cursor = 0;
 	//header is full in buffer
-	// if (this->getState() == HEADER && moveCursor(&cursor, this->getBuffer(), DCRLF))
 	if (isState(HEADER) && moveCursor(&cursor, this->getBuffer(), DCRLF))
 	{
 		streams.get(LOG_REQUEST) << "[PARSING HEADER]" << std::endl
 			<< std::endl;
 		this->fillHeader(cursor);
 		parseHeader();
-		if (isState(ERROR))
-		{
-			printRequest(this);
+		setEndOfHeaderState();
+		if (isState(EXEC))
 			return;
-		}
-		//requete sans body
-		if (this->getContentLength() == 0 && this->_length == 0 && !this->isState(CHUNKED))
-		{
-			this->setState(EXEC);
-			printRequest(this);
-			return;
-		}
-		this->setState(BODY);
-		if (this->isState(CHUNKED))
-			this->setState(CHUNK_SIZE);
 	}
 
-	if (isState(ERROR))
-	{
-		printRequest(this);
-		return;
-	}
 	if (this->isState(BODY))
 	{
 		streams.get(LOG_REQUEST) << "[PARSING BODY]" << std::endl
@@ -60,12 +42,11 @@ void	Request::parseBuffer(void)
 			this->fillChunkedBody();
 		else
 			this->fillBody();
-	}
-	if (this->isState(EXEC) && this->getContentLength() != this->getBody().length())
-	{
-		this->setStatus(Status(BAD_REQUEST, 400));
-		this->setState(ERROR);
-		this->setState(EXEC);
+		//can this happen?? Does it not juste create a phantom client and we will wait for body indefinately
+		if (this->isState(EXEC) && this->getContentLength() != this->getBody().length())
+		{
+			this->setError(Status(BAD_REQUEST, 400));
+		}
 	}
 	printRequest(this);
 }

@@ -82,6 +82,12 @@ public://epollloop variable for accept
 public:
 	Request(Server&);
 	~Request(void);
+	// Request(Request&);
+	// Request();
+
+	const Location*	_location;
+	Server&			_server;
+
 
 	static std::string	fields[207][3];
 	static void			(Request::*fctField[210])(std::string);
@@ -90,11 +96,21 @@ public:
 	void					resetRequest();
 private:
 	int				_start; //pour chuncked request, pour verifier le temps
+
+private:
+	uint8_t			_state;
+public:
+	void					setState(parsing_state new_state);
+	bool					isState(parsing_state new_state) const;
+	std::string				getState() const;
+	void					setEndOfHeaderState();
+
 private:
 	Status			_status; //to put in response
 public:
-	void			setStatus(const Status &);
+	void					setStatus(const Status &);
 	const Status			&getStatus() const;
+	void					setError(const Status &);
 	
 private:
 	std::string		_header;
@@ -114,6 +130,9 @@ public:
 	std::string				getBody() const;
 	void					fillBody();
 	void					fillChunkedBody();
+	unsigned long			getChunkLength(std::string::size_type cursor);
+	void					putChunkInBody(unsigned long chunk_size);
+	void					setTrailers(std::string::size_type cursor);
 
 private:
 	std::string		_buffer;
@@ -123,26 +142,19 @@ public:
 	void					parseBuffer(void);
 
 public:
-	struct Response			_response;
+	struct Response	_response;
 public:
 	bool					recursiveReaddir(std::string);
 	void					generateResponse();
-		void					buildErrorResponse();
-			bool					findErrorPage();
-		void					buildGetResponse();
-		void					buildPostResponse();
-		void					buildDeleteResponse();
+	void					buildErrorResponse();
+	bool					findErrorPage();
+	void					buildGetResponse();
+	void					buildPostResponse();
+	void					buildDeleteResponse();
 // utils
-		void					generateRequestLine();
-		void					appendConnection(void);
-		void					headerEnd(void);
-
-private:
-	uint8_t			_state;
-public:
-	void					setState(parsing_state new_state);
-	bool					isState(parsing_state new_state) const;
-	std::string				getState() const;
+	void					generateRequestLine();
+	void					appendConnection(void);
+	void					headerEnd(void);
 
 private:
 	method 			_method;
@@ -165,12 +177,7 @@ private:
 public:
 	Cgi&					getCgi();
 
-	const Location*	_location;
-	Server&			_server;
-
-	Request(Request&);
-	Request();
-
+//faire une classe de header
 private:
 	std::string		_host; //inutile mais obligatoire
 	std::string		_cookies;
@@ -210,6 +217,6 @@ public:
 //faire surcharge de << pour imprimer toute la classe
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs);
 
-static const int	MAX_BODY_SIZE = (1UL << 16); //juste la le temps de le resoudre dans la config du serveur
+// static const int	MAX_BODY_SIZE = (1UL << 16); //juste la le temps de le resoudre dans la config du serveur
 int		moveCursor(std::string::size_type *cursor, std::string str, std::string toFind);
 void	printRequest(Request *request);
