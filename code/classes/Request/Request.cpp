@@ -17,6 +17,7 @@
 
 Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _server(server), _state(0), _status(Status(OK, 200)), _response(), _method(OTHER), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
 {
+	this->_cgi = NULL;
 	this->fd = accept(server.getFd(), (struct sockaddr *)&this->client_addr, &this->client_len);
 	if (this->fd == -1)
 	{

@@ -16,6 +16,7 @@
 #include "statusCodes.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
+#include <cmath>
 #include <fcntl.h>
 #include <unistd.h>
 #include "helpers.hpp"
@@ -147,14 +148,19 @@ void	Request::checkURI(std::string	&remainder)
 	for (std::set<std::string>::const_iterator it = this->_location->getCgiSuffix().begin();
 		it != this->_location->getCgiSuffix().end(); it++)
 	{
-		if (remainder.rfind(*it) == remainder.size() - 1)
+		if (it->size() < remainder.size() && remainder.rfind(*it) == remainder.size() - it->size())
 		{
+			streams.get(LOG_REQUEST) << "[Cgi detected]"<< remainder.rfind(*it) << std::endl;
 			this->_cgi = new Cgi(this);
-			this->_cgi->_exec = "/usr/bin/python3";
+			this->_cgi->_exec = "./ubuntu_cgi_tester";
+			this->_cgi->_arg.push_back(this->_cgi->_exec);
+			_requestedRessource = _location->getRoot() + "/" +_location->getAlias() + "/" + remainder;
+			trimSlash(_requestedRessource);
+			this->_cgi->_arg.push_back(_requestedRessource);
 			setState(CGI);
+			return ;
 		}
 	}
-	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+remainder+">" << std::endl;
 	if (this->_method == GET)
 	{
 		// fusionner root + alias + remainder pour access
@@ -172,7 +178,7 @@ void	Request::checkURI(std::string	&remainder)
 		}
 		if ((statbuf.st_mode & S_IFMT) == S_IFDIR) // path is a directory
 		{
-			_requestedRessource = _location->getRoot() + "/" + _location->getAlias() + "/" + remainder+ "/" + _location->getIndex();
+			_requestedRessource = _location->getRoot() + "/" + _location->getAlias() + "/" + remainder + "/" + _location->getIndex();
 			trimSlash(_requestedRessource);
 			streams.get(LOG_REQUEST) << "path is a directory, checking index :" + _requestedRessource<< std::endl;
 			if (access(_requestedRessource.c_str(), R_OK))// if cannot read index
