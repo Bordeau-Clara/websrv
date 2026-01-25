@@ -12,6 +12,7 @@
 PROJECT_DIR = code
 BIN = WebServ
 CONFIG = configs/default.conf
+CONFIG_TEST = configs/test.conf
 TESTER_DIR = request_builder
 
 build:
@@ -20,6 +21,10 @@ build:
 
 run:
 	$(PROJECT_DIR)/$(BIN) $(CONFIG)
+.PHONY: run
+
+corr:
+	$(PROJECT_DIR)/$(BIN) $(CONFIG_TEST)
 .PHONY: run
 
 request:
@@ -51,3 +56,7 @@ test:
 debug:
 	valgrind $(PROJECT_DIR)/$(BIN) $(CONFIG)
 .PHONY: debug
+
+corrval:
+	valgrind $(PROJECT_DIR)/$(BIN) $(CONFIG_TEST)
+.PHONY: run
