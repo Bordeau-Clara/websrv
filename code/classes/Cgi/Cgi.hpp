@@ -15,9 +15,10 @@
 #include <string>
 #include <vector>
 #include "define_cgi.hpp"
+#include "Event.hpp"
 
 class Request;
-class Cgi
+class Cgi : public Event
 {
 private:
 
@@ -32,16 +33,17 @@ public:
 	std::string					_buffer;
 	Request					*_client;
 
-	Cgi();
-	int							_responsePipe[2];
-	int							_bodyPipe[2];
+	Cgi():Event(PIPE){}
+	void						init(void);
+	int						_responsePipe[2];
+	int						_bodyPipe[2];
 	Cgi(Request*); //prendre adresse de request
 
 	void						start();
 	pid_t					_pid;
 
 	void						createBasicEnv();
-	// void						convertEnvToCharTab(); //to implement
+	std::vector<char *>			strToArray(std::vector<std::string>); //to implement
 	void						addFields(std::string field, std::string token);//check for host, type, length and or add
 	void						getFieldFromUri(Request *request);//to call in constructor -> no
 	//do function in request createCgi() to add uri, methode, query without getters

@@ -13,8 +13,9 @@
 #include "Request.hpp"
 #include <exception>
 #include <stdexcept>
+#include <string>
 
-Cgi::Cgi(Request *request): _env(CGI_HEADER), _contentLength(0), _client(request)
+Cgi::Cgi(Request *request): Event(PIPE) ,_env(CGI_HEADER), _contentLength(0), _client(request)
 {
 }
 
@@ -64,18 +65,75 @@ void	Cgi::getFieldFromUri(Request *request)
 }
 
 #include <unistd.h>
+#include "deleteVector.hpp"
 
-void	Cgi::start()
+void	Cgi::init(void)
 {
 	if (pipe(_bodyPipe) == -1)
 		throw (std::runtime_error("Cannot Pipe !"));
 	if (pipe(_responsePipe) == -1)
 		std::runtime_error("Cannot Pipe !");
+}
+
+void	Cgi::start()
+{
 	_pid = fork();
 	if (_pid == -1)
 		throw (std::runtime_error("Cannot fork !"));
-	if (_pid == 0);
+	if (_pid == 0)
 		//this->childProcess;
+		//close bodypipe[1]
+		//close response pipe[0]
+		//dup2(responsepipe[1] on stdout)
+		//dup2(bodypipe[0] on stdin)
+		//close ?
+		//execve
+		//exit failure
+	{
+		close(_bodyPipe[1]);
+		close(_responsePipe[0]);
+
+		dup2(_responsePipe[1], STDOUT_FILENO);
+		close(_responsePipe[1]);
+
+		dup2(_bodyPipe[0], STDIN_FILENO);
+		close(_bodyPipe[0]);
+
+		std::vector<char*> arg = strToArray(_arg);
+		std::vector<char*> env = strToArray(_env);
+		execve(_exec.c_str(), arg.data(), env.data());
+		deleteVector(arg);
+		deleteVector(env);
+		exit(1);
+	}
 	else
-		;
+		//close bodypipe[0]
+		//close responsepipe[1]
+		// put body in bodypipe[1]
+		// close bodypipe[1]
+	{
+		close(_bodyPipe[0]);
+		close(_responsePipe[1]);
+
+
+		std::string body = _client->getBody();
+		write(_bodyPipe[1], body.c_str(), body.size());
+		close(_bodyPipe[1]);
+	}
+}
+
+std::vector<char*>	Cgi::strToArray(std::vector<std::string> vect_str)
+{
+	std::vector<char*> array;
+
+	array.reserve(vect_str.size() + 1); // Optionnel mais optimisé
+	for (std::vector<std::string>::iterator it = vect_str.begin();
+		it != vect_str.end(); it++)
+	{
+		char	*copy = new char[it->size() + 1];
+		std::strcpy(copy, it->c_str());
+		array.push_back(copy);
+	}
+	array.push_back(NULL);
+	return (array);
 }
