@@ -16,7 +16,9 @@
 
 bool	EventManager::sendBuffer(Request &client)
 {
+	/**/streams.get(LOG_EVENT) << "before throwing" << std::endl;
 	std::string toSend = client._response.get(BUFFER_SIZE);
+	/**/streams.get(LOG_EVENT) << "before throwing" << std::endl;
 
 	if (send(client.fd, toSend.c_str(), toSend.size(), 0) == -1)
 		throw (std::runtime_error("SEND"));
@@ -28,6 +30,10 @@ void	EventManager::sendToClient(void)
 {
 	// si on est en emission
 	Request &client = *(Request *)getPtr();
+	/**/streams.get(LOG_EVENT) << "[resonse]" << client._response.cursor << std::endl
+	/**/<< "[resonse]" << client._response.str.size() << std::endl
+	/**/<< "[resonse]" << client._response.str << std::endl
+		/**/<< std::endl;
 
 	if (!sendBuffer(client))
 		return;

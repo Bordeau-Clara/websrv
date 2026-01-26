@@ -75,8 +75,13 @@ void	EventManager::run(void)
 		{
 			if (eventIs(EPOLLIN)) // retriving which func it will call in th ejumptable epollinHandler
 				(this->*epollinHandler[checkEvent()])();
-			else // EPOLLOUT can only be for client send queue
+			else if (eventIs(EPOLLOUT) && checkEvent() == CLIENT)// EPOLLOUT can only be for client send queue
+			{
+				Monitor.printNewLine("Sending to client");
 				sendToClient();
+			}
+			else if (eventIs(EPOLLHUP) && checkEvent() == PIPE)
+					handlePipe();
 		}
     }
 }

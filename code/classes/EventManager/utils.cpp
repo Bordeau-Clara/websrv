@@ -32,6 +32,9 @@ void	EventManager::getNewEvent(void)
 	}
 	_it = 0;
 	// monitorNewEvent(_nEvent);
+	if (!getPtr())
+		return ;
+	printEvent();
 }
 
 void	*EventManager::getPtr(void)
@@ -41,15 +44,39 @@ void	*EventManager::getPtr(void)
 	return (_events[_it].data.ptr);
 }
 
+void	EventManager::printEvent(void)
+{
+	int	type = checkEvent();
+	switch (type)
+	{
+		case SRV:
+		Monitor.printNewLine("handling server");
+		break;
+		case CLIENT:
+		Monitor.printNewLine("handling client");
+		break;
+		case PIPE:
+		Monitor.printNewLine("handling pipe");
+		break;
+		default:
+		Monitor.printNewLine("stdin");
+		;
+	}
+}
+
 void	EventManager::eventNext(void)
 {
 	_it++;
-	if (getPtr())
-		Monitor.printNewLine("next event");
+	if (!getPtr())
+		return ;
+	printEvent();
 }
 
 bool	EventManager::eventIs(uint32_t mode)
 {
+		/**/streams.get(LOG_EVENT) << "[EVENT IS]" << getEvent().events  << std::endl
+		/**/<< "[EVENT IS]" << this->checkEvent()  << std::endl
+			/**/<< std::endl;
 	return (getEvent().events & mode);
 }
 

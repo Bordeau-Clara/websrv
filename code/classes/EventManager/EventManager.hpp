@@ -45,6 +45,7 @@ class EventManager
 
 	private: // all computation of webserv is in this class
 
+	public:
 		Request			&requestAdd(Server&);
 		// EPOLLOUT
 		void			sendToClient(void);
@@ -72,6 +73,7 @@ class EventManager
 		void				eventNext(void);
 		int					checkEvent(void);
 		bool				eventIs(uint32_t);
+		void				printEvent(void);
 		// Epoll encapsulation
 		void				EventAdd(int, uint32_t, void*);
 		void				EventModify(int, uint32_t, void*);

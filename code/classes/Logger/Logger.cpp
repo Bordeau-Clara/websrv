@@ -37,7 +37,7 @@ Logger::Logger(const String& defaultStatus, std::ostream& output) : _status_line
 Logger::~Logger()
 {
     // Optionnel : Nettoyer la ligne de statut à la fermeture
-    this->_stream << ANSI_CLEAR_LINE << ANSI_MOVE_START << std::endl;
+    this->_stream << ANSI_CLEAR_LINE << ANSI_MOVE_START << std::endl << std::flush;
 }
 
 // Helper privé : Efface la ligne courante et réécrit le status
