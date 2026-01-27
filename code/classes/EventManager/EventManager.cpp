@@ -68,15 +68,19 @@ EventManager::~EventManager(void)
 void	EventManager::run(void)
 {
 	Monitor.printNewLine("STARTING ..");
-    while (_alive)
+	while (_alive)
 	{
 		// for each events
 		for (getNewEvent(); getPtr(); eventNext())
 		{
 			if (eventIs(EPOLLIN)) // retriving which func it will call in th ejumptable epollinHandler
 				(this->*epollinHandler[checkEvent()])();
-			else // EPOLLOUT can only be for client send queue
+			else if (eventIs(EPOLLOUT) && checkEvent() == CLIENT) // EPOLLOUT can only be for client send queue
 				sendToClient();
+			else if (eventIs(EPOLLHUP) && checkEvent() == PIPE)
+				handlePipe();
+			else
+				throw (std::runtime_error("Unrecognized event"));
 		}
-    }
+	}
 }
