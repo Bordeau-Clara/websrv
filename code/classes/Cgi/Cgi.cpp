@@ -114,9 +114,6 @@ void	Cgi::start(EventManager &webServ)
 		dup2(_bodyPipe[0], STDIN_FILENO);
 		close(_bodyPipe[0]);
 
-		for (int fd = 3; fd < 1024; fd++)
-			close(fd);
-
 		std::vector<char*> arg = strToArray(_arg);
 		std::vector<char*> env = strToArray(_env);
 		execve(_exec.c_str(), arg.data(), env.data());
@@ -135,7 +132,8 @@ void	Cgi::start(EventManager &webServ)
 
 
 		std::string body = _client->getBody();
-		write(_bodyPipe[1], body.c_str(), body.size());
+		write(_bodyPipe[1], body.data(), body.size());
+		(streams.get(LOG_EVENT) << "body:").write(body.data(), body.size()) << std::endl;
 		close(_bodyPipe[1]);
 	}
 }
@@ -176,9 +174,8 @@ void	Cgi::parseBuffer()
 	{
 		//error
 	}
-	//buffer.size() pose probleme avec binaire, comment faire?
-	this->_client->_response.body.append(this->_buffer, this->_buffer.size());
-	this->_client->_response.str.append(this->_client->_response.body);
+	// buffer is body hehe
+	this->_client->_response.str.append(this->_buffer.data(), this->_buffer.size());
 	/**/streams.get(LOG_EVENT) << "[in cgi]" << this->_client->_response.cursor << std::endl
 	/**/<< "[in cgi]" << this->_client->_response.str.size() << std::endl
 	/**/<< "[in cgi]" << this->_client->_response.str << std::endl
