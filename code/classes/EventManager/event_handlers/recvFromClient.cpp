@@ -9,10 +9,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "Event.hpp"
 #include "EventManager.hpp"
 
 #include "Request.hpp"
 #include "Cgi.hpp"
+#include <sys/epoll.h>
 
 bool	EventManager::recvBuffer(Request &client)
 {
@@ -36,7 +38,13 @@ bool	EventManager::recvBuffer(Request &client)
 
 void	EventManager::recvFromClient(void)
 {
+	if (checkEvent() != CLIENT)
+		/**/streams.get(LOG_EVENT) << "{EEEEEEEEEEEERRRRRRRRRRRRROOOOOOOOOOOOOOORRRRRRRRRRR}" << std::endl
+			/**/<< std::endl;
 	Request &client = *(Request *)getPtr();
+	if (checkEvent() != CLIENT)
+		/**/streams.get(LOG_EVENT) << "{EEEEEEEEEEEERRRRRRRRRRRRROOOOOOOOOOOOOOORRRRRRRRRRR}" << std::endl
+			/**/<< std::endl;
 	// si reception
 	// si aucun element est recu
 	// CECI n'est pas tres propre
@@ -62,11 +70,11 @@ void	EventManager::recvFromClient(void)
 		Monitor.printNewLine("Initializing a pipe");
 		cgi->init();
 		// ecoute le pipe cgi
-		EventAdd(cgi->_responsePipe[0], EPOLLIN, cgi);
 		// mute les envois clients
 		EventModify(client.fd, 0, &client);
 		//create pipe fork and send optional body through new pipe and fork here??
 		cgi->start(*this);
+		EventAdd(cgi->_responsePipe[0], EPOLLIN, cgi);
 
 	}
 	else // passe en emission

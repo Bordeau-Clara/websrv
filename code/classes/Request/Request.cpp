@@ -234,5 +234,8 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 	lhs << std::endl
 		<< "Body="
 		<< rhs.getBody() << std::endl;
+	lhs << std::endl
+		<< "Located at:"
+		<< &rhs << std::endl;
 	return (lhs);
 }

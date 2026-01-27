@@ -68,8 +68,12 @@ EventManager::~EventManager(void)
 void	EventManager::run(void)
 {
 	Monitor.printNewLine("STARTING ..");
+	int i = -1;
     while (_alive)
 	{
+		i ++;
+		/**/streams.get(LOG_EVENT) << "[number of epoll_wait calls]" << i << std::endl
+			/**/<< std::endl;
 		// for each events
 		for (getNewEvent(); getPtr(); eventNext())
 		{

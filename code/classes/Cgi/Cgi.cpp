@@ -18,8 +18,12 @@
 #include <stdexcept>
 #include <string>
 
-Cgi::Cgi(Request *request): Event(PIPE) ,_env(CGI_HEADER), _client(request)
+Cgi::Cgi(Request *request): Event(PIPE) ,_env(CGI_HEADER)
 {
+	this->_client = request;
+	streams.get(LOG_EVENT) << "[CGI CLIENT]" << std::endl
+	<< this->_client << std::endl;
+
 }
 
 std::string	httpToCgiHeader(std::string field)
@@ -114,8 +118,8 @@ void	Cgi::start(EventManager &webServ)
 		dup2(_bodyPipe[0], STDIN_FILENO);
 		close(_bodyPipe[0]);
 
-		for (int fd = 3; fd < 1024; fd++)
-			close(fd);
+		// for (int fd = 3; fd < 1024; fd++)
+		// 	close(fd);
 
 		std::vector<char*> arg = strToArray(_arg);
 		std::vector<char*> env = strToArray(_env);
@@ -199,15 +203,18 @@ void	Cgi::parseHeader()
 	std::string::size_type cursorEnd = 0;
 	if (moveCursor(&cursorStart, this->_header, "Status:"))
 	{
-		if (!moveCursor(&cursorEnd, this->_header, CRLF))
+		if (!moveCursor(&cursorEnd, this->_header, cursorStart, CRLF))
 		{
 			//error
 		}
-		this->_client->_response.str.append("HTTP/1.1 ");
+		this->_client->_response.str.append("HTTP/1.1");
 		this->_client->_response.str.append(this->_header.substr(cursorStart + std::string("Status:").size(), cursorEnd + 2));
 		//remove status/content-length/connection de _header puis append le reste de _header a response._header + CRLF
 		this->_header.erase(cursorStart, cursorEnd + 2);
 	}
+	/**/streams.get(LOG_EVENT) << "[cgi header]" << this->_client->_response.cursor << std::endl
+	/**/<< "[response header]" << this->_client->_response.str.size() << std::endl
+		/**/<< std::endl;
 	if (!moveCursor(&cursorStart, this->_header, "Content-Type:"))
 	{
 		//what to do??
@@ -221,7 +228,7 @@ void	Cgi::parseHeader()
 	}
 	else
 	{
-		if (!moveCursor(&cursorEnd, this->_header, DCRLF))
+		if (!moveCursor(&cursorEnd, this->_header, cursorStart, DCRLF))
 		{
 			//error
 		}

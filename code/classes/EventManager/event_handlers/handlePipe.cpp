@@ -27,7 +27,7 @@ void	EventManager::handlePipe()
 {
 	Monitor.printNewLine(RED + "Handling A PIPE ..."  + RESET);
 	Cgi &cgi = *(Cgi *)getPtr();
-	static char buffer[BUFFER_SIZE] = {0};
+	char buffer[BUFFER_SIZE];
 	ssize_t count = read(cgi._responsePipe[0], buffer, sizeof(buffer));
 	if (count == -1)
 		throw (std::runtime_error("RECV KO"));
@@ -44,9 +44,9 @@ void	EventManager::handlePipe()
 	//when finished DEL event cgi and EPOLL_CTL_MOD en EPOLLOUT cgi.request
 	Monitor.printNewLine(RED + "ENDOF PIPE"  + RESET);
 	cgi.parseBuffer();
+	EventModify(cgi._client->fd, EPOLLOUT, cgi._client);
 	EventDelete(cgi._responsePipe[0]);
 	close(cgi._responsePipe[0]);
 		/**/streams.get(LOG_EVENT) << "{FD}" << cgi._client->fd << std::endl
 			/**/<< std::endl;
-	EventModify(cgi._client->fd, EPOLLOUT, &cgi._client);
 }

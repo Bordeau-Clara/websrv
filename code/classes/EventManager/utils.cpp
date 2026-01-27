@@ -39,11 +39,15 @@ void	EventManager::getNewEvent(void)
 
 void	*EventManager::getPtr(void)
 {
+		// /**/streams.get(LOG_EVENT) << "[_it]" << _it  << std::endl
+		// /**/<< "[_nevents]" << _nEvent  << std::endl
+		// 	/**/<< std::endl;
 	if (_it == _nEvent)
 		return (NULL);
 	return (_events[_it].data.ptr);
 }
 
+#include "helpers.hpp"
 void	EventManager::printEvent(void)
 {
 	int	type = checkEvent();
@@ -62,6 +66,7 @@ void	EventManager::printEvent(void)
 		Monitor.printNewLine("stdin");
 		;
 	}
+	// Monitor.printNewLine("" + nbrToString(getEvent().data.ptr) + " TYPE " + nbrToString(checkEvent()));
 }
 
 void	EventManager::eventNext(void)
@@ -74,8 +79,9 @@ void	EventManager::eventNext(void)
 
 bool	EventManager::eventIs(uint32_t mode)
 {
-		/**/streams.get(LOG_EVENT) << "[EVENT IS]" << getEvent().events  << std::endl
-		/**/<< "[EVENT IS]" << this->checkEvent()  << std::endl
+		/**/streams.get(LOG_EVENT) << "[EVENT POLL TYPE]" << getEvent().events  << std::endl
+		/**/<< "[EVENT PTR IS]" << this->checkEvent()  << std::endl
+		/**/<< "[PTR IS]" << getEvent().data.ptr  << std::endl
 			/**/<< std::endl;
 	return (getEvent().events & mode);
 }
@@ -90,9 +96,12 @@ int	EventManager::checkEvent()
 {
 	return (static_cast<Event*>(getPtr())->_type);
 }
-
+#include "helpers.hpp"
 void	EventManager::EventAdd(int event_fd, uint32_t event_mode, void *event_ptr)
 {
+		/**/streams.get(LOG_EVENT) << "[EVENT ADD FD]" << event_fd  << std::endl
+			/**/<< std::endl;
+		Monitor.printNewLine("Adding " + nbrToString(event_fd) + "in mode " + nbrToString(event_mode));
 		// Structure pour les événements
 		struct epoll_event event;
 		event.events = event_mode;
@@ -107,6 +116,8 @@ void	EventManager::EventAdd(int event_fd, uint32_t event_mode, void *event_ptr)
 
 void	EventManager::EventModify(int event_fd, uint32_t event_mode, void *event_ptr)
 {
+		/**/streams.get(LOG_EVENT) << "[EVENT MODIFY FD]" << event_fd  << std::endl
+			/**/<< std::endl;
 		// Structure pour les événements
 		struct epoll_event event;
 		event.events = event_mode;
@@ -121,6 +132,8 @@ void	EventManager::EventModify(int event_fd, uint32_t event_mode, void *event_pt
 
 void	EventManager::EventDelete(int event_fd)
 {
+		/**/streams.get(LOG_EVENT) << "[EVENT DELETE FD]" << event_fd  << std::endl
+			/**/<< std::endl;
 		// Structure pour les événements
 		if (epoll_ctl(this->_fd, EPOLL_CTL_DEL, event_fd, NULL) == -1)
 		{

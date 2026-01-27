@@ -28,6 +28,7 @@ bool	EventManager::sendBuffer(Request &client)
 
 void	EventManager::sendToClient(void)
 {
+	/**/streams.get(LOG_EVENT) << "[SENDING TO CLIENT]" << std::endl;
 	// si on est en emission
 	Request &client = *(Request *)getPtr();
 	/**/streams.get(LOG_EVENT) << "[resonse]" << client._response.cursor << std::endl
