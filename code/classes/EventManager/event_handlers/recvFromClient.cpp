@@ -38,6 +38,7 @@ bool	EventManager::recvBuffer(Request &client)
 void	EventManager::recvFromClient(void)
 {
 	Request &client = *(Request *)getPtr();
+	client.editTime();
 	// si reception
 	// si aucun element est recu
 	// CECI n'est pas tres propre
@@ -69,7 +70,7 @@ void	EventManager::recvFromClient(void)
 		//create pipe fork and send optional body through new pipe and fork here??
 		cgi->start(*this);
 		EventAdd(cgi->_responsePipe[0], EPOLLIN, cgi);
-
+		client.editTime();
 	}
 	else // passe en emission
 	{
