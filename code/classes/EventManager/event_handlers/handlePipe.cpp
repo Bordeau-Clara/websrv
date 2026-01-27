@@ -50,6 +50,7 @@ void	EventManager::handlePipe()
 	close(cgi._responsePipe[0]);
 		/**/streams.get(LOG_EVENT) << "{FD}" << cgi._client->fd << std::endl
 			/**/<< std::endl;
+	cgi._client->setState(EXEC);
 	EventModify(cgi._client->fd, EPOLLOUT, cgi._client);
 }
 //

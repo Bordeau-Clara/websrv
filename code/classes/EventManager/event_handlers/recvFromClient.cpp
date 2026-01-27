@@ -13,6 +13,7 @@
 
 #include "Request.hpp"
 #include "Cgi.hpp"
+#include "stateMachine.hpp"
 
 bool	EventManager::recvBuffer(Request &client)
 {
@@ -51,6 +52,7 @@ void	EventManager::recvFromClient(void)
 	// checke si la reponse attendue est celle dune cgi
 	if (client.isState(CGI))// && !client.isState(ERROR)
 	{
+		client.setState(READ);
 		//mettre l'event en dormant (EPOLLONESHOT) faut il d'abord le mettre en EPOLLOUT?
 		//-> .events = 0 est plus propre car EPOLLONESHOT est fais pour bloquer apres la reception d'un event
 		//comme client va etre mis dans l'event de la cgi(ou inversement) on aura le fd pour le reactiver
