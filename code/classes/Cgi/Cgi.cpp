@@ -197,15 +197,16 @@ void	Cgi::parseHeader()
 {
 	std::string::size_type cursorStart = 0;
 	std::string::size_type cursorEnd = 0;
-	if (moveCursor(&cursorStart, this->_header, "Status:"))
+	if (moveCursor(&cursorStart, this->_header, STATUS))
 	{
-		if (!moveCursor(&cursorEnd, this->_header, CRLF))
+		if (!moveCursor(&cursorEnd, this->_header, cursorStart, CRLF))
 		{
 			//error
+			//setError mais quel error
+			/**/streams.get(LOG_EVENT) << "(1)[error no CRLF]" << this->_header << std::endl;
 		}
-		this->_client->_response.str.append("HTTP/1.1 ");
-		this->_client->_response.str.append(this->_header.substr(cursorStart + std::string("Status:").size(), cursorEnd + 2));
-		//remove status/content-length/connection de _header puis append le reste de _header a response._header + CRLF
+		this->_client->_response.str.append("HTTP/1.1");
+		this->_client->_response.str.append(this->_header.substr(cursorStart + STATUS.size(), cursorEnd + 2 - (cursorStart + STATUS.size())));
 		this->_header.erase(cursorStart, cursorEnd + 2);
 	}
 	if (!moveCursor(&cursorStart, this->_header, "Content-Type:"))
@@ -221,9 +222,11 @@ void	Cgi::parseHeader()
 	}
 	else
 	{
-		if (!moveCursor(&cursorEnd, this->_header, DCRLF))
+		if (!moveCursor(&cursorEnd, this->_header, cursorStart, CRLF))
 		{
 			//error
+			//setError mais quel error
+			/**/streams.get(LOG_EVENT) << "(2)[error no CRLF]" << this->_header << std::endl;
 		}
 		this->_length = strtol(this->_header.substr(cursorStart + CON_LEN.size(), cursorEnd).c_str(), NULL, 10);
 	}

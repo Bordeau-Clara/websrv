@@ -80,6 +80,7 @@ const std::string CONTENT_TYPE = "CONTENT_TYPE=";
 const std::string HTTP = "HTTP_";
 
 const std::string REMOTE_ADDR = "REMOTE_ADDR=";
+const std::string STATUS = "Status:";
 
 // const std::string GATEWAY = "GATEWAY_INTERFACE=CGI/1.1";
 // const std::string PROTOCOL = "SERVER_PROTOCOL=HTTP/1.1";
