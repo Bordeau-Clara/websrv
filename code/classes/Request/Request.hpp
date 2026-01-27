@@ -175,7 +175,11 @@ public:
 
 private:
 	Cgi					*_cgi;
+	time_t				_lastTimeStamp;
 public:
+	void				editTime(void);
+	time_t				getLastTime(void);
+	bool				timeOut(unsigned int);
 	Cgi						*getCgi();
 
 //faire une classe de header
