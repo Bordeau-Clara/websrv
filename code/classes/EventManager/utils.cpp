@@ -10,6 +10,8 @@
 /* ************************************************************************** */
 
 #include "EventManager.hpp"
+#include <ctime>
+#include <list>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -19,7 +21,8 @@
 #include <fcntl.h>
 #include <stdexcept>
 
-#include "Event.hpp"
+#include "Request.hpp"
+#include "statusCodes.hpp"
 
 void	EventManager::getNewEvent(void)
 {
@@ -100,4 +103,29 @@ void	EventManager::EventDelete(int event_fd)
 			perror("epoll_ctl: DEL");
 			throw (std::runtime_error("ERROR"));
 		}
+}
+
+void	EventManager::zombieCheck(void)
+{
+	if (std::time(NULL) == lastZombieCheck)
+		return ;
+	lastZombieCheck = std::time(NULL);
+	for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); it++)
+	{
+		Request	&req = **it;
+		if (req.isState(EXEC))
+			continue ;
+		if (req.timeOut(5))
+		{
+			if (req.isState(CGI))
+			{
+				EventDelete(req.getCgi()->_responsePipe[0]);
+				// delete (req.getCgi());
+				// set cgi pointer to 0
+			}
+			EventModify(req.fd, EPOLLOUT, &req);
+			req.setError(Status(REQUEST_TIMEOUT, 408));
+		}
+			
+	}
 }

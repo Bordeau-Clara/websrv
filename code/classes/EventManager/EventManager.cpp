@@ -12,6 +12,7 @@
 #include "EventManager.hpp"
 
 #include <cerrno>
+#include <ctime>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -28,7 +29,7 @@
 #include "string.hpp"
 
 static const String	MONITOR_START = "Starting Webserv...";
-EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START), _alive(true)
+EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START), _alive(true), lastZombieCheck(std::time(NULL))
 {
     // 2. Créer une instance epoll
 	Monitor.popStatus("Creating an epoll instance");
@@ -82,5 +83,6 @@ void	EventManager::run(void)
 			else
 				throw (std::runtime_error("Unrecognized event"));
 		}
+		zombieCheck();
 	}
 }

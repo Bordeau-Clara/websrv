@@ -45,6 +45,7 @@ class EventManager
 
 	private: // all computation of webserv is in this class
 
+
 		Request			&requestAdd(Server&);
 		// EPOLLOUT
 		void			sendToClient(void);
@@ -85,6 +86,9 @@ class EventManager
 		int					_it;
 		StdinEvent			_stdin;
 		bool				_alive;
+
+		void				zombieCheck(void);
+		time_t				lastZombieCheck;
 };
 
 static const int	BUFFER_SIZE = 1024;
