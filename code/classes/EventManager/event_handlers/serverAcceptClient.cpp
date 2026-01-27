@@ -37,4 +37,5 @@ void	EventManager::serverAcceptClient(void)
 	EventAdd(client.fd, EPOLLIN, &client);
 	streams.get(LOG_EVENT) << "Nouvelle connexion acceptée: " << client.fd
 		<< std::endl;
+	client.editTime();
 }
