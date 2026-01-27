@@ -59,4 +59,13 @@ debug:
 
 corrval:
 	valgrind $(PROJECT_DIR)/$(BIN) $(CONFIG_TEST)
-.PHONY: run
+.PHONY: corrval
+
+corrpost:
+	curl -v \
+		-X POST http://localhost:8002/test.bla \
+		-H "Content-Type: text/plain" \
+		-H "Connection: close" \
+		--data-ascii "a"
+.PHONY: corrpost
+
