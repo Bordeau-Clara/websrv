@@ -82,7 +82,10 @@ void	Request::buildErrorResponse()
 	if (_status.code == 404)
 		this->appendConnection();
 	else
+	{
 		this->_response.str.append(CON_CLOSE);
+		this->_connection = CLOSE;
+	}
 	// check if error page exists
 	// if not or if access fail fall back on our default error page
 	// if yes append page to body

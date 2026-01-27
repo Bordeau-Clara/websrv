@@ -29,9 +29,15 @@ void	Request::generateRequestLine(void)
 void	Request::appendConnection(void)
 {
 	if (this->_connection == KEEP_ALIVE)
+	{
 		this->_response.str.append(CON_KEEP_ALIVE);
+		this->_connection = KEEP_ALIVE;
+	}
 	else
+	{
+		this->_connection = CLOSE;
 		this->_response.str.append(CON_CLOSE);
+	}
 }
 
 void	Request::headerEnd(void)
@@ -41,6 +47,8 @@ void	Request::headerEnd(void)
 
 bool	Request::findErrorPage(void)
 {
+	if (!this->_location)
+		return (false);
 	std::map<int, std::string>::const_iterator	errorPage = this->_location->getErrorPages().find(_status.code);
 
 	if (errorPage == this->_location->getErrorPages().end())
