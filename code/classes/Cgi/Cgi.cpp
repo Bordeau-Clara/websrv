@@ -116,6 +116,7 @@ void	Cgi::start(EventManager &webServ)
 
 		std::vector<char*> arg = strToArray(_arg);
 		std::vector<char*> env = strToArray(_env);
+		// execve(std::string("bash").c_str(), arg.data(), env.data());
 		execve(_exec.c_str(), arg.data(), env.data());
 		deleteVector(arg);
 		deleteVector(env);
@@ -163,7 +164,9 @@ void	Cgi::parseBuffer()
 	if (!moveCursor(&cursor, this->_buffer, DCRLF))
 	{
 		//error
-		//500 Internal Server Error
+		this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
+		this->_client->buildErrorResponse();
+		return;
 	}
 	streams.get(LOG_EVENT) << "[PARSING HEADER]" << std::endl
 		<< std::endl;
@@ -173,6 +176,9 @@ void	Cgi::parseBuffer()
 	if (this->_length != this->_buffer.size())
 	{
 		//error
+		this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
+		this->_client->buildErrorResponse();
+		return;
 	}
 	// buffer is body hehe
 	this->_client->_response.str.append(this->_buffer.data(), this->_buffer.size());
@@ -199,7 +205,9 @@ void	Cgi::parseHeader()
 		if (!moveCursor(&cursorEnd, this->_header, cursorStart, CRLF))
 		{
 			//error
-			//setError mais quel error
+			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
+			this->_client->buildErrorResponse();
+			return;
 			/**/streams.get(LOG_EVENT) << "(1)[error no CRLF]" << this->_header << std::endl;
 		}
 		this->_client->_response.str.append("HTTP/1.1");
@@ -222,7 +230,9 @@ void	Cgi::parseHeader()
 		if (!moveCursor(&cursorEnd, this->_header, cursorStart, CRLF))
 		{
 			//error
-			//setError mais quel error
+			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
+			this->_client->buildErrorResponse();
+			return;
 			/**/streams.get(LOG_EVENT) << "(2)[error no CRLF]" << this->_header << std::endl;
 		}
 		this->_length = strtol(this->_header.substr(cursorStart + CON_LEN.size(), cursorEnd).c_str(), NULL, 10);

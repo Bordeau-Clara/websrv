@@ -18,7 +18,7 @@ bool	EventManager::sendBuffer(Request &client)
 {
 	std::string toSend = client._response.get(BUFFER_SIZE);
 
-	if (send(client.fd, toSend.c_str(), toSend.size(), 0) == -1)
+	if (send(client.fd, toSend.data(), toSend.size(), 0) == -1)
 		throw (std::runtime_error("SEND"));
 	Monitor.printNewLine("SEND TO "+client.ip_str+ ": " + nbrToString(toSend.size())+" bytes");
 	return (client._response.transmissionComplete());
