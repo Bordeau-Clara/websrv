@@ -161,6 +161,12 @@ void	Request::checkURI(std::string	&remainder)
 			this->_cgi->_arg.push_back(this->_cgi->_exec);
 			_requestedRessource = _location->getRoot() + "/" +_location->getAlias() + "/" + remainder;
 			trimSlash(_requestedRessource);
+			if (access(_requestedRessource.c_str(), F_OK))// if cannot read index
+			{
+				streams.get(LOG_REQUEST) << "cgi file not found" << std::endl;
+				this->setError(Status(NOT_FOUND, 404));
+				return ;
+			}
 			this->_cgi->_arg.push_back(_requestedRessource);
 			setState(CGI);
 			return ;
