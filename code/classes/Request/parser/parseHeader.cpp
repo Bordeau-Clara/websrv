@@ -157,15 +157,21 @@ void	Request::checkURI(std::string	&remainder)
 		{
 			streams.get(LOG_REQUEST) << "[Cgi detected]"<< remainder.rfind(it->first) << std::endl;
 			this->_cgi = new Cgi(this);
-			this->_cgi->_exec = it->second;
-			this->_cgi->_arg.push_back(this->_cgi->_exec);
 			_requestedRessource = _location->getRoot() + "/" +_location->getAlias() + "/" + remainder;
 			trimSlash(_requestedRessource);
+			streams.get(LOG_REQUEST) << "accessing cgi :" << _requestedRessource<< std::endl;
 			if (access(_requestedRessource.c_str(), F_OK))// if cannot read index
 			{
 				streams.get(LOG_REQUEST) << "cgi file not found" << std::endl;
 				this->setError(Status(NOT_FOUND, 404));
 				return ;
+			}
+			if (it->second.empty())
+				this->_cgi->_exec = _requestedRessource;
+			else
+			{
+				this->_cgi->_exec = it->second;
+				this->_cgi->_arg.push_back(this->_cgi->_exec);
 			}
 			this->_cgi->_arg.push_back(_requestedRessource);
 			setState(CGI);
