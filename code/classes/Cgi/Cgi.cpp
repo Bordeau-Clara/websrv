@@ -164,6 +164,7 @@ void	Cgi::parseBuffer()
 	if (!moveCursor(&cursor, this->_buffer, DCRLF))
 	{
 		//error
+		/**/streams.get(LOG_EVENT) << "(1)[error no DCRLF]" << this->_header << std::endl;
 		this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 		this->_client->buildErrorResponse();
 		return;
@@ -176,6 +177,7 @@ void	Cgi::parseBuffer()
 	if (this->_length != this->_buffer.size())
 	{
 		//error
+		/**/streams.get(LOG_EVENT) << "(1)[size body differz]" << this->_header << std::endl;
 		this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 		this->_client->buildErrorResponse();
 		return;
@@ -204,11 +206,11 @@ void	Cgi::parseHeader()
 	{
 		if (!moveCursor(&cursorEnd, this->_header, cursorStart, CRLF))
 		{
+			/**/streams.get(LOG_EVENT) << "(1)[error no CRLF]" << this->_header << std::endl;
 			//error
 			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 			this->_client->buildErrorResponse();
 			return;
-			/**/streams.get(LOG_EVENT) << "(1)[error no CRLF]" << this->_header << std::endl;
 		}
 		this->_client->_response.str.append("HTTP/1.1");
 		this->_client->_response.str.append(this->_header.substr(cursorStart + STATUS.size(), cursorEnd + 2 - (cursorStart + STATUS.size())));
@@ -229,11 +231,11 @@ void	Cgi::parseHeader()
 	{
 		if (!moveCursor(&cursorEnd, this->_header, cursorStart, CRLF))
 		{
+			/**/streams.get(LOG_EVENT) << "(2)[error no CRLF]" << this->_header << std::endl;
 			//error
 			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 			this->_client->buildErrorResponse();
 			return;
-			/**/streams.get(LOG_EVENT) << "(2)[error no CRLF]" << this->_header << std::endl;
 		}
 		this->_length = strtol(this->_header.substr(cursorStart + CON_LEN.size(), cursorEnd).c_str(), NULL, 10);
 	}
