@@ -143,10 +143,12 @@ void	Request::parseURI(std::string str)
 
 void	Request::checkURI(std::string	&remainder)
 {
-//Todo:
-// verifier CGI
-	// si CGI
-		// access --> executable
+	//Todo:
+	// verifier CGI == chercher dans la map suffixe - executant
+	//  si trouve
+		// access --> fichier ressource demandee 
+		// access --> executant (deprecated)
+	// 	
 	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+remainder+">" << std::endl;
 	for (std::set<std::string>::const_iterator it = this->_location->getCgiSuffix().begin();
 		it != this->_location->getCgiSuffix().end(); it++)

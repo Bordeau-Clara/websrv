@@ -174,25 +174,6 @@ void	ConfigParser::parseClientMaxBodySize(Location &current)
 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
-void	ConfigParser::parseCgi(Location &current)
-{
-	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
-	if (end())
-		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
-
-	std::set<std::string> suffixes = current.getCgiSuffix();
-	for (;get() != ";" && !end(); next())
-	{
-		if (get().at(0) != '.')
-			throw (std::runtime_error("CGI suffix must start with '.'\n-->" + get()));
-		suffixes.insert(get());
-	}
-	if (end())
-		throw (std::runtime_error("Unclosed directive CGI \n-->edit"));
-	current.setCgiSuffixSet(suffixes);
-	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
-}
-
 void	ConfigParser::parseAllowedMethods(Location &current)
 {
 	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
@@ -362,5 +343,128 @@ void	ConfigParser::parsePostLocation(Location &current)
 	next();
 	if (get() != ";")
 		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+}
+
+
+// parser cgi like error page but instead of using number we use ascii sequence that starts with .
+// line can have only one argument that mean the file himself will execute hiself
+/*
+void	ConfigParser::parseErrorPages(Location &current)
+{
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
+	static const int	codes[] = {404, 500};
+	static const int	max = sizeof(codes) / sizeof(int);
+
+	std::vector<std::string>::iterator it_start = _token_it;
+	std::vector<std::string>::iterator page;
+	{
+		int	size = 0;
+		for (;get() != ";" && !end(); next())
+		{
+			size++;
+			page = _token_it;// get last argument (the page)
+						// should be the location of each error_pages
+		}
+		if (end())
+			throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
+		if (size < 2)
+			throw (std::runtime_error("Directive" + DIRECTIVE[ERROR_PAGE] + "need at least 2 arguments\n-->" + *(--_token_it)));
+		streams.get(LOG_DIRECTIVE) << size - 1 << " page to fill" << std::endl;
+	}
+
+	// for each token until page
+	for (; it_start < page; it_start++)
+	{
+		int	nb;
+		nb = std::strtol(it_start->c_str(), NULL, 10);
+		// work in progress thro strtol
+		if (0)
+			throw (std::runtime_error("error page code must be a number argument\n-->" + *it_start));
+		if (0)
+			throw (std::runtime_error("error page code must not exceed int value\n-->" + *it_start));
+		for (int i = 0; i < max + 1; i++)
+		{
+			if (i == max)
+				throw (std::runtime_error("Unrecognized error page code \n-->" + *it_start));
+			if (codes[i] == nb)
+			{
+				current.setErrorPage(nb, *page);
+				streams.get(LOG_DIRECTIVE) << nb << ": " + *page << std::endl;
+				break ;
+			}
+		}
+	}
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+}
+*/
+void	ConfigParser::parseCgi(Location &current)
+{
+	// error page quon modifie traite map int str
+	// cgi est actuelmmenet set str
+	//
+	std::vector<std::string>::iterator it_start = _token_it;
+	std::vector<std::string>::iterator exec;
+	{
+		int	size = 0;
+		for (;get() != ";" && !end(); next())
+		{
+			size++;
+			exec = _token_it;// get last argument (the page)
+						// should be the location of each error_pages
+		}
+		if (end())
+			throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
+		if (!size)
+			throw (std::runtime_error("Directive" + DIRECTIVE[getDirective()] + "need at least 1 arguments\n-->" + *(--_token_it)));
+		if (size == 1)
+		{
+			//cle avec valeur vide
+			//return ;
+		}
+		streams.get(LOG_DIRECTIVE) << size - 1 << "cgi to fill" << std::endl;
+	}
+
+	// for each token until page
+	for (; it_start < page; it_start++)
+	{
+		int	nb;
+		nb = std::strtol(it_start->c_str(), NULL, 10);
+		// work in progress thro strtol
+		if (0)
+			throw (std::runtime_error("error page code must be a number argument\n-->" + *it_start));// start with .
+		for (int i = 0; i < max + 1; i++)
+		{
+			if (i == max)
+				throw (std::runtime_error("Unrecognized error page code \n-->" + *it_start));
+			if (codes[i] == nb)
+			{
+				current.setErrorPage(nb, *page);
+				streams.get(LOG_DIRECTIVE) << nb << ": " + *page << std::endl;
+				break ;
+			}
+		}
+	}
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+}
+// fin error page modifie
+
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
+	std::set<std::string> suffixes = current.getCgiSuffix();
+	for (;get() != ";" && !end(); next())
+	{
+		if (get().at(0) != '.')
+			throw (std::runtime_error("CGI suffix must start with '.'\n-->" + get()));
+		suffixes.insert(get());
+	}
+	if (end())
+		throw (std::runtime_error("Unclosed directive CGI \n-->edit"));
+	current.setCgiSuffixSet(suffixes);
 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
