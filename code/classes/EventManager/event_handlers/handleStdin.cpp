@@ -20,5 +20,9 @@ void	EventManager::handleStdin(void)
 
 	ssize_t	rbytes = read(0, buffer, BUFFER_SIZE);
 	if (!rbytes)
+	{
+	/**/streams.get(LOG_EVENT) << "[ENDING WEBSERV]" << std::endl
+		/**/<< std::endl;
 		_alive = false;
+	}
 }

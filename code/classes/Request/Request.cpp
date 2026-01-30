@@ -37,10 +37,14 @@ Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in))
 #include <unistd.h>
 Request::~Request(void)
 {
+	/**/streams.get(LOG_EVENT) << "[REQUEST DESTRUCTOR CALLED]" << std::endl
+		/**/<< std::endl;
 	if (this->fd != -1)
 		close(this->fd);
 	if (this->_cgi)
 	{
+	/**/streams.get(LOG_EVENT) << "[CGI DELETED]" << std::endl
+		/**/<< std::endl;
 		delete _cgi;
 		_cgi = NULL;
 	}

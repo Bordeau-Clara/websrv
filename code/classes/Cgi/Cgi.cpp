@@ -117,12 +117,15 @@ void	Cgi::start(EventManager &webServ)
 
 		std::vector<char*> arg = strToArray(_arg);
 		std::vector<char*> env = strToArray(_env);
-		// execve(std::string("bash").c_str(), arg.data(), env.data());
-		execve(_exec.c_str(), arg.data(), env.data());
+		execve(std::string("bash").c_str(), arg.data(), env.data());
+		// execve(_exec.c_str(), arg.data(), env.data());
+		/**/streams.get(LOG_EVENT) << "(1)[EXECVE FAIL]" << this->_header << std::endl;
 		deleteVector(arg);
 		deleteVector(env);
-		/**/streams.get(LOG_EVENT) << "(1)[EXECVE FAIL]" << this->_header << std::endl;
-		
+		for (std::list<Request*>::iterator it = webServ.requests.begin(); it != webServ.requests.end(); it++)
+		{
+			delete (*it);
+		}
 		exit(1);
 	}
 	else

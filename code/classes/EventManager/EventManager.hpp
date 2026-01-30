@@ -42,6 +42,7 @@ class EventManager
 		EventManager(std::vector<Server>&);
 		~EventManager(void);
 		void			run(void);
+		std::list<Request*>	requests;
 
 	private: // all computation of webserv is in this class
 
@@ -78,7 +79,6 @@ class EventManager
 		void				EventModify(int, uint32_t, void*);
 		void				EventDelete(int);
 		// allocated request vector
-		std::list<Request*>	requests;
 		void(EventManager::*epollinHandler[4])(void);// jumptable
 		int					_fd;
 		struct epoll_event	_events[MAX_EVENTS];
