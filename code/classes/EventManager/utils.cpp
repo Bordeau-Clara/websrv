@@ -10,8 +10,10 @@
 /* ************************************************************************** */
 
 #include "EventManager.hpp"
+#include <csignal>
 #include <ctime>
 #include <list>
+#include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -122,7 +124,10 @@ void	EventManager::zombieCheck(void)
 		Monitor.printNewLine("client Timeout !");
 		if (req.isState(CGI))
 		{
+			pid_t &pid = req.getCgi()->_pid;
 			EventDelete(req.getCgi()->_responsePipe[0]);
+			if (pid != -1 && pid != 0)
+				kill(pid, SIGKILL);
 			// delete (req.getCgi());
 			// set cgi pointer to 0
 		}
