@@ -47,7 +47,7 @@ public:
 	int						_bodyPipe[2];
 	Cgi(Request*); //prendre adresse de request
 
-	void						start(EventManager &webServ);
+	int						start(EventManager &webServ);
 	pid_t					_pid;
 
 	void						createBasicEnv();

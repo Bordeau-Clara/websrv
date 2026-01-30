@@ -84,6 +84,8 @@ void	EventManager::run(void)
 				handlePipe();
 			else
 				throw (std::runtime_error("Unrecognized event"));
+			if (_alive == false)
+				break;
 		}
 		zombieCheck();
 	}

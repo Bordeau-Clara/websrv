@@ -90,7 +90,7 @@ void	Cgi::init(void)
 	fcntl(_responsePipe[0], F_SETFL, O_NONBLOCK);
 }
 
-void	Cgi::start(EventManager &webServ)
+int	Cgi::start(EventManager &webServ)
 {
 	(void)webServ;
 	_pid = fork();
@@ -117,16 +117,17 @@ void	Cgi::start(EventManager &webServ)
 
 		std::vector<char*> arg = strToArray(_arg);
 		std::vector<char*> env = strToArray(_env);
-		execve(std::string("bash").c_str(), arg.data(), env.data());
-		// execve(_exec.c_str(), arg.data(), env.data());
+		// execve(std::string("bash").c_str(), arg.data(), env.data());
+		execve(_exec.c_str(), arg.data(), env.data());
 		/**/streams.get(LOG_EVENT) << "(1)[EXECVE FAIL]" << this->_header << std::endl;
 		deleteVector(arg);
 		deleteVector(env);
-		for (std::list<Request*>::iterator it = webServ.requests.begin(); it != webServ.requests.end(); it++)
-		{
-			delete (*it);
-		}
-		exit(1);
+		// for (std::list<Request*>::iterator it = webServ.requests.begin(); it != webServ.requests.end(); it++)
+		// {
+		// 	delete (*it);
+		// }
+		return 0;
+		// exit(1);
 	}
 	else
 		//close bodypipe[0]
@@ -142,6 +143,7 @@ void	Cgi::start(EventManager &webServ)
 		write(_bodyPipe[1], body.data(), body.size());
 		(streams.get(LOG_EVENT) << "body:").write(body.data(), body.size()) << std::endl;
 		close(_bodyPipe[1]);
+		return 1;
 	}
 }
 

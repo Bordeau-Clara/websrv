@@ -68,7 +68,11 @@ void	EventManager::recvFromClient(void)
 		// mute les envois clients
 		EventModify(client.fd, 0, &client);
 		//create pipe fork and send optional body through new pipe and fork here??
-		cgi->start(*this);
+		if (!cgi->start(*this))
+		{
+			this->_alive = false;
+			return;
+		}
 		EventAdd(cgi->_responsePipe[0], EPOLLIN, cgi);
 		client.editTime();
 	}
