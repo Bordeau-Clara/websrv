@@ -173,6 +173,12 @@ void	Request::checkURI(std::string	&remainder)
 				this->_cgi->_exec = it->second;
 				this->_cgi->_arg.push_back(this->_cgi->_exec);
 			}
+			if (access(this->_cgi->_exec.c_str(), X_OK))// if cannot read index
+			{
+				streams.get(LOG_REQUEST) << "cgi cannot be executed" << std::endl;
+				this->setError(Status(INTERNAL_SERVER_ERROR, 500));
+				return ;
+			}
 			this->_cgi->_arg.push_back(_requestedRessource);
 			setState(CGI);
 			return ;
