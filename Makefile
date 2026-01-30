@@ -57,6 +57,14 @@ debug:
 	valgrind $(PROJECT_DIR)/$(BIN) $(CONFIG)
 .PHONY: debug
 
+debugFork:
+	valgrind --trace-children=yes --track-fds=yes $(PROJECT_DIR)/$(BIN) $(CONFIG)
+.PHONY: debug
+
+debugLeaks:
+	valgrind --trace-children=yes --track-fds=yes --leak-check=full --show-leak-kinds=all $(PROJECT_DIR)/$(BIN) $(CONFIG)
+.PHONY: debug
+
 corrval:
 	valgrind $(PROJECT_DIR)/$(BIN) $(CONFIG_TEST)
 .PHONY: corrval
