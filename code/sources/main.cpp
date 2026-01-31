@@ -11,9 +11,13 @@
 
 #include "EventManager.hpp"
 #include <iostream>
+#include <string>
+#include "helpers.hpp"
+#include "logfiles.hpp"
 #include "webserv.hpp"
 
 FileStream	streams;
+const std::string MIMES_PATH = "mime.types";
 
 int	main(int argc, char **argv)
 {
@@ -32,6 +36,13 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
+	std::map<std::string,std::string> mimes;
+	mimeTypesMapFill(MIMES_PATH.c_str(), mimes);
+	for (std::map<std::string, std::string>::iterator it = mimes.begin()
+		; it != mimes.end(); it++)
+	{
+		streams.get(LOG_LOCATION) << it->first + '=' + it->second << std::endl;
+	}
 	std::vector<Server>	servers;
 	try// to fill server vector with config file
 	{

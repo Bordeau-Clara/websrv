@@ -20,8 +20,8 @@
 
 void	mimeTypesMapFill(const char* path, std::map<std::string, std::string>& mime)
 {
-
-	std::stringstream	ss(path);
+	std::string str = extractStr(path);
+	std::stringstream	ss(str);
 	std::vector<std::string>	ext;
 	std::string	line;
 	int	lineCount;

@@ -12,8 +12,11 @@
 #pragma once
 
 #include <sstream>
+#include <map>
+#include <string>
 std::string	nbrToString(size_t nbr);
 std::string	extractStr(const char *file);
+void	mimeTypesMapFill(const char* path, std::map<std::string, std::string>& mime);
 void		trimSlash(std::string &str);
 void	trimDots(std::string &str);
 std::string	buildIpPortStr(unsigned int	ip, unsigned short int port);
