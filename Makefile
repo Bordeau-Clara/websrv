@@ -102,3 +102,15 @@ cgi-py:
 cgi-sh:
 	$(BROWSER_CMD) localhost:8002/cgi-bin/wow.sh
 .PHONY: cgi-sh
+
+cgi-not_found:
+	$(BROWSER_CMD) localhost:8002/cgi-bin/prout.sh
+.PHONY: cgi-sh
+
+cgi-time_out:
+	$(BROWSER_CMD) localhost:8002/cgi-bin/infiniteLoop.sh
+.PHONY: cgi-time_out
+
+cgi-cannot_exec:
+	$(BROWSER_CMD) localhost:8002/cgi-bin/cannot.sh
+.PHONY: cgi-cannot_exec
