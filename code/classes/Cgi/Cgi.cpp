@@ -225,6 +225,8 @@ void	Cgi::parseHeader()
 {
 	/**/streams.get(LOG_EVENT) << "[CGI header]" << std::endl <<this->_header << std::endl;
 	appendStatus();
+	appendContentLen();
+	setConnection();
 	std::string::size_type cursorStart = 0;
 	if (!moveCursor(&cursorStart, this->_header, "Content-Type:"))
 	{
