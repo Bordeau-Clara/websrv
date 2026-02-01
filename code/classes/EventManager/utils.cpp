@@ -130,8 +130,12 @@ void	EventManager::zombieCheck(void)
 				kill(pid, SIGKILL);
 			// delete (req.getCgi());
 			// set cgi pointer to 0
+			req.setError(Status(GATEWAY_TIMEOUT, 504));
+			req.buildErrorResponse();
+			EventModify(req.fd, EPOLLOUT, &req);
+			return;
 		}
-		req.setError(Status(GATEWAY_TIMEOUT, 504));
+		req.setError(Status(REQUEST_TIMEOUT, 408));
 		req.buildErrorResponse();
 		EventModify(req.fd, EPOLLOUT, &req);
 			
