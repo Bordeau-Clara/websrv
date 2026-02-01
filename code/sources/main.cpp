@@ -17,10 +17,11 @@
 #include "webserv.hpp"
 
 FileStream	streams;
-const std::string MIMES_PATH = "mime.types";
+std::map<std::string,std::string>	mimes;
 
 int	main(int argc, char **argv)
 {
+	// streams init
 	try// to open stream log file
 	{
 		streams.add(LOG_CONFIGPARSER);
@@ -36,13 +37,22 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
-	std::map<std::string,std::string> mimes;
-	mimeTypesMapFill(MIMES_PATH.c_str(), mimes);
+	// mimes parser
+	try// init mimes
+	{
+		mimeTypesMapFill(MIMES_PATH.c_str(), mimes);
+	}
+	catch (std::exception &e)// open or parsing mimes issues
+	{
+		std::cerr << MIMES_PATH << " error:" << e.what() << std::endl;
+	}
 	for (std::map<std::string, std::string>::iterator it = mimes.begin()
 		; it != mimes.end(); it++)
 	{
 		streams.get(LOG_LOCATION) << it->first + '=' + it->second << std::endl;
 	}
+
+	// config parser
 	std::vector<Server>	servers;
 	try// to fill server vector with config file
 	{

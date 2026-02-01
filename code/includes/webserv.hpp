@@ -18,3 +18,5 @@
 #include "Location.hpp"
 #include "Server.hpp"
 #include "Request.hpp"
+
+const std::string					MIMES_PATH = "mime.types";
