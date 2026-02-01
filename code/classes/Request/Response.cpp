@@ -90,6 +90,7 @@ void	Request::buildErrorResponse()
 	// if not or if access fail fall back on our default error page
 	// if yes append page to body
 	// this->_response.str.append(extractStr(_requestedRessource.c_str()));
+	this->_response.body.clear();
 	if (!findErrorPage())
 	{
 		this->_response.body.append(_status.str);
