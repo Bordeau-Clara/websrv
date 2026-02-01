@@ -224,6 +224,37 @@ void	Cgi::fillHeader(std::string::size_type cursor)
 void	Cgi::parseHeader()
 {
 	/**/streams.get(LOG_EVENT) << "[CGI header]" << std::endl <<this->_header << std::endl;
+	appendStatus();
+	std::string::size_type cursorStart = 0;
+	if (!moveCursor(&cursorStart, this->_header, "Content-Type:"))
+	{
+		//what to do??
+	}
+	while (1)
+	{
+		if (!moveCursor(&cursorStart, this->_header, _headerLimiter))
+		{
+			/**/streams.get(LOG_EVENT) << "(3)[error no limiter]" << this->_header << std::endl;
+			//error
+			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
+			this->_client->buildErrorResponse();
+			return;
+		}
+		/**/streams.get(LOG_EVENT) << "[1 header has been append]" << std::endl << std::endl;
+		this->_client->_response.str.append(this->_header, 0, cursorStart);
+		this->_client->_response.str.append(CRLF);
+		this->_header.erase(0, cursorStart + _headerLimiter.size());
+		if (_header.empty())
+		{
+			this->_client->_response.str.append(CRLF);
+			break;
+		}
+	}
+
+}
+
+void	Cgi::appendStatus()
+{
 	std::string::size_type cursorStart = 0;
 	std::string::size_type cursorEnd = 0;
 	if (moveCursor(&cursorStart, this->_header, STATUS))
@@ -246,10 +277,12 @@ void	Cgi::parseHeader()
 	/**/streams.get(LOG_EVENT) << "[status has been append]" << std::endl << std::endl;
 		this->_client->_response.str.append("HTTP/1.1 200 OK" + CRLF);
 	}
-	if (!moveCursor(&cursorStart, this->_header, "Content-Type:"))
-	{
-		//what to do??
-	}
+}
+
+void	Cgi::appendContentLen()
+{
+	std::string::size_type cursorStart = 0;
+	std::string::size_type cursorEnd = 0;
 	if (!moveCursor(&cursorStart, this->_header, CON_LEN))
 	{
 	/**/streams.get(LOG_EVENT) << "[content len has been filled]" << std::endl << std::endl;
@@ -271,6 +304,11 @@ void	Cgi::parseHeader()
 	/**/streams.get(LOG_EVENT) << "[content len has been found and filled]" << std::endl << std::endl;
 		this->_length = strtol(this->_header.substr(cursorStart + CON_LEN.size(), cursorEnd).c_str(), NULL, 10);
 	}
+}
+
+void	Cgi::setConnection()
+{
+	std::string::size_type cursorStart = 0;
 	if (!moveCursor(&cursorStart, this->_header, "Connection:"))
 	{
 		if (this->_client->getConnection() == KEEP_ALIVE)
@@ -278,25 +316,4 @@ void	Cgi::parseHeader()
 		else
 			this->_client->_response.str.append(CON_CLOSE);
 	}
-	while (1)
-	{
-		if (!moveCursor(&cursorStart, this->_header, _headerLimiter))
-		{
-			/**/streams.get(LOG_EVENT) << "(3)[error no limiter]" << this->_header << std::endl;
-			//error
-			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
-			this->_client->buildErrorResponse();
-			return;
-		}
-	/**/streams.get(LOG_EVENT) << "[1 header has been append]" << std::endl << std::endl;
-		this->_client->_response.str.append(this->_header, 0, cursorStart);
-		this->_client->_response.str.append(CRLF);
-		this->_header.erase(0, cursorStart + _headerLimiter.size());
-		if (_header.empty())
-		{
-			this->_client->_response.str.append(CRLF);
-			break;
-		}
-	}
-
 }

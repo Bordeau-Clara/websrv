@@ -35,6 +35,9 @@ public:
 	std::string					_header;
 	void							fillHeader(std::string::size_type cursor);
 	void							parseHeader();
+	void							appendStatus();
+	void							appendContentLen();
+	void							setConnection();
 	std::string					_headerLimiter;
 	std::string							findLimiter();
 
