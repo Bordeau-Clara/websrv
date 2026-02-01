@@ -149,6 +149,32 @@ void	ConfigParser::parseAlias(Location &current)
 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
+void	ConfigParser::parseClientMaxHeaderSize(Location &current)
+{
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
+	int i;
+	try
+	{
+		i = std::strtol(get().c_str(), NULL, 10);
+    }
+	catch (std::invalid_argument const& ex)
+	{
+		throw (std::runtime_error("max_client_header_size must be a number argument\n-->" + get()));
+	}
+	catch (std::out_of_range const& ex)
+	{
+		throw (std::runtime_error("max_client_header_size must not exceed int value\n-->" + get()));
+	}
+	current.setClientMaxHeaderSize(i);
+	next();
+	if (get() != ";")
+		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+}
+
 void	ConfigParser::parseClientMaxBodySize(Location &current)
 {
 	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;

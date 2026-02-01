@@ -42,6 +42,12 @@ class	Location
 	std::string					_root;
 
 	public:
+	void							setClientMaxHeaderSize(unsigned int);
+	unsigned int					getClientMaxHeaderSize(void) const;
+	private:
+	unsigned int				_client_max_header_size;
+
+	public:
 	void							setClientMaxBodySize(unsigned int);
 	unsigned int					getClientMaxBodySize(void) const;
 	private:

@@ -33,6 +33,11 @@ Location	ConfigParser::parseLocationLoop(Location &current)
 			parseAlias(current);
 			break ;
 
+			case CLIENT_MAX_HEADER_SIZE:
+			next();
+			parseClientMaxHeaderSize(current);
+			break ;
+
 			case CLIENT_MAX_BODY_SIZE:
 			next();
 			parseClientMaxBodySize(current);

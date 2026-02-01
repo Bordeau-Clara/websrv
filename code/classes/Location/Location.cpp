@@ -5,6 +5,18 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/01 17:19:41 by aykrifa           #+#    #+#             */
+/*   Updated: 2026/02/01 17:19:53 by aykrifa          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Location.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 14:45:42 by aykrifa           #+#    #+#             */
 /*                                                                            */
 /* ************************************************************************** */
@@ -34,6 +46,7 @@ Location::Location(void):
 	_name(DEFAULT_LOCATION_NAME),
 	_alias(DEFAULT_LOCATION_ALIAS),
 	_root(DEFAULT_LOCATION_ROOT),
+	_client_max_header_size(DEFAULT_LOCATION_MAX_HEADER_SIZE),
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
 	_return(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
@@ -50,6 +63,7 @@ Location::Location(const std::string &name):
 	_name(name),
 	_alias(name),
 	_root(DEFAULT_LOCATION_ROOT),
+	_client_max_header_size(DEFAULT_LOCATION_MAX_HEADER_SIZE),
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
 	_return(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
@@ -66,6 +80,7 @@ Location::Location(const Location &copy):
 	_name(copy._name),
 	_alias(copy._alias),
 	_root(copy._root),
+	_client_max_header_size(copy._client_max_header_size),
 	_client_max_body_size(copy._client_max_body_size),
 	_cgi_suffix(copy._cgi_suffix),
 	_return(copy._return),
@@ -89,6 +104,7 @@ Location	&Location::operator=(const Location &copy)
 	this->_name = copy._name;
 	this->_root = copy._root;
 	this->_alias = copy._alias;
+	this->_client_max_header_size = copy._client_max_header_size;
 	this->_client_max_body_size = copy._client_max_body_size;
 	this->_cgi_suffix = copy._cgi_suffix;
 	this->_return = copy._return;
@@ -134,6 +150,17 @@ void	Location::setAlias(const std::string &alias)
 const std::string	&Location::getAlias(void) const
 {
 	return (this->_alias);
+}
+
+//client_max_header_size
+void	Location::setClientMaxHeaderSize(unsigned int  client_max_header_size)
+{
+	this->_client_max_header_size = client_max_header_size;
+}
+
+unsigned int	Location::getClientMaxHeaderSize(void) const
+{
+	return (this->_client_max_header_size);
 }
 
 //client_max_body_size
@@ -244,6 +271,10 @@ std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 
 	lhs << "alias: "
 		<< rhs.getAlias()
+		<< std::endl;
+
+	lhs << "client_max_header_size: "
+		<< rhs.getClientMaxHeaderSize()
 		<< std::endl;
 
 	lhs << "client_max_body_size: "

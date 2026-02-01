@@ -60,6 +60,7 @@ class	ConfigParser
 		void	parseRoot(Location&);
 		void	parseAlias(Location&);
 		void	parseClientMaxBodySize(Location&);
+		void	parseClientMaxHeaderSize(Location&);
 		void	parseCgi(Location&);
 		void	parseAllowedMethods(Location&);
 		void	parseReturn(Location&);
