@@ -23,7 +23,7 @@
 
 void	Request::generateRequestLine(void)
 {
-	this->_response.str.append("HTTP/1.1 " + getStatus().str + CRLF);
+	this->_response.str.assign("HTTP/1.1 " + getStatus().str + CRLF);
 }
 
 void	Request::appendConnection(void)
