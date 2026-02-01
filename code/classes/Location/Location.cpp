@@ -27,6 +27,7 @@ void Location::defaultErrorPagesMapFiller(void)
 
     // 5xx Server Errors
     this->setErrorPage(500, DEFAULT_LOCATION_ERRORPAGES_PATH + "500.html");
+    this->setErrorPage(504, DEFAULT_LOCATION_ERRORPAGES_PATH + "504.html");
 }
 
 Location::Location(void):
