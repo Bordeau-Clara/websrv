@@ -28,6 +28,7 @@ static const std::string URI_TOO_LONG = "414 URI Too Long"; //or Request-URI Too
 static const std::string HEADER_TOO_LONG = "431 Request Header Fields Too Large";
 
 static const std::string INTERNAL_SERVER_ERROR = "500 Internal Server Error";
+static const std::string GATEWAY_TIMEOUT = "504 Gateway Timeout";
 
 
 //modele reponse erreur

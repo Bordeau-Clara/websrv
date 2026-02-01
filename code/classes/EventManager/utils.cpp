@@ -131,7 +131,7 @@ void	EventManager::zombieCheck(void)
 			// delete (req.getCgi());
 			// set cgi pointer to 0
 		}
-		req.setError(Status(INTERNAL_SERVER_ERROR, 500));
+		req.setError(Status(GATEWAY_TIMEOUT, 504));
 		req.buildErrorResponse();
 		EventModify(req.fd, EPOLLOUT, &req);
 			
