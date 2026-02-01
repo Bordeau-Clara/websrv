@@ -18,6 +18,8 @@
 #include <cstddef>
 #include <fcntl.h>
 #include <fstream>
+#include <map>
+#include <string>
 #include <unistd.h>
 #include "helpers.hpp"
 
@@ -57,4 +59,22 @@ bool	Request::findErrorPage(void)
 		return (false);
 	_response.body = extractStr(errorPage->second.c_str());
 	return (true);
+}
+
+extern std::map<std::string, std::string>	mimes;
+
+void	Request::appendContentType()
+{
+	std::string::size_type dot = _requestedRessource.rfind(".");
+	std::string suffix = _requestedRessource.substr(dot, _requestedRessource.size());
+
+	std::map<std::string, std::string>::iterator mime = mimes.find(suffix);
+	if (mime != mimes.end())
+	{
+		_response.str.append("Content-Type:" + mime->second + CRLF);
+	}
+	else
+	{
+		// _response.str.append("Content-Type:application/octet-stream" + CRLF);
+	}
 }

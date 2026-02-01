@@ -114,6 +114,7 @@ void	Request::buildGetResponse()
 	// size of body
 	this->_response.str.append(CON_LEN + nbrToString(_response.body.size()) + CRLF);
 	this->appendConnection();
+	this->appendContentType();
 	//add Content-type
 	//add Date ??
 	this->headerEnd();

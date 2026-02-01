@@ -155,6 +155,7 @@ public:
 // utils
 	void					generateRequestLine();
 	void					appendConnection(void);
+	void					appendContentType(void);
 	void					headerEnd(void);
 
 private:
