@@ -463,22 +463,22 @@ void	ConfigParser::parseCgi(Location &current)
 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
-// fin error page modifie
-// {
-// 	//wtf is this??
-// 	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
-// 	if (end())
-// 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
-//
-// 	std::map<std::string, std::string> suffixes = current.getCgiSuffix();
-// 	for (;get() != ";" && !end(); next())
-// 	{
-// 		if (get().at(0) != '.')
-// 			throw (std::runtime_error("CGI suffix must start with '.'\n-->" + get()));
-// 		suffixes.insert(std::pair<std::string, std::string>(get(), *exec));//ok ????
-// 	}
-// 	if (end())
-// 		throw (std::runtime_error("Unclosed directive CGI \n-->edit"));
-// 	current.setCgiSuffixSet(suffixes);
-// 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
-// }
+void	ConfigParser::parseCookies(Location &current)
+{
+	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
+	bool	cookies;
+	if (get() == "on" || get() == "ON")
+		cookies = true;
+	else if (get() == "off" || get() == "OFF")
+		cookies = false;
+	else
+		throw (std::runtime_error("In directive " + DIRECTIVE[AUTOINDEX] + " :unrecognized token\n-->" + get()));
+	current.setCookies(cookies);
+	next();
+	if (get() != ";")
+		throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
+	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+}

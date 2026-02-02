@@ -30,3 +30,4 @@ static const bool						DEFAULT_LOCATION_POST = false;
 static const bool						DEFAULT_LOCATION_DELETE = false;
 static const std::string				DEFAULT_LOCATION_CGI_PYTHON = ".bla";
 static const std::string				DEFAULT_LOCATION_CGI_PHP = ".php";
+static const bool						DEFAULT_LOCATION_COOKIES = false;
