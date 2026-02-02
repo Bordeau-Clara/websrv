@@ -95,6 +95,12 @@ class	Location
 	void							setPostDirectory(const std::string&);
 	private:
 	std::string					_post_directory;
+
+	public:
+	void							setCookies(bool);
+	bool							getCookies(void) const;
+	private:
+	bool						_cookies;
 };
 
 std::ostream			&operator<<(std::ostream&, const Location&);

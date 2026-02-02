@@ -6,7 +6,7 @@
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 17:19:41 by aykrifa           #+#    #+#             */
-/*   Updated: 2026/02/01 17:19:53 by aykrifa          ###   ########.fr       */
+/*   Updated: 2026/02/02 09:47:35 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ Location::Location(void):
 	_return(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
 	_index(DEFAULT_LOCATION_INDEX),
-	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
+	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY),
+	_cookies(DEFAULT_LOCATION_COOKIES)
 {
 	this->defaultErrorPagesMapFiller();
 	this->_methods[GET] = DEFAULT_LOCATION_GET;
@@ -68,7 +69,8 @@ Location::Location(const std::string &name):
 	_return(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
 	_index(DEFAULT_LOCATION_INDEX),
-	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
+	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY),
+	_cookies(DEFAULT_LOCATION_COOKIES)
 {
 	this->defaultErrorPagesMapFiller();
 	this->_methods[GET] = DEFAULT_LOCATION_GET;
@@ -87,7 +89,8 @@ Location::Location(const Location &copy):
 	_autoindex(copy._autoindex),
 	_index(copy._index),
 	_error_page(copy._error_page),
-	_post_directory(copy._post_directory)
+	_post_directory(copy._post_directory),
+	_cookies(copy._cookies)
 {
 	this->_methods[GET] = copy._methods[GET];
 	this->_methods[POST] = copy._methods[POST];
@@ -115,6 +118,7 @@ Location	&Location::operator=(const Location &copy)
 	this->_methods[GET] = copy._methods[GET];
 	this->_methods[POST] = copy._methods[POST];
 	this->_methods[DELETE] = copy._methods[DELETE];
+	this->_cookies = copy._cookies;
 
 	return (*this);
 }
@@ -259,6 +263,17 @@ void	Location::setPostDirectory(const std::string &post_directory)
 	this->_post_directory = post_directory;
 }
 
+// cookies
+bool	Location::getCookies(void) const
+{
+	return (this->_cookies);
+}
+
+void	Location::setCookies(bool cookies)
+{
+	this->_cookies = cookies;
+}
+
 std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 {
 	lhs << "name: "
@@ -319,5 +334,9 @@ std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 			<< it->second
 			<< std::endl;
 	}
+
+	lhs << "cookies: "
+		<< (rhs.getCookies() ? "on" : "off")
+		<< std::endl;
 	return (lhs);
 }

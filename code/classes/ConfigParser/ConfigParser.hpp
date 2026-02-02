@@ -67,6 +67,7 @@ class	ConfigParser
 		void	parseAutoIndex(Location&);
 		void	parseErrorPages(Location&);
 		void	parsePostLocation(Location&);
+		void	parseCookies(Location&);
 
 		ConfigParser(){}
 };

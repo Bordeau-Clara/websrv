@@ -18,22 +18,23 @@ static const std::string	OPERAND = "{};";
 
 static const std::string	DIRECTIVE[] =
 	{
-		"server",				// {}
-		"location",				// expr{}
-		"listen",				// short (port)
-		"error_page",			// int
+		"server",					// {}
+		"location",					// expr{}
+		"listen",					// short (port)
+		"error_page",				// int
 		"client_max_header_size",	// int
-		"client_max_body_size",	// int
-		"allow_methods",		//
-		"return",				// URL (redirection)
-		"root",					// path (debut du path)
-		"alias",				// expr (remplace location)
-		"autoindex",			// on |off
-		"cgi",			// .expr
-		"post_directory",		// path
-		"{",					//
-		"}",					//
-		";"						//
+		"client_max_body_size",		// int
+		"allow_methods",			// expr
+		"return",					// URL (redirection)
+		"root",						// path (debut du path)
+		"alias",					// expr (remplace location)
+		"autoindex",				// on |off
+		"cgi",						// .expr
+		"post_directory",			// path
+		"cookies",					// bool
+		"{",						//
+		"}",						//
+		";"							//
 	};
 
 static const int SERVER					= 0;
@@ -49,7 +50,8 @@ static const int ALIAS					= 9;
 static const int AUTOINDEX				= 10;
 static const int CGI_SUFFIX				= 11;
 static const int POST_LOCATION			= 12;
-static const int OPENING_BRACKET		= 13;
-static const int CLOSING_BRACKET		= 14;
-static const int SEMICOLOM				= 15;
-static const int NONE					= 16;
+static const int COOKIES				= 13;
+static const int OPENING_BRACKET		= 14;
+static const int CLOSING_BRACKET		= 15;
+static const int SEMICOLOM				= 16;
+static const int NONE					= 17;
