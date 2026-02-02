@@ -201,6 +201,7 @@ private:
 
 public:
 	std::string				getHost() const;
+	std::string				getCookies() const;
 	std::string				getContentType() const;
 	std::string				getExpect() const;
 	unsigned long			getContentLength() const;

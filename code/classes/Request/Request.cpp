@@ -225,6 +225,8 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 		<< rhs.getExpect() << std::endl
 		<< "Content Length="
 		<< rhs.getContentLength() << std::endl
+		<< "Cookies="
+		<< rhs.getCookies() << std::endl
 		<< "Transfer Encoding =";
 	if (rhs.isState(CHUNKED))
 		lhs << "chunked" << std::endl;
