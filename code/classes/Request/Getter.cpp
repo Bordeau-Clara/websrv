@@ -70,6 +70,11 @@ std::string	Request::getHost() const
 	return this->_host;
 }
 
+std::string	Request::getCookies() const
+{
+	return this->_cookies;
+}
+
 std::string	Request::getContentType() const
 {
 	return this->_contentType;

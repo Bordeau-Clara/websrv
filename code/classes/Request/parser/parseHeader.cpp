@@ -24,14 +24,14 @@
 // string = expr + final CRLF
 void	Request::parseHeader(void)
 {
-	std::string				token;
+	std::string				statusLine;
 
-	if (!this->getToken(&token))//can't use this cause it skip ows
+	if (!this->getStatusLine(&statusLine))
 	{
 		this->setError(Status(BAD_REQUEST, 400));
 		return;
 	}
-	parseRequestLine(token);
+	parseRequestLine(statusLine);
 	if (this->isState(ERROR))
 		return;
 	if (this->isState(CGI))

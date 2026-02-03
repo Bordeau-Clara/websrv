@@ -30,7 +30,7 @@
 
 extern FileStream	streams;
 int				find_type(std::string str);
-unsigned long	hexToLong(std::string line);
+// unsigned long	hexToLong(std::string line);
 
 // const bool			CHUNKED = 1;
 const bool			KEEP_ALIVE = true;
@@ -124,6 +124,7 @@ public:
 	int						getToken(std::string *header);
 	int						getField(int *type);
 	int						getField(std::string *field, int *type);
+	int						getStatusLine(std::string *header);
 
 private:
 	std::string		_body;
@@ -133,6 +134,7 @@ public:
 	void					fillChunkedBody();
 	unsigned long			getChunkLength(std::string::size_type cursor);
 	void					putChunkInBody(unsigned long chunk_size);
+	unsigned long			hexToLong(std::string line);
 	void					setTrailers(std::string::size_type cursor);
 
 private:
@@ -141,6 +143,7 @@ public:
 	std::string				getBuffer() const;
 	void					appendBuffer(char *, int size);
 	void					parseBuffer(void);
+	void					skipCrlf(void);
 
 public:
 	struct Response	_response;
@@ -201,6 +204,7 @@ private:
 
 public:
 	std::string				getHost() const;
+	std::string				getCookies() const;
 	std::string				getContentType() const;
 	std::string				getExpect() const;
 	unsigned long			getContentLength() const;

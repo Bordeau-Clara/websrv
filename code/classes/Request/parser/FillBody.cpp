@@ -89,6 +89,8 @@ unsigned long	Request::getChunkLength(std::string::size_type cursor)
 	line.assign(this->_buffer.substr(0, cursor));
 	this->_buffer.erase(0, line.size() + 2);
 	chunk_size = hexToLong(line);
+	if (isState(ERROR))
+		return 0;
 	if (chunk_size == 0 && this->_trailer)
 		this->setState(TRAILERS);
 	else if (chunk_size == 0)
@@ -101,6 +103,31 @@ unsigned long	Request::getChunkLength(std::string::size_type cursor)
 	else
 		this->setState(OCTET);
 	return CHUNK_SIZE;
+}
+
+const std::string hex = "0123456789abcdefABCDEF";
+unsigned long Request::hexToLong(std::string line)
+{
+	unsigned long chunk_size;
+	const char* semicolon = std::strchr(line.data(), ';');
+
+	//verifier que tout les chiffre font parti de la base 16 (a tester)
+	for(std::string::iterator it = line.begin(); *it != ';' && it != line.end(); ++it)
+	{
+		if (hex.find(*it) == std::string::npos)
+		{
+			//error
+			this->setError(Status(BAD_REQUEST, 400));
+			return 0;
+		}
+	}
+
+	chunk_size = std::strtoul(line.data(), semicolon ? (char**)&semicolon : NULL, 16);
+
+		streams.get(LOG_REQUEST) << "[CHUNK SIZE]" << std::endl
+			<< "octet to read: " << chunk_size
+			<< std::endl;
+	return chunk_size;
 }
 
 void	Request::putChunkInBody(unsigned long chunk_size)

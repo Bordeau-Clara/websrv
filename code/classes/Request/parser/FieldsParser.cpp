@@ -30,7 +30,20 @@ void	Request::parseCookies(std::string str)
 	//or set in JavaSript using Document.cookie)
 	//format: name=value; name2=value2; name3=value3
 	//see what use for cookie bonus
-	(void)str;
+	
+	std::string::size_type cursor = str.find("SESSION_ID=");
+	if (cursor != 0)
+	{
+		//error;
+	}
+	// this->_cookies.assign(str);
+	//ne pas retirer session_id= pour cgi
+	//a mettre dans une fonction getSession ou rajouter une variable a request
+	//nerver mind ca devrait fonctionner comme ca
+	cursor += std::string("SESSION_ID=").size();
+	this->_cookies.assign(str, cursor, str.size() - cursor);
+	streams.get(LOG_REQUEST) << "[cookies]" << std::endl << this->_cookies
+		<< std::endl;
 }
 
 //keep-alive ou close
