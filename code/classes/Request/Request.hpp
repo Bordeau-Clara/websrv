@@ -124,6 +124,7 @@ public:
 	int						getToken(std::string *header);
 	int						getField(int *type);
 	int						getField(std::string *field, int *type);
+	int						getStatusLine(std::string *header);
 
 private:
 	std::string		_body;
@@ -142,6 +143,7 @@ public:
 	std::string				getBuffer() const;
 	void					appendBuffer(char *, int size);
 	void					parseBuffer(void);
+	void					skipCrlf(void);
 
 public:
 	struct Response	_response;

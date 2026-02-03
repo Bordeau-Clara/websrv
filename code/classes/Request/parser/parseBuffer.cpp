@@ -11,6 +11,7 @@
 
 #include "Request.hpp"
 #include "Cgi.hpp"
+#include "requestDefines.hpp"
 #include "statusCodes.hpp"
 #include <iostream>
 
@@ -22,6 +23,9 @@ void	Request::parseBuffer(void)
 		<< std::endl;
 	//can a \r or \n be alone in header???
 	std::string::size_type cursor = 0;
+	//skip CRLF that can be at the beginning of the request
+	if (isState(HEADER))
+		this->skipCrlf();
 	//header is full in buffer
 	if (isState(HEADER) && moveCursor(&cursor, this->getBuffer(), DCRLF))
 	{
@@ -49,4 +53,12 @@ void	Request::parseBuffer(void)
 		}
 	}
 	printRequest(this);
+}
+
+void	Request::skipCrlf()
+{
+	while(this->_buffer.find(CRLF) == 0)
+	{
+		this->_buffer.erase(0, CRLF.size());
+	}
 }

@@ -126,6 +126,24 @@ int	Request::getToken(std::string *token)
 	return 1;
 }
 
+int	Request::getStatusLine(std::string *token)
+{
+	std::string::size_type	cursor = 0;
+
+	if (!moveCursor(&cursor, this->_header, CRLF))
+	{
+		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "CRLF has not been find to complete token"
+			<< std::endl;
+		return 0;
+		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
+	}
+	token->assign(this->_header, 0, cursor);
+	cursor += 2;
+	this->_header.erase(0, cursor);
+	return 1;
+}
+
 int	Request::getField(int *type)
 {
 	std::string field;
