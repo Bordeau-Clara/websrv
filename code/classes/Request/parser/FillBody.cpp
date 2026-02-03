@@ -51,6 +51,9 @@ void	Request::fillChunkedBody()
 	{
 		if (this->_body.size() > this->_location->getClientMaxBodySize())
 		{
+		streams.get(LOG_REQUEST) << "[CHUNK BODY]" << std::endl
+			<< "body size exceded mak body size"
+			<< std::endl;
 			this->setError(Status(PAYLOAD_TOO_LARGE, 413));
 			return;
 		}
@@ -98,11 +101,11 @@ unsigned long	Request::getChunkLength(std::string::size_type cursor)
 		this->_buffer.erase(0, 2);
 		this->setState(EXEC);
 		this->_contentLength = this->_body.size();
-		return CHUNK_SIZE;
+		return chunk_size;
 	}
 	else
 		this->setState(OCTET);
-	return CHUNK_SIZE;
+	return chunk_size;
 }
 
 const std::string hex = "0123456789abcdefABCDEF";
@@ -117,6 +120,9 @@ unsigned long Request::hexToLong(std::string line)
 		if (hex.find(*it) == std::string::npos)
 		{
 			//error
+			streams.get(LOG_REQUEST) << "[CHUNK SIZE]" << std::endl
+				<< "character not in hexa base"
+				<< std::endl;
 			this->setError(Status(BAD_REQUEST, 400));
 			return 0;
 		}
@@ -132,9 +138,16 @@ unsigned long Request::hexToLong(std::string line)
 
 void	Request::putChunkInBody(unsigned long chunk_size)
 {
+		streams.get(LOG_REQUEST) << "[CHUNK READING]" << std::endl
+			<< "size:" << chunk_size
+			<< std::endl;
 	this->_body.append(this->_buffer, 0, chunk_size);
 	if (this->_buffer[chunk_size ] != '\r' && this->_buffer[chunk_size + 1] != '\n')
 	{
+		streams.get(LOG_REQUEST) << "[CHUNK READING]" << std::endl
+			<< "no CRLF at buffer[chunk-size]; char is:" << _buffer[chunk_size]
+			<< "body is:" << _body
+			<< std::endl;
 		this->setError(Status(BAD_REQUEST, 400));
 		return;
 	}

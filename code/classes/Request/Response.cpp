@@ -146,6 +146,7 @@ void	Request::buildPostResponse()
 	this->appendConnection();
 	//a modifier
 	this->_response.str.append("Location:" + _requestedRessource + CRLF);
+	this->_response.str.append(CON_LEN + nbrToString(_response.body.size()) + CRLF);
 	this->headerEnd();
 }
 

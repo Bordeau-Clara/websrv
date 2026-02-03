@@ -116,3 +116,16 @@ cgi-time_out:
 cgi-cannot_exec:
 	$(BROWSER_CMD) localhost:8002/cgi-bin/cannot.sh
 .PHONY: cgi-cannot_exec
+
+chunked:
+	{ \
+	  echo "--- Début du message ---"; \
+	  sleep 4; \
+	  echo "--- Milieu du message (2s plus tard) ---"; \
+	  sleep 4; \
+	  echo "--- Fin du message ---"; \
+	} | curl -v  --no-buffer -X POST "http://localhost:8002/chunked.txt" \
+		 -H "Transfer-Encoding: chunked" \
+		 -H "Content-Type: text/plain" \
+		 --data-binary @-
+.PHONY: chunked
