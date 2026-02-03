@@ -30,7 +30,7 @@
 
 extern FileStream	streams;
 int				find_type(std::string str);
-unsigned long	hexToLong(std::string line);
+// unsigned long	hexToLong(std::string line);
 
 // const bool			CHUNKED = 1;
 const bool			KEEP_ALIVE = true;
@@ -133,6 +133,7 @@ public:
 	void					fillChunkedBody();
 	unsigned long			getChunkLength(std::string::size_type cursor);
 	void					putChunkInBody(unsigned long chunk_size);
+	unsigned long			hexToLong(std::string line);
 	void					setTrailers(std::string::size_type cursor);
 
 private:
