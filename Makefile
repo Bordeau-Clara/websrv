@@ -23,6 +23,16 @@ run:
 	$(PROJECT_DIR)/$(BIN) $(CONFIG)
 .PHONY: run
 
+# betardite aigue
+request:
+	$(MAKE) -C RequestGenerator
+.PHONY: request
+
+test:
+	bash netcat.sh
+.PHONY: test
+#fin
+
 corr:
 	$(PROJECT_DIR)/$(BIN) $(CONFIG_TEST)
 .PHONY: run
@@ -40,10 +50,6 @@ delete:
 	curl -v \
 		-X DELETE http://localhost:8002/test.txt
 .PHONY: delete
-
-test:
-	bash netcat.sh
-.PHONY: test
 
 debug:
 	valgrind $(PROJECT_DIR)/$(BIN) $(CONFIG)
