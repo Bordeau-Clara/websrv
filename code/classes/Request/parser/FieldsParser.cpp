@@ -23,25 +23,44 @@ void	Request::parseHost(std::string str)
 	this->_host = str;
 }
 
-void	Request::parseCookies(std::string str)
+#include <string>
+#include <sstream>
+#include <vector>
+#include <stdexcept>
+
+void Request::parseCookies(std::string str) 
 {
 	//contains stored HTTP cookies associated with the server 
 	//(previously sent by the server with the Set-Cookie header
-	//or set in JavaSript using Document.cookie)
 	//format: name=value; name2=value2; name3=value3
-	//see what use for cookie bonus
-	
-	std::string::size_type cursor = str.find("SESSION_ID=");
-	if (cursor != 0)
+	//
+	// On utilise un stringstream pour découper par ';'
+	std::stringstream ss(str);
+	std::string segment;
+
+	while (std::getline(ss, segment, ';'))
 	{
-		//error;
+		// 1. Nettoyage des espaces au début (après le ';')
+		size_t start = segment.find_first_not_of(" ");
+		if (start == std::string::npos)// segment vide erreur
+		{
+			setError(Status("400 Bad Request: Malformed Cookie Header", 400));
+			return ;
+		}
+		segment = segment.substr(start);
+		// 2. Vérification du format clé=valeur
+		size_t sep = segment.find('=');
+		if (sep == std::string::npos || sep == 0 || sep == segment.size() - 1)
+		{
+			setError(Status("400 Bad Request: Malformed Cookie Header", 400));
+			return ;
+		}
+		std::string key = segment.substr(0, sep);
+		std::string value = segment.substr(sep + 1);
+		// 3. Extraction de SESSIONID
+		if (key == SID)
+			this->_cookies = value;
 	}
-	// this->_cookies.assign(str);
-	//ne pas retirer session_id= pour cgi
-	//a mettre dans une fonction getSession ou rajouter une variable a request
-	//nerver mind ca devrait fonctionner comme ca
-	cursor += std::string("SESSION_ID=").size();
-	this->_cookies.assign(str, cursor, str.size() - cursor);
 	streams.get(LOG_REQUEST) << "[cookies]" << std::endl << this->_cookies
 		<< std::endl;
 }
