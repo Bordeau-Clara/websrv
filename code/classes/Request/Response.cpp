@@ -98,7 +98,7 @@ void	Request::buildErrorResponse()
 			this->_response.body.append("No location");
 	}
 	this->_response.str.append(CON_LEN + nbrToString(_response.body.length()) + CRLF);
-	this->_response.str.append(CRLF);
+	headerEnd();
 	this->_response.str.append(_response.body);
 }
 
@@ -115,6 +115,7 @@ void	Request::buildGetResponse()
 	this->_response.str.append(CON_LEN + nbrToString(_response.body.size()) + CRLF);
 	this->appendConnection();
 	this->appendContentType();
+	appendCookie();
 	//add Content-type
 	//add Date ??
 	this->headerEnd();
@@ -146,6 +147,7 @@ void	Request::buildPostResponse()
 	this->appendConnection();
 	//a modifier
 	this->_response.str.append("Location:" + _requestedRessource + CRLF);
+	appendCookie();
 	this->headerEnd();
 }
 
@@ -165,5 +167,6 @@ void	Request::buildDeleteResponse()
 	this->setStatus(Status(NO_CONT, 204));
 	this->generateRequestLine();
 	this->appendConnection();
+	appendCookie();
 	this->headerEnd();
 }
