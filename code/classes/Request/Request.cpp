@@ -199,7 +199,7 @@ void Request::initFields()
 	Request::fields[58][0] = "host";
 	Request::fields[66][0] = "origin";
 	Request::fields[67][0] = "expect";
-	Request::fields[70][0] = "cookies";
+	Request::fields[70][0] = "cookie";
 	Request::fields[76][0] = "trailer";
 	Request::fields[102][0] = "connection";
 	Request::fields[147][0] = "accept-language";
