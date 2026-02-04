@@ -39,3 +39,4 @@ static const std::string TEXT_HTML_TYPE = "Content-type:text/html\r\n";
 
 
 static const std::string CON_LEN = "Content-length:";
+static const std::string SID = "SESSIONID";
