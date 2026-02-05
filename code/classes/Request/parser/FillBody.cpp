@@ -114,6 +114,14 @@ unsigned long Request::hexToLong(std::string line)
 	unsigned long chunk_size;
 	const char* semicolon = std::strchr(line.data(), ';');
 
+	if (line.empty())
+	{
+			streams.get(LOG_REQUEST) << "[CHUNK SIZE]" << std::endl
+				<< "no chunk size"
+				<< std::endl;
+			this->setError(Status(BAD_REQUEST, 400));
+			return 0;
+	}
 	//verifier que tout les chiffre font parti de la base 16 (a tester)
 	for(std::string::iterator it = line.begin(); *it != ';' && it != line.end(); ++it)
 	{
