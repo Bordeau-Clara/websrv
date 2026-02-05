@@ -8,4 +8,4 @@ SOURCE_DIR=basic
 #
 mkdir -p "$OUTPUT_DIR"
 #
-"$BIN" "$SOURCE_DIR/header.txt" > "$OUTPUT_DIR/base_request.txt"
+"$BIN" "$SOURCE_DIR/header.txt" "$SOURCE_DIR/body.txt" > "$OUTPUT_DIR/base_request.txt"

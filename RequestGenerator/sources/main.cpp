@@ -13,9 +13,10 @@
 #include <fstream>
 #include <sstream>
 
+
 int main(int argc, char **argv)
 {
-	if (argc < 2 || argc > 3)
+	if (argc > 3)
 	{
         std::cerr << "Usage ./requestGenerator headerfile [bodyfile]" << std::endl;
         return 1;
@@ -34,14 +35,18 @@ int main(int argc, char **argv)
 	std::string line;
 	while (std::getline(file, line))
 	{
+		std::cerr << "sending: " << line << std::endl;
 		if (line.empty())
 			continue ;
 		std::cout << line << CRLF;
 	}
+	// Fin du header (ligne vide entre header et body)
+	std::cout << CRLF;
 
 	if (argc == 2)
 	{
 		// fin du fichier j'en net un supplementaire
+		std::cerr << "pas de body" << std::endl;
 		std::cout << CRLF;
 		return (0);
 	}
@@ -58,20 +63,14 @@ int main(int argc, char **argv)
 		std::cerr << "Erreur : impossible d'ouvrir le fichier " << filename << std::endl;
 		return 1;
 	}
-
-	// On lit tout le contenu dans un stringstream pour calculer la taille facilement
-	std::stringstream bodyContent;
-	bodyContent << bodyFile.rdbuf();
-	std::string content = bodyContent.str();
-
-	// On affiche le Content-Length
-	std::cout << "Content-Length: " << content.size() << CRLF;
-
-	// Fin du header (ligne vide entre header et body)
-	std::cout << CRLF;
-
 	// On affiche le contenu du body
-	std::cout << content;
+	std::string bline;
+	while (std::getline(bodyFile, bline))
+	{
+		std::cerr << "sending: " << bline << std::endl;
+		std::cout << bline << CRLF;
+	}
+	std::cout << CRLF;
 
 	return 0;
 }

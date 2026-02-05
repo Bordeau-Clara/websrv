@@ -1,12 +1,7 @@
-client 1
-{
-	name: ayoub;
-	intra: aykrifa;
-	aka: beau gosse;
-}
-client 2
-{
-	name: clara;
-	intra: cbordeau;
-	aka: betarde;
-}
+7
+Mozilla
+9
+Developer
+7
+Network
+0
