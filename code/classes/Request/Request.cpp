@@ -158,7 +158,13 @@ int	Request::getField(int *type)
 	}
 	cursor += 1;
 	field.assign(this->_header.substr(0, cursor));
+	streams.get(LOG_REQUEST) << "[FIELD]" << std::endl
+		<< field
+		<< std::endl;
 	*type = find_type(field);
+	streams.get(LOG_REQUEST) << "[TYPE]" << std::endl
+		<< *type
+		<< std::endl;
 	this->_header.erase(0, cursor);
 	if (*type == 0)
 		return 1;
@@ -180,7 +186,13 @@ int	Request::getField(std::string *field, int *type)
 	}
 	cursor += 1;
 	field->assign(this->_header.substr(0, cursor));
+	streams.get(LOG_REQUEST) << "[FIELD]" << std::endl
+		<< field
+		<< std::endl;
 	*type = find_type(*field);
+	streams.get(LOG_REQUEST) << "[TYPE]" << std::endl
+		<< *type
+		<< std::endl;
 	if (*type == -1)
 		return 0;
 	if (*type == 0)
@@ -199,7 +211,7 @@ void Request::initFields()
 	Request::fields[58][0] = "host";
 	Request::fields[66][0] = "origin";
 	Request::fields[67][0] = "expect";
-	Request::fields[70][0] = "cookie";
+	Request::fields[52][0] = "cookie";
 	Request::fields[76][0] = "trailer";
 	Request::fields[102][0] = "connection";
 	Request::fields[147][0] = "accept-language";
@@ -214,7 +226,7 @@ void Request::initFields()
 
 	Request::fctField[58] = &Request::parseHost;
 	Request::fctField[67] = &Request::parseExpect;
-	Request::fctField[70] = &Request::parseCookies;
+	Request::fctField[52] = &Request::parseCookies;
 	Request::fctField[76] = &Request::parseTrailer;
 	Request::fctField[102] = &Request::parseConnection;
 	Request::fctField[189] = &Request::parseContentLength;
