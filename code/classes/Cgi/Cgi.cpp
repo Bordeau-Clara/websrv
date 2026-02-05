@@ -25,18 +25,22 @@ Cgi::Cgi(Request *request): Event(PIPE) ,_env(CGI_HEADER), _client(request)
 
 std::string	httpToCgiHeader(std::string field)
 {
-	for (int i = 0; !field[i]; i++)
+	int i = 0;
+	for (; field[i] != ':'; i++)
 	{
 		if (field[i] == '-')
 			field[i] = '_';
 		if (field[i] >= 'a' && field[i] <= 'z')
-			field[i] += 32;
+		{
+			field[i] -= 32;
+		}
 	}
+	field[i] = '=';
 	//if content-length -> trigger variable
 	//if no content-length -> take content-length for client (means it was a chunked body)
-	if (!field.compare("CONTENT_TYPE") || !field.compare("CONTENT_LENGTH"))
-		return (field + "=");
-	return (HTTP + field + "=");
+	if (!field.compare("CONTENT_TYPE=") || !field.compare("CONTENT_LENGTH="))
+		return (field);
+	return (HTTP + field);
 }
 
 void	Cgi::addFields(std::string field, std::string token)
