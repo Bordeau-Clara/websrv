@@ -24,7 +24,8 @@
 // string = expr + final CRLF
 void	Request::parseHeader(void)
 {
-	std::string	statusLine;
+	std::string		statusLine;
+	unsigned long	headerSize = this->_header.size();
 
 	if (!this->getStatusLine(&statusLine))
 	{
@@ -34,6 +35,11 @@ void	Request::parseHeader(void)
 	parseRequestLine(statusLine);
 	if (this->isState(ERROR))
 		return;
+	if (headerSize > this->_location->getClientMaxHeaderSize())
+	{
+		this->setError(Status(HEADER_TOO_LONG, 431));
+		return;
+	}
 	if (this->isState(CGI))
 	{
 		this->_cgi->getFieldFromUri();
