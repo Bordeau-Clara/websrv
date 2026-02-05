@@ -144,12 +144,6 @@ void	Request::parseURI(std::string str)
 
 void	Request::checkURI(std::string	&remainder)
 {
-	//Todo:
-	// verifier CGI == chercher dans la map suffixe - executant
-	//  si trouve
-		// access --> fichier ressource demandee 
-		// access --> executant (deprecated)
-	// 	
 	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+remainder+">" << std::endl;
 	for (std::map<std::string, std::string>::const_iterator it = this->_location->getCgiSuffix().begin();
 		it != this->_location->getCgiSuffix().end(); it++)
@@ -240,12 +234,12 @@ void	Request::checkURI(std::string	&remainder)
 	}
 	if (this->_method == POST)
 	// _requested ressource will be post location + remainder
-	// then try to see if we can open file (create or append)
 	{
 		_requestedRessource = this->_location->getPostDirectory() + remainder;
 			streams.get(LOG_REQUEST) << "[REQUESTED RESSOURCE]" << std::endl
 				<< _requestedRessource << std::endl
 				<< std::endl;
+	// then try to see if we can open file (create or append)
 		if(!canBuildOnDir(_requestedRessource))
 		{
 			this->setError(Status(FORBIDDEN, 403));
@@ -316,7 +310,6 @@ void	Request::parseHeaderRegular(void)
 		{
 			this->setError(Status(BAD_REQUEST, 400));
 		}
-		//inverser condition if else pour supprimer else pour la clarter
 	}
 	//check_complete_header(event);
 	//if POST ->Content Length obligatoire ->411
