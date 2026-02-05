@@ -13,6 +13,7 @@
 
 #include <sched.h>
 #include <string>
+#include <unistd.h>
 #include <vector>
 #include "EventManager.hpp"
 #include "define_cgi.hpp"
@@ -50,6 +51,19 @@ public:
 	int						_responsePipe[2];
 	int						_bodyPipe[2];
 	Cgi(Request*); //prendre adresse de request
+	~Cgi()
+	{
+		if (_responsePipe[1] != -1)
+		{
+			close(_responsePipe[1]);
+			_responsePipe[1] = -1;
+		}
+		if (_responsePipe[0] != -1)
+		{
+			close(_responsePipe[0]);
+			_responsePipe[0] = -1;
+		}
+	}
 
 	int						start(EventManager &webServ);
 	pid_t					_pid;
