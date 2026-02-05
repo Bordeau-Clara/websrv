@@ -51,8 +51,10 @@ void	EventManager::recvFromClient(void)
 	// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
 
 	// checke si la reponse attendue est celle dune cgi
-	if (client.isState(CGI))// && !client.isState(ERROR)
+	if (client.isState(CGI) && !client.isState(ERROR))
 	{
+		/**/streams.get(LOG_EVENT) << "{IN STATE CGI/ IN IF DANS RECVFROMCLIENT}" << std::endl
+			/**/<< std::endl;
 		client.setState(READ);
 		//mettre l'event en dormant (EPOLLONESHOT) faut il d'abord le mettre en EPOLLOUT?
 		//-> .events = 0 est plus propre car EPOLLONESHOT est fais pour bloquer apres la reception d'un event
