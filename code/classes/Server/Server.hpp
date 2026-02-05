@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <ctime>
 #include <map>
 #include <string>
 #include <sys/socket.h>
@@ -19,6 +20,13 @@
 #include "Event.hpp"
 
 class	Location;
+struct	Session
+{
+	std::string	ID;
+	std::time_t	lastTrigger;
+	Session(std::string key): ID(key), lastTrigger(std::time(NULL)){}
+	void	refresh(void){lastTrigger = std::time(NULL);}
+};
 
 class	Server: public Event
 {
@@ -65,6 +73,8 @@ class	Server: public Event
 		//runtime methods
 		void									startListen(void);
 		const Location							*urlSolver(std::string&);
+
+		std::map<std::string, Session>	sessions;
 
 	private:
 		std::map<std::string, Location>	_locations;

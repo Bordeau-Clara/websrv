@@ -21,6 +21,7 @@
 #include <map>
 #include <string>
 #include <unistd.h>
+#include <utility>
 #include "helpers.hpp"
 
 void	Request::generateRequestLine(void)
@@ -77,4 +78,36 @@ void	Request::appendContentType()
 	{
 		// _response.str.append("Content-Type:application/octet-stream" + CRLF);
 	}
+}
+
+#include "Server.hpp"
+
+#include <string>
+
+std::string	strNext(const std::string &str)
+{
+    const char char_max = '~'; 
+    const char char_min = '!'; 
+
+	std::string	next(str);
+
+    if (next.empty() || next.at(next.size() - 1) < char_max)
+		next.append(1, char_min);
+	else
+		next.at(next.size() - 1)++;
+	return (next);
+}
+
+void	Request::appendCookie(void)
+{
+	if (!_cookies.empty() && _server.sessions.find(_cookies) != _server.sessions.end())
+		return ;
+
+	std::string	newSession;
+	if (_server.sessions.empty())
+		newSession = "1";
+	else
+		newSession = strNext(_server.sessions.rbegin()->first);
+	_server.sessions.insert(std::make_pair(newSession, Session(newSession)));
+	_response.str.append("Set-Cookie:" + SID + '=' + newSession + "; Path=/; HttpOnly" + CRLF);
 }

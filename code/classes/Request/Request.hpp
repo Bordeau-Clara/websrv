@@ -159,6 +159,7 @@ public:
 	void					generateRequestLine();
 	void					appendConnection(void);
 	void					appendContentType(void);
+	void					appendCookie(void);
 	void					headerEnd(void);
 
 private:
