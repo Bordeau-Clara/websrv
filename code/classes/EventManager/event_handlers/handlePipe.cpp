@@ -23,8 +23,6 @@
 #include "string.hpp"
 #include "helpers.hpp"
 
-
-
 void	EventManager::handlePipe()
 {
 	Monitor.printNewLine(RED + "Handling A PIPE ..."  + RESET);
@@ -33,7 +31,7 @@ void	EventManager::handlePipe()
 	ssize_t count = read(cgi._responsePipe[0], buffer, sizeof(buffer));
 	if (count == -1)
 		throw (std::runtime_error("RECV KO"));
-	if (count) // eof
+	if (count)
 	{
 		cgi._buffer.append(buffer, count);
 		Monitor.printNewLine("RECV FROM PIPE" + nbrToString(count) + "BYTES !");
@@ -41,37 +39,16 @@ void	EventManager::handlePipe()
 			/**/<< std::endl;
 		return ;
 	}
-
-	//treat info and put into cgi.request.response
-	//when finished DEL event cgi and EPOLL_CTL_MOD en EPOLLOUT cgi.request
+	// else -> eof
 	Monitor.printNewLine(RED + "ENDOF PIPE"  + RESET);
+	//treat info and put into cgi.request.response
 	cgi.parseBuffer();
+	//DEL event cgi
 	EventDelete(cgi._responsePipe[0]);
 	close(cgi._responsePipe[0]);
-		/**/streams.get(LOG_EVENT) << "{FD}" << cgi._client->fd << std::endl
-			/**/<< std::endl;
+	/**/streams.get(LOG_EVENT) << "{FD}" << cgi._client->fd << std::endl
+		/**/<< std::endl;
 	cgi._client->setState(EXEC);
+	//MOD request back to EPOLLOUT
 	EventModify(cgi._client->fd, EPOLLOUT, cgi._client);
 }
-//
-// void	EventManager::handlePipe()
-// {
-// 	Cgi &cgi = *(Cgi *)getPtr();
-// 	static char buffer[BUFFER_SIZE] = {0};
-// 	ssize_t count = read(cgi._responsePipe[0], buffer, sizeof(buffer));
-// 	if (count == -1)
-// 		throw (std::runtime_error("RECV KO"));
-// 	if (count == 0) // client has closed connection
-// 	{
-// 		Monitor.printNewLine(RED + "ENDOF PIPE"  + RESET);
-// 		EventDelete(cgi._responsePipe[0]);
-// 		delete (Request *)getPtr();
-// 		return ;
-// 	}
-// 	cgi._buffer.append(buffer, count);
-// 	Monitor.printNewLine("RECV FROM PIPE" + nbrToString(count) + "BYTES !");
-// 	/**/streams.get(LOG_EVENT) << "RECEIVED:" +cgi._buffer << std::endl
-// 		/**/<< std::endl;
-// 	//treat info and put into cgi.request.response
-// 	//when finished DEL event cgi and EPOLL_CTL_MOD en EPOLLOUT cgi.request
-// }

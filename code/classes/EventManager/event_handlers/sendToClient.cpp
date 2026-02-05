@@ -31,22 +31,13 @@ bool	EventManager::sendBuffer(Request &client)
 
 void	EventManager::sendToClient(void)
 {
-	// si on est en emission
 	Request &client = *(Request *)getPtr();
 
 	if (!sendBuffer(client))
 		return;
-	// shoul return if false
-	// continue if true then checkif shoukld close request or keepalive
 	/**/streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl
 		/**/<< std::endl;
 
-	// Close pas la connexion et garde en ecoute le socket client pour les prochaines requetes
-	/* /!\ ATTENTION /!\
-	 * le buffer peut contenir une ou plusieurs requete entiere apres la premiere reponse
-	 * ce qui ferait que epoll ne rapellera jamais ce client
-	 * sauf si il demande une enieme requete (ultra sale)
-	*/
 	if (client.getConnection() == KEEP_ALIVE)
 	{
 		Monitor.printNewLine(RED + "FROM "+client.ip_str+" connection:KEEPALIVE (end of the request)"  + WHITE);

@@ -39,44 +39,31 @@ void	EventManager::recvFromClient(void)
 {
 	Request &client = *(Request *)getPtr();
 	client.editTime();
-	// si reception
-	// si aucun element est recu
-	// CECI n'est pas tres propre
 	if (!recvBuffer(client)) // if nothing has been received
 		return ;
 	client.parseBuffer();
 	if (!client.isState(EXEC))// if parsing is not finished
 		return ;
-	// (should be only send because error is send)
-	// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
-
-	// checke si la reponse attendue est celle dune cgi
-	if (client.isState(CGI))// && !client.isState(ERROR)
+	if (client.isState(CGI))
 	{
 		client.setState(READ);
-		//mettre l'event en dormant (EPOLLONESHOT) faut il d'abord le mettre en EPOLLOUT?
-		//-> .events = 0 est plus propre car EPOLLONESHOT est fais pour bloquer apres la reception d'un event
-		//comme client va etre mis dans l'event de la cgi(ou inversement) on aura le fd pour le reactiver
-		//lancer cgi et add l'event en EPOLLIN
-		//quand cgi finit on le met dans la rep du client et on le reactive et on le passe en EPOLLOUT
-		//
 		Cgi	*cgi = client.getCgi();
-		// cree les pipes
+		//pipe
 		Monitor.printNewLine("Initializing a pipe");
 		cgi->init();
-		// ecoute le pipe cgi
-		// mute les envois clients
+		// desarme client
 		EventModify(client.fd, 0, &client);
-		//create pipe fork and send optional body through new pipe and fork here??
+		//fork
 		if (!cgi->start(*this))
 		{
 			this->_alive = false;
 			return;
 		}
+		// listen to cgi pipe
 		EventAdd(cgi->_responsePipe[0], EPOLLIN, cgi);
 		client.editTime();
 	}
-	else // passe en emission
+	else // regular mode
 	{
 		client.generateResponse();
 		EventModify(client.fd, EPOLLOUT, &client);
