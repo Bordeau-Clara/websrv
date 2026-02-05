@@ -24,7 +24,7 @@
 // string = expr + final CRLF
 void	Request::parseHeader(void)
 {
-	std::string				statusLine;
+	std::string	statusLine;
 
 	if (!this->getStatusLine(&statusLine))
 	{
@@ -41,10 +41,6 @@ void	Request::parseHeader(void)
 	}
 	else
 		parseHeaderRegular();
-		
-
-	//if CGI parse_header in cgi mode
-	//state CGI but same parsing function?
 }
 
 //parse method
@@ -118,7 +114,6 @@ void	Request::parseURI(std::string str)
 	streams.get(LOG_REQUEST) << "[urlSolver]" << "end" << std::endl;
 }
 {//deal with location errors
-	// 404 not found
 	if (!this->_location)
 	{
 		this->setError(Status(NOT_FOUND, 404));
@@ -340,8 +335,6 @@ void	Request::parseHeaderCgi(void)
 	std::string	field;
 	int			type;
 
-	// this->_cgi = new Cgi(*this);
-
 	if (this->getHeader().empty())
 		return;
 	
@@ -367,8 +360,6 @@ void	Request::parseHeaderCgi(void)
 		else if (type < 0)
 		{
 			this->setError(Status(BAD_REQUEST, 400));
-		//How to deal with expect? Does errors override expect?? Does expect override body??
-		//->Put in a string and check at response construction?
 		}
 		if (!field.empty())
 			this->_cgi->addFields(field, token);

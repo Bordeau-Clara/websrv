@@ -47,6 +47,4 @@ int	find_type(std::string str)
 			return index + i;
 	}
 	return 0;
-	// should not return 0 if not in fct tab but in field tab
-	// so it doesnt invalidate valid headers that should not be parsed
 }

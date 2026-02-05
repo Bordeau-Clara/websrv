@@ -153,6 +153,11 @@ void	Request::parseTransferEncoding(std::string str)
 
 void	Request::parseTrailer(std::string str)
 {
+	//indique quels headers apparaitront apres un message chunked
+	//viennent apres le chunk final (chunk size = 0)
+	//a stocker qqpart pour pouvoir les supprimer de la fin du body
+	//ne surtout pas les envoyer a la cgi
+	
 	(void)str;
 	this->_trailer = 1;
 }
@@ -206,13 +211,6 @@ void	Request::parseTrailer(std::string str)
 // 	//format jour, jj, moi AAAA HH:MM:SS TIME_ZONE (ex gmt)
 // 	str = skipOWS(str);
 // }
-
-//Trailer
-//
-//indique quels headers apparaitront apres un message chunked
-//viennent apres le chunk final (chunk size = 0)
-//a stocker qqpart pour pouvoir les supprimer de la fin du body
-//ne surtout pas les envoyer a la cgi
 
 //Liste des fields possible a verifier pour la CGI
 //pragma
