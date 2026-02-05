@@ -19,29 +19,25 @@ bool	EventManager::sendBuffer(Request &client)
 	std::string toSend = client._response.get(BUFFER_SIZE);
 
 	if (send(client.fd, toSend.data(), toSend.size(), 0) == -1)
-		throw (std::runtime_error("SEND"));
+	{
+		Monitor.printNewLine(RED + "FROM "+client.ip_str+" connection:CLOSE (client ended connection while sending)"  + WHITE);
+		EventDelete(client.fd);
+		this->requests.remove((Request *)getPtr());
+		delete (Request *)getPtr();
+	}
 	Monitor.printNewLine("SEND TO "+client.ip_str+ ": " + nbrToString(toSend.size())+" bytes");
 	return (client._response.transmissionComplete());
 }
 
 void	EventManager::sendToClient(void)
 {
-	// si on est en emission
 	Request &client = *(Request *)getPtr();
 
 	if (!sendBuffer(client))
 		return;
-	// shoul return if false
-	// continue if true then checkif shoukld close request or keepalive
 	/**/streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl
 		/**/<< std::endl;
 
-	// Close pas la connexion et garde en ecoute le socket client pour les prochaines requetes
-	/* /!\ ATTENTION /!\
-	 * le buffer peut contenir une ou plusieurs requete entiere apres la premiere reponse
-	 * ce qui ferait que epoll ne rapellera jamais ce client
-	 * sauf si il demande une enieme requete (ultra sale)
-	*/
 	if (client.getConnection() == KEEP_ALIVE)
 	{
 		Monitor.printNewLine(RED + "FROM "+client.ip_str+" connection:KEEPALIVE (end of the request)"  + WHITE);
