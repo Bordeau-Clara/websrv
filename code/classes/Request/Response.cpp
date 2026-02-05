@@ -72,11 +72,6 @@ void	Request::generateResponse()
 
 void	Request::buildErrorResponse()
 {
-	//ne pas oublier DCRLF a la fin du header
-	//open fichier erreur et mettre body dans une autre chaine
-	//pour pouvoir connaitre sa longueur et l'ajouter au header
-	//ou compter la taille du body qui est direct append a la reponse
-	//et insert Content-length a response.find(CRLF) donc apres la status line
 	generateRequestLine();
 	this->_response.str.append(TEXT_HTML_TYPE);
 	if (_status.code == 404)
@@ -86,13 +81,12 @@ void	Request::buildErrorResponse()
 		this->_response.str.append(CON_CLOSE);
 		this->_connection = CLOSE;
 	}
-	// check if error page exists
-	// if not or if access fail fall back on our default error page
-	// if yes append page to body
-	// this->_response.str.append(extractStr(_requestedRessource.c_str()));
 	this->_response.body.clear();
+	// check if error page exists
+	// and try to append it to body
 	if (!findErrorPage())
 	{
+	// if cannot fall back on our default error page
 		this->_response.body.append(_status.str);
 		if (!this->_location)
 			this->_response.body.append("No location");
@@ -116,7 +110,6 @@ void	Request::buildGetResponse()
 	this->appendConnection();
 	this->appendContentType();
 	appendCookie();
-	//add Content-type
 	//add Date ??
 	this->headerEnd();
 	this->_response.str.append(_response.body.data(), _response.body.size());
@@ -124,8 +117,6 @@ void	Request::buildGetResponse()
 
 void	Request::buildPostResponse()
 {
-	//error : method not allowed
-	//c la merde
 	if (!canBuildOnDir(_requestedRessource))
 	{
 		this->setError(Status(FORBIDDEN, 403));
