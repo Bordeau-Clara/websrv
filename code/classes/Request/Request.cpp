@@ -183,7 +183,7 @@ int	Request::getField(std::string *field, int *type)
 	cursor += 1;
 	field->assign(this->_header.substr(0, cursor));
 	streams.get(LOG_REQUEST) << "[FIELD]" << std::endl
-		<< field
+		<< *field
 		<< std::endl;
 	*type = find_type(*field);
 	streams.get(LOG_REQUEST) << "[TYPE]" << std::endl
