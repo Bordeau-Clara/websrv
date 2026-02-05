@@ -21,6 +21,10 @@
 
 Cgi::Cgi(Request *request): Event(PIPE) ,_env(CGI_HEADER), _client(request)
 {
+	this->_bodyPipe[0] = -1;
+	this->_bodyPipe[1] = -1;
+	this->_responsePipe[0] = -1;
+	this->_responsePipe[1] = -1;
 }
 
 std::string	httpToCgiHeader(std::string field)
