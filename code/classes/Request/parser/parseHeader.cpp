@@ -315,8 +315,6 @@ void	Request::parseHeaderRegular(void)
 		else if (type < 0)
 		{
 			this->setError(Status(BAD_REQUEST, 400));
-		//How to deal with expect? Does errors override expect?? Does expect override body??
-		//->Put in a string and check at response construction?
 		}
 		//inverser condition if else pour supprimer else pour la clarter
 	}

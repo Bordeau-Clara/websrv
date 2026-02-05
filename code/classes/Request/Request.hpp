@@ -30,22 +30,9 @@
 
 extern FileStream	streams;
 int				find_type(std::string str);
-// unsigned long	hexToLong(std::string line);
 
-// const bool			CHUNKED = 1;
 const bool			KEEP_ALIVE = true;
 const bool			CLOSE = false;
-// typedef enum parsing_state
-// {
-// 	HEADER = 0,
-// 	CGI,
-// 	BODY,
-// 	CHUNK_SIZE,
-// 	TRAILERS,
-// 	SEND,
-// 	// SEND_CGI, -> so that resonse builder knows what to parse and how
-// 	// or put variable in cgi or request or if *cgi==NULL?
-// } parsing_state;
 
 class Location;
 class Server;
