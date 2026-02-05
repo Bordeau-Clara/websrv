@@ -81,23 +81,6 @@ void	Request::appendContentType()
 }
 
 #include "Server.hpp"
-
-#include <string>
-
-std::string	strNext(const std::string &str)
-{
-    const char char_max = '~'; 
-    const char char_min = '!'; 
-
-	std::string	next(str);
-
-    if (next.empty() || next.at(next.size() - 1) < char_max)
-		next.append(1, char_min);
-	else
-		next.at(next.size() - 1)++;
-	return (next);
-}
-
 void	Request::appendCookie(void)
 {
 	if (!_cookies.empty() && _server.sessions.find(_cookies) != _server.sessions.end())

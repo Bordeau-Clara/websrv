@@ -21,3 +21,6 @@ void		trimSlash(std::string &str);
 void	trimDots(std::string &str);
 std::string	buildIpPortStr(unsigned int	ip, unsigned short int port);
 bool	canBuildOnDir(std::string &str);
+
+std::string	strNext(const std::string &str);
+

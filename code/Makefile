@@ -23,6 +23,7 @@ SRC_FILES = \
 	utils/hexToLong.cpp \
 	utils/mimeTypesMapFill.cpp \
 	utils/nbrToString.cpp \
+	utils/strNext.cpp \
 	utils/strTimestamp.cpp \
 	utils/trimDots.cpp \
 	utils/trimSlash.cpp \
