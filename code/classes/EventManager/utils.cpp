@@ -122,7 +122,7 @@ void	EventManager::zombieCheck(void)
 		if (!req.timeOut(5))
 			continue;
 		Monitor.printNewLine("client Timeout !");
-		if (req.isState(CGI))
+		if (req.isState(CGI) && req.getCgi() != NULL)
 		{
 			pid_t &pid = req.getCgi()->_pid;
 			EventDelete(req.getCgi()->_responsePipe[0]);
