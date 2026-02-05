@@ -187,10 +187,6 @@ void	Request::checkURI(std::string	&remainder)
 	}
 	if (this->_method == GET)
 	{
-		// fusionner root + alias + remainder pour access
-		// ERRATUM > il fau pas access mais stat en premier
-		// si rien ou slash sans rien alors verifier index
-		// ERRATUM SI STAT RENVOIE DIR VERIFIER INDEX
 		_requestedRessource = _location->getRoot() + "/" +_location->getAlias() + "/" + remainder;
 		trimSlash(_requestedRessource);
 
@@ -241,7 +237,6 @@ void	Request::checkURI(std::string	&remainder)
 			this->setError(Status(NOT_FOUND, 404));
 			return ;
 		}
-		//reminder.find_last_of(".") to fill _response.contentType
 	}
 	if (this->_method == POST)
 	// _requested ressource will be post location + remainder
@@ -259,7 +254,6 @@ void	Request::checkURI(std::string	&remainder)
 	}
 	if (this->_method == DELETE)
 	// _requested ressource will be post location + remainder
-	// TBD
 	{
 		_requestedRessource = this->_location->getPostDirectory() + remainder;
 		struct stat	statbuf;
@@ -281,10 +275,6 @@ void	Request::checkURI(std::string	&remainder)
 	}
 }
 
-// void	Request::buildIndex()
-// {
-// }
-
 void	Request::isCGI(void)
 {
 	const std::map<std::string, std::string>	&CgiSuffixes = _location->getCgiSuffix();
@@ -300,8 +290,7 @@ void	Request::parseHeaderRegular(void)
 
 	if (this->getHeader().empty())
 		return;
-	//error if empty??? can it be empty?? Is it an error?? have to test it
-	
+
 	int type;
 	while (1)
 	{
@@ -372,7 +361,3 @@ void	Request::parseHeaderCgi(void)
 	}
 	//check_complete_header(event); //if content_length absent -> add it
 }
-//construction reponse:
-//si cgi -> recuperer header + body => comment savoir si cgi? Encore une variable? Peut pas avec state car passe en send quand cgi a fini
-//state "SEND_CGI"? Et donc va check la class cgi qui ce trouve dan client?
-//else a construire a partir des variable et uri
