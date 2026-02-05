@@ -129,3 +129,7 @@ chunked:
 		 -H "Content-Type: text/plain" \
 		 --data-binary @-
 .PHONY: chunked
+
+pretty:
+	code/WebServ configs/pretty.conf
+.PHONY: pretty
