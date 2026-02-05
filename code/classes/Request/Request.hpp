@@ -83,8 +83,6 @@ public://epollloop variable for accept
 public:
 	Request(Server&);
 	~Request(void);
-	// Request(Request&);
-	// Request();
 
 	const Location*	_location;
 	Server&			_server;
@@ -198,10 +196,6 @@ private:
 	bool			_transferEncoding;
 	bool			_connection;
 	bool			_trailer;
-	// std::string	_authorization;
-	// std::string	_accept; //ignorable ou 406
-	// std::string	_ifModifiedSince;
-	// bool			_ifModif;
 
 public:
 	std::string				getHost() const;
@@ -221,14 +215,10 @@ public:
 	void					parseContentLength(std::string);
 	void					parseTransferEncoding(std::string);
 	void					parseTrailer(std::string);
-	// void					parseAuthorization(std::string);
-	// void					parseIfModifiedSince(std::string);
 };
 
-//faire surcharge de << pour imprimer toute la classe
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs);
 
-// static const int	MAX_BODY_SIZE = (1UL << 16); //juste la le temps de le resoudre dans la config du serveur
 int		moveCursor(std::string::size_type *cursor, std::string str, std::string toFind);
 int		moveCursor(std::string::size_type *cursor, std::string str, int start, std::string toFind);
 void	printRequest(Request *request);

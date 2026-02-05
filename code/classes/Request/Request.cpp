@@ -99,7 +99,6 @@ void	Request::setError(const Status &status)
 
 void	Request::fillHeader(std::string::size_type cursor)
 {
-	// this->_state = BODY;
 	this->_header.append(this->_buffer, 0, cursor + 2);
 	this->_buffer.erase(0, cursor + 4);
 }
@@ -118,7 +117,6 @@ int	Request::getToken(std::string *token)
 			<< "CRLF has not been find to complete token"
 			<< std::endl;
 		return 0;
-		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
 	token->assign(this->_header, Ows, cursor - Ows);
 	cursor += 2;
@@ -136,7 +134,6 @@ int	Request::getStatusLine(std::string *token)
 			<< "CRLF has not been find to complete token"
 			<< std::endl;
 		return 0;
-		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
 	token->assign(this->_header, 0, cursor);
 	cursor += 2;
@@ -154,7 +151,6 @@ int	Request::getField(int *type)
 			<< "':' has not been find to complete field"
 			<< std::endl;
 		return 0;
-		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
 	cursor += 1;
 	field.assign(this->_header.substr(0, cursor));

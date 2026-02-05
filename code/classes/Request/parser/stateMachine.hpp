@@ -42,17 +42,3 @@ typedef enum parsing_state
 
 	ERROR,
 } parsing_state;
-
-// typedef enum parsing_state
-// {
-// 	INIT = 0,
-// 	READ = ~(1 << 7),
-// 	SEND = 1 << 7,
-// 	CGI = 1 << 6,
-// 	HEADER = ~(1 << 5),
-// 	BODY = 1 << 5,
-// 	OCTET = ~(1 << 4),
-// 	CHUNK_SIZE = 1 << 4,
-// 	TRAILERS = 1 << 3,
-// 	ERROR = 1,
-// } parsing_state;
