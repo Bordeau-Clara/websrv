@@ -143,5 +143,8 @@ SIEGE_IP = localhost
 siege_server_run:
 	$(PROJECT_DIR)/$(BIN) $(SIEGE_CONFIG)
 
-siege_stress_test:
+siege_stress_empty:
 	siege -c 10 -t 10S http://$(SIEGE_IP):$(SIEGE_PORT)/$(SIEGE_LOCATION)
+
+siege_stress_404:
+	siege -c 10 -t 10S http://$(SIEGE_IP):$(SIEGE_PORT)/kk
