@@ -463,22 +463,16 @@ void	ConfigParser::parseCgi(Location &current)
 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
-void	ConfigParser::parseCookies(Location &current)
+void	ConfigParser::parseIndex(Location &current)
 {
 	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
-	bool	cookies;
-	if (get() == "on" || get() == "ON")
-		cookies = true;
-	else if (get() == "off" || get() == "OFF")
-		cookies = false;
-	else
-		throw (std::runtime_error("In directive " + DIRECTIVE[AUTOINDEX] + " :unrecognized token\n-->" + get()));
-	current.setCookies(cookies);
+	current.setIndex(get());
 	next();
 	if (get() != ";")
-		throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
+		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
+

@@ -73,9 +73,9 @@ Location	ConfigParser::parseLocationLoop(Location &current)
 			parsePostLocation(current);
 			break ;
 
-			case COOKIES:
+			case INDEX:
 			next();
-			parseCookies(current);
+			parseIndex(current);
 			break ;
 
 			case CLOSING_BRACKET:

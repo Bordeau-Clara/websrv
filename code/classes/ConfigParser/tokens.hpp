@@ -31,7 +31,7 @@ static const std::string	DIRECTIVE[] =
 		"autoindex",				// on |off
 		"cgi",						// .expr
 		"post_directory",			// path
-		"cookies",					// bool
+		"index",					// path
 		"{",						//
 		"}",						//
 		";"							//
@@ -50,7 +50,7 @@ static const int ALIAS					= 9;
 static const int AUTOINDEX				= 10;
 static const int CGI_SUFFIX				= 11;
 static const int POST_LOCATION			= 12;
-static const int COOKIES				= 13;
+static const int INDEX					= 13;
 static const int OPENING_BRACKET		= 14;
 static const int CLOSING_BRACKET		= 15;
 static const int SEMICOLOM				= 16;
