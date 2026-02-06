@@ -138,3 +138,15 @@ chunked:
 pretty:
 	code/WebServ configs/pretty.conf
 .PHONY: pretty
+
+# SIEGE
+SIEGE_PORT = 4000
+SIEGE_LOCATION = /siege.html
+SIEGE_CONFIG = configs/siege.conf
+SIEGE_IP = localhost
+
+siege_server_run:
+	$(PROJECT_DIR)/$(BIN) $(SIEGE_CONFIG)
+
+siege_stress_test:
+	siege -c 10 -t 10S http://$(SIEGE_IP):$(SIEGE_PORT)/$(SIEGE_LOCATION)
