@@ -69,14 +69,9 @@ public:
 	pid_t					_pid;
 
 	void						createBasicEnv();
-	std::vector<char *>			strToArray(std::vector<std::string>); //to implement
+	std::vector<char *>			strToArray(std::vector<std::string>);
 	void						addFields(std::string field, std::string token);//check for host, type, length and or add
-	void						getFieldFromUri();//to call in constructor -> no
-	//do function in request createCgi() to add uri, methode, query without getters
-
-	// void				parseCgiHost(std::string field, std::string token);
-	// void				parseCgiContentType(std::string);
-	// void				parseCgiContentLength(std::string); //do after body parsing? if chunked do after?
+	void						getFieldFromUri();
 };
 
 	//variable static:
@@ -101,3 +96,27 @@ public:
 				//CONTENT_TYPE
 	//a obtenir autrement:
 				//REMOTE_ADDR -> ipv4 du client
+
+//Liste des fields possible a verifier pour la CGI
+//pragma
+//cache-control
+//date
+//upgrade (ne pas envoyer a la cgi mais valide)
+//accept-charset
+//from
+//if-mach
+//if-none-match
+//if-range
+//if-unmodified-since
+//max-forward (ne pas envoyer mais a valider)
+//proxy-authorization (ne pas envoyer mais a valider)
+//range
+//referer
+//TE
+//user-agent
+//
+//lie au body
+//content-encoding
+//content-location
+//content-language
+//content-range
