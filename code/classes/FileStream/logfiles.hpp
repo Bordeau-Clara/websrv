@@ -14,9 +14,6 @@
 #include <string>
 
 
-static const std::string	LOG_CONFIGPARSER = "log/ConfigParser.log";
-static const std::string	LOG_DIRECTIVE = "log/Directive.log";
-static const std::string	LOG_LOCATION = "log/Location.log";
 static const std::string	LOG_SERVER = "log/Server.log";
 static const std::string	LOG_EVENT = "log/Event.log";
 

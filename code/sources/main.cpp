@@ -24,10 +24,7 @@ int	main(int argc, char **argv)
 	// streams init
 	try// to open stream log file
 	{
-		streams.add(LOG_CONFIGPARSER);
 		streams.add(LOG_SERVER);
-		streams.add(LOG_DIRECTIVE);
-		streams.add(LOG_LOCATION);
 		streams.add(LOG_EVENT);
 		streams.add(LOG_REQUEST);
 	}
@@ -46,12 +43,7 @@ int	main(int argc, char **argv)
 	{
 		std::cerr << MIMES_PATH << " error:" << e.what() << std::endl;
 	}
-	for (std::map<std::string, std::string>::iterator it = mimes.begin()
-		; it != mimes.end(); it++)
-	{
-		streams.get(LOG_LOCATION) << it->first + '=' + it->second << std::endl;
-	}
-
+	
 	// config parser
 	std::vector<Server>	servers;
 	try// to fill server vector with config file

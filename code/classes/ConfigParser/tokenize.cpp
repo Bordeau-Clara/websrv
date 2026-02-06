@@ -81,8 +81,4 @@ void	ConfigParser::tokenize(void)
 		}
 		cursor = end;
 	}
-	/**/streams.get(LOG_CONFIGPARSER) << SEPARATOR + "VV Token list VV" << std::endl;
-	/**/for (std::vector<std::string>::iterator it = _token_vec.begin(); it != _token_vec.end(); ++it)
-	/**/{streams.get(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
-	/**/streams.get(LOG_CONFIGPARSER) << std::endl;
 }
