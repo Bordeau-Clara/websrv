@@ -37,24 +37,12 @@
 	//a obtenir autrement:
 				//REMOTE_ADDR -> ipv4 du client
 
-// const std::vector<std::string> CGI_HEADER =
-// 	{
-// 		"GATEWAY_INTERFACE=CGI/1.1",
-// 		"SERVER_PROTOCOL=HTTP/1.1",
-// 		"SERVER_SOFTWARE=", //voir chat pour info
-// 		"AUTH_TYPE=",
-// 		"HOST_NAME=",
-// 		"SERVER_PORT=",
-// 		"REMOTE_IDENT=",
-// 		"REMOTE_USER="
-// 	};
-
 static const char* CGI_HEADER_ARRAY[] = {
     "GATEWAY_INTERFACE=CGI/1.1",
     "SERVER_PROTOCOL=HTTP/1.1",
     "SERVER_SOFTWARE=",
     "AUTH_TYPE=",
-    //"HOST_NAME=", ->what is this??
+    //"HOST_NAME=",
     "SERVER_PORT=",
     "REMOTE_IDENT=",
     "REMOTE_HOST=",
@@ -81,13 +69,3 @@ const std::string HTTP = "HTTP_";
 
 const std::string REMOTE_ADDR = "REMOTE_ADDR=";
 const std::string STATUS = "Status:";
-
-// const std::string GATEWAY = "GATEWAY_INTERFACE=CGI/1.1";
-// const std::string PROTOCOL = "SERVER_PROTOCOL=HTTP/1.1";
-// const std::string SOFTWARE = "SERVER_SOFTWARE="; //voir chat pour info
-//
-// const std::string AUTH_TYPE = "AUTH_TYPE=";
-// const std::string HOST_NAME = "HOST_NAME=";
-// const std::string SERVER_PORT = "SERVER_PORT=";
-// const std::string REMOTE_IDENT = "REMOTE_IDENT=";
-// const std::string REMOTE_USER = "REMOTE_USER=";

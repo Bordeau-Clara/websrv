@@ -21,7 +21,6 @@ void	Request::parseBuffer(void)
 	streams.get(LOG_REQUEST) << "[BUFFER BEFORE PARSING]" << std::endl
 		<< this->getBuffer()
 		<< std::endl;
-	//can a \r or \n be alone in header???
 	std::string::size_type cursor = 0;
 	//skip CRLF that can be at the beginning of the request
 	if (isState(HEADER))
@@ -46,7 +45,7 @@ void	Request::parseBuffer(void)
 			this->fillChunkedBody();
 		else
 			this->fillBody();
-		//can this happen?? Does it not juste create a phantom client and we will wait for body indefinately
+		//never really happens just create a phantom client and we will wait for body indefinately, but just in case
 		if (this->isState(EXEC) && this->getContentLength() != this->getBody().length())
 		{
 			this->setError(Status(BAD_REQUEST, 400));

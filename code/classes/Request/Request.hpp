@@ -23,7 +23,6 @@
 #include "stateMachine.hpp"
 #include "statusCodes.hpp"
 
-//C comme ca que ca marche ???
 #include "FileStream.hpp"
 #include "logfiles.hpp"
 #include "Status.hpp"
@@ -36,7 +35,6 @@ const bool			CLOSE = false;
 
 class Location;
 class Server;
-// class Cgi;
 #include "Cgi.hpp"
 
 struct Response

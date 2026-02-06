@@ -13,6 +13,7 @@ PROJECT_DIR = code
 BIN = WebServ
 CONFIG = configs/default.conf
 CONFIG_TEST = configs/test.conf
+CONFIG_CHRIS = configs/defaultChris.conf
 TESTER_DIR = request_builder
 
 build:
@@ -35,6 +36,10 @@ test:
 
 corr:
 	$(PROJECT_DIR)/$(BIN) $(CONFIG_TEST)
+.PHONY: run
+
+chris:
+	$(PROJECT_DIR)/$(BIN) $(CONFIG_CHRIS)
 .PHONY: run
 
 post:

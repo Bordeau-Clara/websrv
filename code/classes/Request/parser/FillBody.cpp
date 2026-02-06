@@ -19,8 +19,6 @@ void	Request::fillBody()
 		streams.get(LOG_REQUEST) << "[PARSING NORMAL BODY]" << std::endl
 			<< std::endl;
 	
-	//tester erreur avec content Length trop grand et trop petit
-	
 	if ((this->_body.size() + this->_buffer.size()) <= this->_contentLength)
 	{
 		this->_body.append(this->_buffer, 0, this->_buffer.size());
@@ -122,7 +120,7 @@ unsigned long Request::hexToLong(std::string line)
 			this->setError(Status(BAD_REQUEST, 400));
 			return 0;
 	}
-	//verifier que tout les chiffre font parti de la base 16 (a tester)
+	//verifie que tout les chiffre font parti de la base 16
 	for(std::string::iterator it = line.begin(); *it != ';' && it != line.end(); ++it)
 	{
 		if (hex.find(*it) == std::string::npos)

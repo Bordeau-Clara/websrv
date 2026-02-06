@@ -42,6 +42,8 @@ std::string	httpToCgiHeader(std::string field)
 	field[i] = '=';
 	//if content-length -> trigger variable
 	//if no content-length -> take content-length for client (means it was a chunked body)
+	//check for host/type/length to be parse separated cause dont have HTTP_ preposition
+	//field has to be in field tab (not an error if not but do not put in env)
 	if (!field.compare("CONTENT_TYPE=") || !field.compare("CONTENT_LENGTH="))
 		return (field);
 	return (HTTP + field);
@@ -51,8 +53,6 @@ void	Cgi::addFields(std::string field, std::string token)
 {
 	std::string	variable;
 
-	//check for host/type/length to be parse separated cause dont have HTTP_ preposition
-	//field has to be in field tab (not an error if not but do not put in env)
 
 	variable.assign(httpToCgiHeader(field));
 	variable.append(token);
@@ -104,15 +104,8 @@ int	Cgi::start(EventManager &webServ)
 	_pid = fork();
 	if (_pid == -1)
 		throw (std::runtime_error("Cannot fork !"));
+	//child process;
 	if (_pid == 0)
-		//this->childProcess;
-		//close bodypipe[1]
-		//close response pipe[0]
-		//dup2(responsepipe[1] on stdout)
-		//dup2(bodypipe[0] on stdin)
-		//close ?
-		//execve
-		//exit failure
 	{
 		close(_bodyPipe[1]);
 		close(_responsePipe[0]);
@@ -125,23 +118,14 @@ int	Cgi::start(EventManager &webServ)
 
 		std::vector<char*> arg = strToArray(_arg);
 		std::vector<char*> env = strToArray(_env);
-		// execve(std::string("bash").c_str(), arg.data(), env.data());
 		execve(_exec.c_str(), arg.data(), env.data());
 		/**/streams.get(LOG_EVENT) << "(1)[EXECVE FAIL]" << this->_header << std::endl;
 		deleteVector(arg);
 		deleteVector(env);
-		// for (std::list<Request*>::iterator it = webServ.requests.begin(); it != webServ.requests.end(); it++)
-		// {
-		// 	delete (*it);
-		// }
 		return 0;
-		// exit(1);
 	}
+	//parent process;
 	else
-		//close bodypipe[0]
-		//close responsepipe[1]
-		// put body in bodypipe[1]
-		// close bodypipe[1]
 	{
 		close(_bodyPipe[0]);
 		close(_responsePipe[1]);
@@ -196,13 +180,12 @@ void	Cgi::parseBuffer()
 
 	if (this->_length != this->_buffer.size())
 	{
-		//error
 		/**/streams.get(LOG_EVENT) << "(1)[size body differz]" << this->_header << std::endl;
 		this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 		this->_client->buildErrorResponse();
 		return;
 	}
-	// buffer is body hehe
+	// buffer is now body
 	this->_client->_response.str.append(this->_buffer.data(), this->_buffer.size());
 	/**/streams.get(LOG_EVENT) << "[in cgi]" << this->_client->_response.cursor << std::endl
 	/**/<< "[in cgi]" << this->_client->_response.str.size() << std::endl
@@ -238,14 +221,13 @@ void	Cgi::parseHeader()
 	std::string::size_type cursorStart = 0;
 	if (!moveCursor(&cursorStart, this->_header, "Content-Type:"))
 	{
-		//what to do??
+		//
 	}
 	while (1)
 	{
 		if (!moveCursor(&cursorStart, this->_header, _headerLimiter))
 		{
 			/**/streams.get(LOG_EVENT) << "(3)[error no limiter]" << this->_header << std::endl;
-			//error
 			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 			this->_client->buildErrorResponse();
 			return;
@@ -272,7 +254,6 @@ void	Cgi::appendStatus()
 		if (!moveCursor(&cursorEnd, this->_header, cursorStart, this->_headerLimiter))
 		{
 			/**/streams.get(LOG_EVENT) << "(1)[error no limiter]" << this->_header << std::endl;
-			//error
 			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 			this->_client->buildErrorResponse();
 			return;
@@ -306,7 +287,6 @@ void	Cgi::appendContentLen()
 		if (!moveCursor(&cursorEnd, this->_header, cursorStart, this->_headerLimiter))
 		{
 			/**/streams.get(LOG_EVENT) << "(2)[error no limiter]" << this->_header << std::endl;
-			//error
 			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 			this->_client->buildErrorResponse();
 			return;
