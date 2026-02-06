@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Patterns GoF</title>
+    <style>
+        /* Un style très basique pour la lisibilité */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 30px;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        strong {
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Les Design Patterns du GoF (Gang of Four)</h1>
+    <p>
+        Les "Design Patterns" (patrons de conception) du "Gang of Four" (GoF) sont des solutions éprouvées à des problèmes de conception logicielle courants dans le développement orienté objet. Ils sont décrits dans le livre "Design Patterns: Elements of Reusable Object-Oriented Software".
+    </p>
+    <p>Ils sont classés en trois catégories principales :</p>
+
+    <h2>1. Patterns de Création (Creational Patterns)</h2>
+    <p>
+        Ces patterns se concentrent sur les mécanismes de <strong>création d'objets</strong>. Ils visent à créer des objets d'une manière adaptée à la situation, en augmentant la flexibilité et la réutilisation du code.
+    </p>
+    <ul>
+        <li>
+            <strong>Singleton :</strong> S'assure qu'une classe n'a qu'une seule instance et fournit un point d'accès global unique à cette instance.
+        </li>
+        <li>
+            <strong>Factory Method (Méthode de fabrique) :</strong> Définit une interface pour créer un objet, mais laisse les sous-classes décider quelle classe concrète instancier.
+        </li>
+        <li>
+            <strong>Abstract Factory (Fabrique abstraite) :</strong> Fournit une interface pour créer des familles d'objets liés ou dépendants sans avoir à spécifier leurs classes concrètes.
+        </li>
+        <li>
+            <strong>Builder (Monteur) :</strong> Sépare la construction d'un objet complexe de sa représentation, permettant au même processus de construction de créer différentes représentations.
+        </li>
+    </ul>
+
+    <h2>2. Patterns Structurels (Structural Patterns)</h2>
+    <p>
+        Ces patterns expliquent comment <strong>assembler des objets et des classes</strong> en structures plus larges, tout en gardant ces structures flexibles et efficaces.
+    </p>
+    <ul>
+        <li>
+            <strong>Adapter (Adaptateur) :</strong> Permet à des interfaces incompatibles de fonctionner ensemble. Il agit comme un "traducteur" entre deux objets.
+        </li>
+        <li>
+            <strong>Decorator (Décorateur) :</strong> Permet d'ajouter dynamiquement de nouvelles fonctionnalités à un objet sans modifier sa classe d'origine.
+        </li>
+        <li>
+            <strong>Facade (Façade) :</strong> Fournit une interface unifiée et simplifiée à un ensemble complexe d'interfaces dans un sous-système.
+        </li>
+        <li>
+            <strong>Composite :</strong> Permet de traiter un groupe d'objets de la même manière qu'un objet unique.
+        </li>
+    </ul>
+
+    <h2>3. Patterns Comportementaux (Behavioral Patterns)</h2>
+    <p>
+        Ces patterns concernent les algorithmes et l'assignation des <strong>responsabilités et des communications</strong> entre les objets.
+    </p>
+    <ul>
+        <li>
+            <strong>Strategy (Stratégie) :</strong> Définit une famille d'algorithmes, encapsule chacun d'eux et les rend interchangeables. Cela permet à l'algorithme de varier indépendamment des clients qui l'utilisent.
+        </li>
+        <li>
+            <strong>Observer (Observateur) :</strong> Définit une relation de dépendance un-à-plusieurs entre les objets. Lorsqu'un objet (le "sujet") change d'état, tous ses dépendants (les "observateurs") sont automatiquement notifiés et mis à jour.
+        </li>
+        <li>
+            <strong>Command (Commande) :</strong> Encapsule une requête (une action) en tant qu'objet. Cela permet de paramétrer des clients avec différentes requêtes, de les mettre en file d'attente ou de journaliser les opérations.
+        </li>
+        <li>
+            <strong>Iterator (Itérateur) :</strong> Fournit un moyen d'accéder séquentiellement aux éléments d'une collection sans exposer sa représentation sous-jacente.
+        </li>
+    </ul>
+
+</body>
+</html>

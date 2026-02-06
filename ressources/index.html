@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue sur webserv42</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #35424a;
+            color: #ffffff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 2rem 0;
+        }
+
+        .hero {
+            background: #e8e8e8;
+            padding: 2rem;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 2rem 0;
+        }
+
+        .feature {
+            flex: 1;
+            min-width: 200px;
+            margin: 1rem;
+            padding: 1rem;
+            background: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature h3 {
+            color: #35424a;
+        }
+
+        .navigation {
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navigation h2 {
+            color: #35424a;
+            text-align: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-section {
+            margin: 1rem 0;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .nav-section h3 {
+            color: #35424a;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-links li {
+            margin: 0.5rem 0;
+        }
+
+        .nav-links button {
+            background: #3498db;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-links button:hover {
+            background: #2980b9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background: #35424a;
+            color: #ffffff;
+            margin-top: 2rem;
+        }
+
+        .ParamOpaciteMenu {
+            background: #35424a;
+            color: #ffffff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        #MenuRubriques {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        #MenuRubriques li {
+            position: relative;
+            margin: 0 2rem;
+        }
+
+        #MenuRubriques a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 3px;
+            display: block;
+        }
+
+        #MenuRubriques a:hover {
+            background: #333;
+        }
+
+        .submenu {
+            position: absolute;
+            background: #333;
+            border: 1px solid #ddd;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            min-width: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .submenu li {
+            margin: 0;
+        }
+
+        .submenu a {
+            color: #333;
+            padding: 0.5rem 1rem;
+            display: block;
+        }
+
+        .submenu a:hover {
+            background: #f4f4f4;
+        }
+
+        a {
+            color: #f4f4f4;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>webserv42</h1>
+        <p>Un serveur web minimaliste écrit en C++</p>
+    </header>
+
+    <div style="margin-left: auto; margin-right: auto; padding-top:0px; ">
+    <div id="BandeMenuHaut" class="ParamOpaciteMenu">
+    <ul id="MenuRubriques">
+    <li><a href="#" onclick="toggle('cgi'); return false;">CGI Scripts</a>
+    <ul id="cgi" class="submenu" style="display:none;">
+    <li><a href="/cgi-bin/test.py" onclick="window.location.href=this.href; return false;">Test Python</a></li>
+    <li><a href="/cgi-bin/time.py" onclick="window.location.href=this.href; return false;">Time Python</a></li>
+    <li><a href="/cgi-bin/time.sh" onclick="window.location.href=this.href; return false;">Time Shell</a></li>
+    </ul>
+    </li>
+    <li><a href="#" onclick="toggle('error'); return false;">Pages d'Erreur</a>
+    <ul id="error" class="submenu" style="display:none;">
+    <li><a href="/error_pages/301.html" onclick="window.location.href=this.href; return false;">301 Moved Permanently</a></li>
+    <li><a href="/error_pages/400.html" onclick="window.location.href=this.href; return false;">400 Bad Request</a></li>
+    <li><a href="/error_pages/401.html" onclick="window.location.href=this.href; return false;">401 Unauthorized</a></li>
+    <li><a href="/error_pages/403.html" onclick="window.location.href=this.href; return false;">403 Forbidden</a></li>
+    <li><a href="/error_pages/404.html" onclick="window.location.href=this.href; return false;">404 Not Found</a></li>
+    <li><a href="/error_pages/500.html" onclick="window.location.href=this.href; return false;">500 Internal Server Error</a></li>
+    <li><a href="/error_pages/501.html" onclick="window.location.href=this.href; return false;">501 Not Implemented</a></li>
+    <li><a href="/error_pages/502.html" onclick="window.location.href=this.href; return false;">502 Bad Gateway</a></li>
+    <li><a href="/error_pages/503.html" onclick="window.location.href=this.href; return false;">503 Service Unavailable</a></li>
+    <li><a href="/error_pages/504.html" onclick="window.location.href=this.href; return false;">504 Gateway Timeout</a></li>
+    <li><a href="/error_pages/520.html" onclick="window.location.href=this.href; return false;">520 Unknown Error</a></li>
+    <li><a href="/error_pages/521.html" onclick="window.location.href=this.href; return false;">521 Web Server Is Down</a></li>
+    <li><a href="/error_pages/533.html" onclick="window.location.href=this.href; return false;">533 Custom Error</a></li>
+    </ul>
+    </li>
+    <li><a href="#" onclick="toggle('tours'); return false;">Tours</a>
+    <ul id="tours" class="submenu" style="display:none;">
+    <li><a href="/tours/index.html" onclick="window.location.href=this.href; return false;">Index Tours</a></li>
+    <li><a href="/tours/tours1.html" onclick="window.location.href=this.href; return false;">Tours 1</a></li>
+    </ul>
+    </li>
+    <li><a href="#" onclick="toggle('cookies'); return false;">Cookies</a>
+    <ul id="cookies" class="submenu" style="display:none;">
+    <li><a href="/cookies/index.html" onclick="window.location.href=this.href; return false;">Préférences de couleur</a></li>
+    </ul>
+    </li>
+    <li><a href="/uploads" onclick="window.location.href=this.href; return false;">Upload</a></li>
+    </ul>
+    </div>
+    </div>
+
+    <div class="container">
+
+        <section class="hero">
+            <h2>Bienvenue sur webserv42 !</h2>
+            <p>Ce serveur est un projet développé dans le cadre de l'École 42. Il prend en charge les requêtes HTTP/1.1 et est optimisé pour la performance.</p>
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <h3>⚡ Performant</h3>
+                <p>Conçu pour gérer plusieurs requêtes simultanées avec une latence minimale.</p>
+            </div>
+            <div class="feature">
+                <h3>🛠️ Configurable</h3>
+                <p>Personnalise les routes, les ports et les réponses selon tes besoins.</p>
+            </div>
+            <div class="feature">
+                <h3>🔒 Sécurisé</h3>
+                <p>Gestion des en-têtes modernes comme <code>Sec-Fetch-*</code> et <code>Upgrade-Insecure-Requests</code>.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Comment tester ?</h2>
+            <p>Tu peux tester ce serveur en envoyant des requêtes HTTP à <code>http://localhost:8002</code>.</p>
+            <p>Exemple avec <code>curl</code> :</p>
+            <pre>curl -v http://localhost:8002</pre>
+        </section>
+
+        <section>
+            <h2>Prochaines étapes</h2>
+            <p>Ce projet est en développement actif. Voici ce qui est prévu :</p>
+            <ul>
+                <li>Support des méthodes HTTP (GET, POST, DELETE)</li>
+                <li>Gestion des fichiers statiques</li>
+                <li>Support des CGI</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 webserv42 - Un projet <a href="https://www.42.fr/" target="_blank">École 42</a></p>
+        <p>Contact: <a href="mailto:chrleroy@42.paris.fr">chrleroy@42.paris.fr</a></p>
+        <p></p>
+    </footer>
+    <script>
+        function toggle(id) {
+            var elem = document.getElementById(id);
+            var isVisible = elem.style.display === 'block';
+            // Hide all submenus
+            var submenus = document.querySelectorAll('.submenu');
+            submenus.forEach(function(sub) {
+                sub.style.display = 'none';
+            });
+            // If it was not visible, show it
+            if (!isVisible) {
+                elem.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</htmlexactewment >
