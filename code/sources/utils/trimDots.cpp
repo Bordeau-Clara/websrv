@@ -28,48 +28,50 @@ void	trimDots(std::string &str)
 		{
 			std::string	sub = str.substr(pos, len);
 			if (sub == ".." || sub == ".")
+			{
 				str.erase(pos, len);
+				continue ;
+			}
 		}
-		else
-			pos += len;
+		pos += len;
 	}
 }
 
-#include <iostream>
-int	main(void)
-{
-	{
-		std::string	s1("/kk"), s2("../"), s3("/../"), s4("/..");
-		trimDots(s1);
-		trimDots(s2);
-		trimDots(s3);
-		trimDots(s4);
-		std::cout << s1 << std::endl;
-		std::cout << s2 << std::endl;
-		std::cout << s3 << std::endl;
-		std::cout << s4 << std::endl;
-	}
-	{
-		std::string	s1("a..a"), s2("..a"), s3("a..a/"), s4("/a..a");
-		trimDots(s1);
-		trimDots(s2);
-		trimDots(s3);
-		trimDots(s4);
-		std::cout << s1 << std::endl;
-		std::cout << s2 << std::endl;
-		std::cout << s3 << std::endl;
-		std::cout << s4 << std::endl;
-	}
-	{
-		std::string	s1(".."), s2("./."), s3("././"), s4("/.../");
-		trimDots(s1);
-		trimDots(s2);
-		trimDots(s3);
-		trimDots(s4);
-		std::cout << s1 << std::endl;
-		std::cout << s2 << std::endl;
-		std::cout << s3 << std::endl;
-		std::cout << s4 << std::endl;
-	}
-}
-
+// #include <iostream>
+// int	main(void)
+// {
+// 	{
+// 		std::string	s1("/k"), s2("../"), s3("/../"), s4("/..");
+// 		trimDots(s1);
+// 		trimDots(s2);
+// 		trimDots(s3);
+// 		trimDots(s4);
+// 		std::cout << s1 << std::endl;
+// 		std::cout << s2 << std::endl;
+// 		std::cout << s3 << std::endl;
+// 		std::cout << s4 << std::endl;
+// 	}
+// 	{
+// 		std::string	s1("a..a"), s2("..a"), s3("a..a/"), s4("/a..a");
+// 		trimDots(s1);
+// 		trimDots(s2);
+// 		trimDots(s3);
+// 		trimDots(s4);
+// 		std::cout << s1 << std::endl;
+// 		std::cout << s2 << std::endl;
+// 		std::cout << s3 << std::endl;
+// 		std::cout << s4 << std::endl;
+// 	}
+// 	{
+// 		std::string	s1(".."), s2("./."), s3("././"), s4("/.../");
+// 		trimDots(s1);
+// 		trimDots(s2);
+// 		trimDots(s3);
+// 		trimDots(s4);
+// 		std::cout << s1 << std::endl;
+// 		std::cout << s2 << std::endl;
+// 		std::cout << s3 << std::endl;
+// 		std::cout << s4 << std::endl;
+// 	}
+// }
+//
