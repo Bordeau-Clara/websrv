@@ -44,6 +44,8 @@ void	EventManager::recvFromClient(void)
 	client.parseBuffer();
 	if (!client.isState(EXEC))// if parsing is not finished
 		return ;
+	/**/streams.get(LOG_EVENT) << "end of the parsing" << std::endl
+		/**/<< std::endl;
 	if (client.isState(CGI) && !client.isState(ERROR))
 	{
 		/**/streams.get(LOG_EVENT) << "{IN STATE CGI/ IN IF DANS RECVFROMCLIENT}" << std::endl

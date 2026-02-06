@@ -27,6 +27,8 @@ void	Request::parseHeader(void)
 	std::string		statusLine;
 	unsigned long	headerSize = this->_header.size();
 
+	streams.get(LOG_REQUEST) << "[PARSE HEADER]" << std::endl
+		<< std::endl;
 	if (!this->getStatusLine(&statusLine))
 	{
 		this->setError(Status(BAD_REQUEST, 400));
@@ -56,6 +58,8 @@ void	Request::parseRequestLine(std::string token)
 {
 	std::string::size_type cursor= 0;
 
+	streams.get(LOG_REQUEST) << "[PARSE REQUEST LINE]" << std::endl
+		<< std::endl;
 	if (!moveCursor(&cursor, token, " "))
 	{
 		this->setError(Status(BAD_REQUEST, 400));
@@ -106,6 +110,9 @@ void	Request::parseMethod(std::string str)
 void	Request::parseURI(std::string str)
 {
 	std::string::size_type cursor = 0;
+	streams.get(LOG_REQUEST) << "[PARSE URI]" << std::endl
+		<< std::endl;
+
 	//or # anchor???
 	if (moveCursor(&cursor, str, "?"))
 	{
@@ -288,6 +295,8 @@ void	Request::parseHeaderRegular(void)
 	int type;
 	while (1)
 	{
+		streams.get(LOG_REQUEST) << "BETARDE MAXIMALE" << std::endl
+			<< std::endl;
 		//look at parse_cgi_header for amelioration
 		if (this->getHeader().empty())
 		{
