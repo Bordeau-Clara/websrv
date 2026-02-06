@@ -105,7 +105,7 @@ void	Request::setEndOfHeaderState()
 		return;
 	}
 	//requete sans body
-	//should I remove _length == 0?? cause if content-length field present with 0 no need to start body parsing
+	// _length == 0 is depricated cause if content-length field present with 0 no need to start body parsing, but just in case
 	if (this->getContentLength() == 0 && this->_length == 0 && !this->isState(CHUNKED))
 	{
 		this->setState(EXEC);
