@@ -109,6 +109,7 @@ public:
 	int						getField(int *type);
 	int						getField(std::string *field, int *type);
 	int						getStatusLine(std::string *header);
+	void					checkFullHeader();
 
 private:
 	std::string		_body;

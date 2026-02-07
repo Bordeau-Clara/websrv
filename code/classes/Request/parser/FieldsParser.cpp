@@ -20,6 +20,11 @@
 //<port> optional
 void	Request::parseHost(std::string str)
 {
+	if (!this->_host.empty())
+	{
+		setError(Status("400 Bad Request: Multiple Host Header", 400));
+		return ;
+	}
 	this->_host = str;
 }
 

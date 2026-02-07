@@ -318,8 +318,8 @@ void	Request::parseHeaderRegular(void)
 			this->setError(Status(BAD_REQUEST, 400));
 		}
 	}
-	//check_complete_header(event);
-	//if POST ->Content Length obligatoire ->411
+	checkFullHeader();
+	//if POST ->Content Length obligatoire ->411 ??
 }
 
 void	Request::parseHeaderCgi(void)
@@ -357,5 +357,13 @@ void	Request::parseHeaderCgi(void)
 		if (!field.empty())
 			this->_cgi->addFields(field, token);
 	}
-	//check_complete_header(event); //if content_length absent -> add it
+	checkFullHeader();
+}
+
+void	Request::checkFullHeader()
+{
+	if (this->_host.empty())
+	{
+		this->setError(Status(BAD_REQUEST, 400));
+	}
 }
