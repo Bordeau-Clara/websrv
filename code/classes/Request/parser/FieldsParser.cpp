@@ -83,11 +83,6 @@ void	Request::parseConnection(std::string str)
 	}
 }
 
-void	Request::parseExpect(std::string str)
-{
-	this->_expect.assign(str);
-}
-
 void	Request::parseContentType(std::string str)
 {
 	this->_contentType.assign(str);

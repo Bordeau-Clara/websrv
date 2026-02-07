@@ -80,11 +80,6 @@ std::string	Request::getContentType() const
 	return this->_contentType;
 }
 
-std::string	Request::getExpect() const
-{
-	return this->_expect;
-}
-
 bool	Request::getConnection() const
 {
 	return this->_connection;

@@ -57,6 +57,7 @@ void	Request::resetRequest()
 	this->_status = Status(OK, 200);
 
 	this->_requestedRessource.clear();
+	this->_queryString.clear();
 	this->_url.clear();
 	this->_uri.clear();
 
@@ -65,7 +66,11 @@ void	Request::resetRequest()
 	this->_contentLength = 0;
 	this->_length = 0;
 	this->_connection = KEEP_ALIVE;
+	// this->_transferEncoding = 0;
 	this->_trailer = 0;
+	this->_host.clear();
+	this->_cookies.clear();
+	this->_contentType.clear();
 
 	this->_response = Response();
 	//add everything that has been modified
@@ -232,7 +237,6 @@ void Request::initFields()
 	Request::fields[238][0] = "if-unmodified-since";
 
 	Request::fctField[58] = &Request::parseHost;
-	Request::fctField[67] = &Request::parseExpect;
 	Request::fctField[52] = &Request::parseCookies;
 	Request::fctField[76] = &Request::parseTrailer;
 	Request::fctField[102] = &Request::parseConnection;
@@ -258,8 +262,6 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 		<< rhs.getHost() << std::endl
 		<< "Content Type="
 		<< rhs.getContentType() << std::endl
-		<< "Expect="
-		<< rhs.getExpect() << std::endl
 		<< "Content Length="
 		<< rhs.getContentLength() << std::endl
 		<< "Cookies="

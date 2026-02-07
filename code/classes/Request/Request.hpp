@@ -176,10 +176,8 @@ private:
 	std::string		_host; //inutile mais obligatoire
 	std::string		_cookies;
 	std::string		_contentType; //que utile pour POST
-	std::string		_expect;
 	unsigned long	_contentLength;
 	bool			_length;
-	bool			_transferEncoding;
 	bool			_connection;
 	bool			_trailer;
 
@@ -187,7 +185,6 @@ public:
 	std::string				getHost() const;
 	std::string				getCookies() const;
 	std::string				getContentType() const;
-	std::string				getExpect() const;
 	unsigned long			getContentLength() const;
 	bool					getTransferEncoding() const;
 	bool					getConnection() const;
@@ -196,7 +193,6 @@ public:
 	void					parseHost(std::string);
 	void					parseCookies(std::string);
 	void					parseConnection(std::string);
-	void					parseExpect(std::string);
 	void					parseContentType(std::string);
 	void					parseContentLength(std::string);
 	void					parseTransferEncoding(std::string);
