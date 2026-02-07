@@ -139,6 +139,10 @@ pretty:
 	code/WebServ configs/pretty.conf
 .PHONY: pretty
 
+multiple:
+	code/WebServ configs/multipleServers.conf
+.PHONY: multiple
+
 # SIEGE
 SIEGE_PORT = 4000
 SIEGE_LOCATION = /siege.html
