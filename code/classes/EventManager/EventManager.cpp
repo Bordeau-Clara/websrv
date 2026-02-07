@@ -75,13 +75,9 @@ void	EventManager::run(void)
 	DashBoard.log("STARTING ..");
 	while (_alive)
 	{
-		/**/streams.get(LOG_EVENT) << "epoll loop start"
-			/**/<< std::endl;
 		// for each events
 		for (getNewEvent(); getPtr(); eventNext())
 		{
-		/**/streams.get(LOG_EVENT) << "epoll loop iteration:"
-			/**/<< std::endl;
 			if (eventIs(EPOLLIN)) // retriving which func it will call in th ejumptable epollinHandler
 				(this->*epollinHandler[checkEvent()])();
 			else if (eventIs(EPOLLOUT) && checkEvent() == CLIENT) // EPOLLOUT can only be for client send queue
