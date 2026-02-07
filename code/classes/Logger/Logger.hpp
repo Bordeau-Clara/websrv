@@ -38,8 +38,8 @@ public :
 	void	editStatusLine(const String&);
 	// print a new line and keep status at start
 	void	printNewLine(const String&) const;
-	// print actual status as new line and edit status
-	void	popStatus(const String&);
+	// // print actual status as new line and edit status
+	// void	popStatus(const String&);
 private:
 	String				_status_line;
 	void				_refreshStatusLine(void) const;

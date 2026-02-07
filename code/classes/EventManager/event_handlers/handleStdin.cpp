@@ -22,7 +22,7 @@ void	EventManager::handleStdin(void)
 	ssize_t	rbytes = read(0, buffer, BUFFER_SIZE);
 	if (!rbytes || rbytes == -1)
 	{
-		Monitor.printNewLine(GREEN + "Stopping webserv"  + RESET);
+		DashBoard.log(GREEN + "Stopping webserv"  + RESET);
 	/**/streams.get(LOG_EVENT) << "[ENDING WEBSERV]" << std::endl
 		/**/<< std::endl;
 		_alive = false;

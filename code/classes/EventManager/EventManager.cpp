@@ -31,24 +31,24 @@
 
 std::string intToIPv4(uint32_t);
 static const String	MONITOR_START = "Starting Webserv...";
-EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START), _alive(true), lastZombieCheck(std::time(NULL))
+EventManager::EventManager(std::vector<Server> &servers): _alive(true), lastZombieCheck(std::time(NULL))
 {
     // 2. Créer une instance epoll
-	Monitor.popStatus("Creating an epoll instance ");
+	DashBoard.log("Creating an epoll instance ");
     _fd = epoll_create1(0);
     if (_fd == -1)
 	{
         perror("epoll_create1");
 		throw (std::runtime_error("epoll"));
     }
-	Monitor.printNewLine("Opening Server fd...");
+	DashBoard.log("Opening Server fd...");
 	for(std::vector<Server>::iterator it = servers.begin(); it != servers.end(); it++)
 	{
 		it->startListen();
-		Monitor.printNewLine("Listening " + nbrToString(it->getPort()) + " on interface: " + intToIPv4(it->getInterface()) );
+		DashBoard.log("Listening " + nbrToString(it->getPort()) + " on interface: " + intToIPv4(it->getInterface()) );
 		// 3. Ajouter le socket serveur à epoll
 		EventAdd(it->getFd(), EPOLLIN, &*it);
-		Monitor.printNewLine("Adding listening socket to epoll Succeed !");
+		DashBoard.log("Adding listening socket to epoll Succeed !");
 	}
 	// stdin event add
 	EventAdd(STDIN_FILENO, EPOLLIN, &this->_stdin);
@@ -72,7 +72,7 @@ EventManager::~EventManager(void)
 
 void	EventManager::run(void)
 {
-	Monitor.printNewLine("STARTING ..");
+	DashBoard.log("STARTING ..");
 	while (_alive)
 	{
 		/**/streams.get(LOG_EVENT) << "epoll loop start"
@@ -89,7 +89,7 @@ void	EventManager::run(void)
 			else if (eventIs(EPOLLHUP) && checkEvent() == PIPE)
 				handlePipe();
 			else
-				Monitor.printNewLine(BLACK + "Unrecognized event");
+				DashBoard.log(BLACK + "Unrecognized event");
 			if (_alive == false)
 				break;
 		}

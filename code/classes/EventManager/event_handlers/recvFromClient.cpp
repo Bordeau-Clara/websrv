@@ -24,9 +24,9 @@ bool	EventManager::recvBuffer(Request &client)
 	if (count <= 0) // client has closed connection
 	{
 		if (count == -1)
-			Monitor.printNewLine(VIVID_RED + "Unexpected end from " + client.ip_str +  "recv: "+ strerror(errno) + RESET);
+			DashBoard.log(VIVID_RED + "Unexpected end from " + client.ip_str +  "recv: "+ strerror(errno) + RESET);
 		else
-			Monitor.printNewLine(MAGENTA + "EOF reveived from " + client.ip_str + " (client socket closed)" + RESET);
+			DashBoard.log(MAGENTA + "EOF reveived from " + client.ip_str + " (client socket closed)" + RESET);
 		EventDelete(client.fd);
 		delete (Request *)getPtr();
 		this->requests.remove((Request *)getPtr());
@@ -59,7 +59,7 @@ void	EventManager::recvFromClient(void)
 		// desarme client
 		EventModify(client.fd, 0, &client);
 		//fork
-		Monitor.printNewLine(VIVID_YELLOW + "Executing requested cgi:" + cgi->_exec + RESET);
+		DashBoard.log(VIVID_YELLOW + "Executing requested cgi:" + cgi->_exec + RESET);
 		if (!cgi->start(*this))
 		{
 			this->_alive = false;

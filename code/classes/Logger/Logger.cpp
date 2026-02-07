@@ -68,16 +68,3 @@ void Logger::printNewLine(const String& msg) const
     // 3. On réimprime la ligne de statut en bas
     this->_stream << strTimestamp() + _status_line  << RESET << std::flush;
 }
-
-void Logger::popStatus(const String& nextStatus)
-{
-    // 1. On sauvegarde le statut actuel qui va devenir un log permanent
-    String completedTask = _status_line;
-
-    // 2. On met à jour le futur statut (celui qui restera en bas)
-    _status_line = nextStatus;
-
-    // 3. On utilise la méthode existante pour imprimer l'ancien statut
-    //    et rafraîchir la ligne du bas avec le nouveau.
-    this->printNewLine(completedTask);
-}

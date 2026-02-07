@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Logger.hpp"
+#include "ServerMonitor.hpp"
 #include <string>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -63,7 +63,7 @@ class EventManager
 		void			handleStdin(void);
 	
 		// Logger
-		Logger			Monitor;
+		ServerMonitor	DashBoard;
 		void			monitorNewEvent(ssize_t);
 		void			monitorEventRecv(ssize_t, String, Request&);
 

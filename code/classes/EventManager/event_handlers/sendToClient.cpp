@@ -21,13 +21,13 @@ bool	EventManager::sendBuffer(Request &client)
 
 	if (send(client.fd, toSend.data(), toSend.size(), 0) == -1)
 	{
-		Monitor.printNewLine(VIVID_RED + "Unexpected connection end from " + client.ip_str +  " send: "+ strerror(errno) + RESET);
+		DashBoard.log(VIVID_RED + "Unexpected connection end from " + client.ip_str +  " send: "+ strerror(errno) + RESET);
 		EventDelete(client.fd);
 		this->requests.remove((Request *)getPtr());
 		delete (Request *)getPtr();
 		return (false);
 	}
-	Monitor.printNewLine(VIVID_BLUE + "SEND TO " + client.ip_str + ": " + nbrToString(toSend.size()) + " bytes" + RESET);
+	DashBoard.log(VIVID_BLUE + "SEND TO " + client.ip_str + ": " + nbrToString(toSend.size()) + " bytes" + RESET);
 	return (client._response.transmissionComplete());
 }
 
@@ -42,13 +42,13 @@ void	EventManager::sendToClient(void)
 
 	if (client.getConnection() == KEEP_ALIVE)
 	{
-		Monitor.printNewLine(VIVID_CYAN + "FROM "+client.ip_str+" connection:KEEPALIVE (end of the request)"  + RESET);
+		DashBoard.log(VIVID_CYAN + "FROM "+client.ip_str+" connection:KEEPALIVE (end of the request)"  + RESET);
 		client.resetRequest();
 		EventModify(client.fd, EPOLLIN, &client);
 	}
 	else
 	{
-		Monitor.printNewLine(VIVID_CYAN + "END FROM "+client.ip_str+" connection:CLOSE (end of the request)"  + RESET);
+		DashBoard.log(VIVID_CYAN + "END FROM "+client.ip_str+" connection:CLOSE (end of the request)"  + RESET);
 		EventDelete(client.fd);
 		this->requests.remove((Request *)getPtr());
 		delete (Request *)getPtr();

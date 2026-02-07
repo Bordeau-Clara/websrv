@@ -34,20 +34,20 @@ void	EventManager::handlePipe()
 	if (count > 0)
 	{
 		cgi._buffer.append(buffer, count);
-		Monitor.printNewLine(BRIGHT_YELLOW + "READ from cgi " + nbrToString(count) + " BYTES !" + RESET);
+		DashBoard.log(BRIGHT_YELLOW + "READ from cgi " + nbrToString(count) + " BYTES !" + RESET);
 		/**/streams.get(LOG_EVENT) << "RECEIVED:" +cgi._buffer << std::endl
 			/**/<< std::endl;
 		return ;
 	}
 	if (count == -1) // read error : cgi broken ?
 	{
-		Monitor.printNewLine(VIVID_RED + "Unexpected broken CGI pipe: "+ strerror(errno) + RESET);
+		DashBoard.log(VIVID_RED + "Unexpected broken CGI pipe: "+ strerror(errno) + RESET);
 		cgi._client->setError(Status(GATEWAY_TIMEOUT, 504));
 		cgi._client->buildErrorResponse();
 	}
 	else // else -> eof
 	{
-		Monitor.printNewLine(ORANGE + "CGI successfully ended"  + RESET);
+		DashBoard.log(ORANGE + "CGI successfully ended"  + RESET);
 		//treat info and put into cgi.request.response
 		cgi.parseBuffer();
 		/**/streams.get(LOG_EVENT) << "{FD}" << cgi._client->fd << std::endl

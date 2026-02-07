@@ -30,7 +30,7 @@ void	EventManager::serverAcceptClient(void)
 	Server	&server = *(Server*)getPtr();
 	Request	&client = requestAdd(server);
 
-	Monitor.printNewLine(VIVID_GREEN + "New client " + client.ip_str + " accepted !" + RESET);
+	DashBoard.log(VIVID_GREEN + "New client " + client.ip_str + " accepted !" + RESET);
 	// Configurer le socket client en non-bloquant
 	fcntl(client.fd, F_SETFL, O_NONBLOCK);
 

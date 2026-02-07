@@ -51,7 +51,7 @@ void	EventManager::eventNext(void)
 {
 	_it++;
 	if (getPtr())
-		Monitor.printNewLine("next event");
+		DashBoard.log("next event");
 }
 
 bool	EventManager::eventIs(uint32_t mode)
@@ -122,7 +122,7 @@ void	EventManager::zombieCheck(void)
 			continue ;
 		if (!req.timeOut(5))
 			continue;
-		Monitor.printNewLine(VIVID_RED + "client Timeout !" + RESET);
+		DashBoard.log(VIVID_RED + "client Timeout !" + RESET);
 		if (req.isState(CGI) && req.getCgi() != NULL)
 		{
 			pid_t &pid = req.getCgi()->_pid;

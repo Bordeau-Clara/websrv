@@ -18,18 +18,19 @@
 
 void	EventManager::monitorNewEvent(ssize_t nEvent)
 {
-	// Source - https://stackoverflow.com/q
-	// Posted by SAK, modified by community. See post 'Timeline' for change history
-	// Retrieved 2025-12-07, License - CC BY-SA 4.0
-	std::stringstream ss;
-
-	ss << nEvent << "events found !";
-	Monitor.editStatusLine(ss.str());
+	(void)nEvent;
+	// // Source - https://stackoverflow.com/q
+	// // Posted by SAK, modified by community. See post 'Timeline' for change history
+	// // Retrieved 2025-12-07, License - CC BY-SA 4.0
+	// std::stringstream ss;
+	//
+	// ss << nEvent << "events found !";
+	// Monitor.editStatusLine(ss.str());
 }
 
 void	EventManager::monitorEventRecv(ssize_t count, String recv, Request &client)
 {
-	Monitor.printNewLine(VIVID_MAGENTA + "FROM " + client.ip_str + ": "+nbrToString(count) + " bytes recv" + RESET);
+	DashBoard.log(VIVID_MAGENTA + "FROM " + client.ip_str + ": "+nbrToString(count) + " bytes recv" + RESET);
 	streams.get(LOG_EVENT) << " " << count << " bytes recv" << std::endl
 	<< recv << std::endl; 
 }
