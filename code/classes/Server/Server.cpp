@@ -11,6 +11,7 @@
 
 #include "Server.hpp"
 #include "Location.hpp"
+#include <cstdio>
 #include <stdexcept>
 #include "FileStream.hpp"
 #include "helpers.hpp"
@@ -167,6 +168,7 @@ void	Server::startListen(void)
     this->setFd(socket(this->socket_adress_family, this->socket_type, this->socket_protocol));
     if (this->getFd() == -1)
 	{
+		perror("socket");
 		throw (std::runtime_error("socket"));
     }
     // Configurer le socket pour le réutiliser rapidement
@@ -180,18 +182,19 @@ void	Server::startListen(void)
     server_addr.sin_port = htons(this->getPort());
     if (bind(this->getFd(), (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1)
 	{
+		perror("bind");
 		throw (std::runtime_error("bind"));
     }
 
 	//listen
     if (listen(this->getFd(), this->socket_max_connection) == -1)
 	{
+		perror("listen");
 		throw (std::runtime_error("listen"));
     }
 
 	// Configurer le socket server en non-bloquant
 	fcntl(this->_fd, F_SETFL, O_NONBLOCK);
-	std::cout << "listening " << getPort() << " on interface: " << intToIPv4(getInterface()) << std::endl;
 	streams.get(LOG_SERVER) << *this << SEPARATOR << std::endl;
 }
 

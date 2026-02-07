@@ -26,8 +26,10 @@
 #include "Server.hpp"
 #include "Request.hpp"
 #include "Cgi.hpp"
-#include "string.hpp"
+#include "colors.hpp"
+#include "helpers.hpp"
 
+std::string intToIPv4(uint32_t);
 static const String	MONITOR_START = "Starting Webserv...";
 EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START), _alive(true), lastZombieCheck(std::time(NULL))
 {
@@ -37,13 +39,13 @@ EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START)
     if (_fd == -1)
 	{
         perror("epoll_create1");
-		throw (std::runtime_error("ERROR"));
+		throw (std::runtime_error("epoll"));
     }
 	Monitor.printNewLine("Opening Server fd...");
 	for(std::vector<Server>::iterator it = servers.begin(); it != servers.end(); it++)
 	{
 		it->startListen();
-		Monitor.printNewLine("Listening Succeed !");
+		Monitor.printNewLine("Listening " + nbrToString(it->getPort()) + " on interface: " + intToIPv4(it->getInterface()) );
 		// 3. Ajouter le socket serveur à epoll
 		EventAdd(it->getFd(), EPOLLIN, &*it);
 		Monitor.printNewLine("Adding listening socket to epoll Succeed !");
@@ -87,7 +89,7 @@ void	EventManager::run(void)
 			else if (eventIs(EPOLLHUP) && checkEvent() == PIPE)
 				handlePipe();
 			else
-				throw (std::runtime_error("Unrecognized event"));
+				Monitor.printNewLine(BLACK + "Unrecognized event");
 			if (_alive == false)
 				break;
 		}
