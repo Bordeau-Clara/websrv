@@ -26,3 +26,8 @@ tags
 
 # request generated
 generated_requests/
+
+# Images
+*.pgn
+*.jpeg
+*.jpg
