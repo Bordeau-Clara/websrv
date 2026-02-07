@@ -13,6 +13,7 @@
 
 #include "Request.hpp"
 #include "Cgi.hpp"
+#include "colors.hpp"
 #include "stateMachine.hpp"
 
 bool	EventManager::recvBuffer(Request &client)
@@ -20,22 +21,12 @@ bool	EventManager::recvBuffer(Request &client)
 	static char buffer[BUFFER_SIZE] = {0};
 
 	ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
-	if (count == -1)
+	if (count <= 0) // client has closed connection
 	{
-		std::cerr << "Erreur recv: " << strerror(errno) << " (code: " << errno << ")"<< std::endl;
-		if (errno == 104)
-		{
-			Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (client disconnected)"  + RESET);
-			EventDelete(client.fd);
-			delete (Request *)getPtr();
-			this->requests.remove((Request *)getPtr());
-			return (false);
-		}
-		throw (std::runtime_error("RECV KO"));
-	}
-	if (count == 0) // client has closed connection
-	{
-		Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (client disconnected)"  + RESET);
+		if (count == -1)
+			Monitor.printNewLine(VIVID_RED + "Unexpected end from " + client.ip_str +  "recv: "+ strerror(errno) + RESET);
+		else
+			Monitor.printNewLine(MAGENTA + "EOF reveived from " + client.ip_str + " (client socket closed)" + RESET);
 		EventDelete(client.fd);
 		delete (Request *)getPtr();
 		this->requests.remove((Request *)getPtr());
@@ -64,11 +55,11 @@ void	EventManager::recvFromClient(void)
 		client.setState(READ);
 		Cgi	*cgi = client.getCgi();
 		//pipe
-		Monitor.printNewLine("Initializing a pipe");
 		cgi->init();
 		// desarme client
 		EventModify(client.fd, 0, &client);
 		//fork
+		Monitor.printNewLine(VIVID_YELLOW + "Executing requested cgi:" + cgi->_exec + RESET);
 		if (!cgi->start(*this))
 		{
 			this->_alive = false;
