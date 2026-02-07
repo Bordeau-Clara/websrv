@@ -29,7 +29,7 @@
 
 void	EventManager::getNewEvent(void)
 {
-	Monitor.popStatus("Polling...");
+	// Monitor.popStatus("Polling...");
 	_nEvent = epoll_wait(this->_fd, this->_events, MAX_EVENTS, 1000);
 	if (_nEvent == -1)
 	{
