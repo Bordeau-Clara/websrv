@@ -35,9 +35,12 @@ int	find_type(std::string str)
 	}
 	if (!str.empty())
 		str.resize(str.size() - 1);
+	streams.get(LOG_REQUEST) << "[TYPE VALUE]" << std::endl
+		<< index
+		<< std::endl;
 	if (index <= 0)
 		return -1;
-	if (index > 207)
+	if (index > static_cast<int>(TAB_SIZE))
 	{
 		return 0;
 	}
@@ -46,5 +49,8 @@ int	find_type(std::string str)
 		if (!Request::fields[index][i].empty() && !Request::fields[index][i].compare(str))
 			return index + i;
 	}
+	streams.get(LOG_REQUEST) << "[TYPE NOT FOUND]" << std::endl
+		<< index
+		<< std::endl;
 	return 0;
 }

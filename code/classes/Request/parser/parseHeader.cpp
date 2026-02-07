@@ -295,8 +295,6 @@ void	Request::parseHeaderRegular(void)
 	int type;
 	while (1)
 	{
-		streams.get(LOG_REQUEST) << "BETARDE MAXIMALE" << std::endl
-			<< std::endl;
 		//look at parse_cgi_header for amelioration
 		if (this->getHeader().empty())
 		{
@@ -313,7 +311,7 @@ void	Request::parseHeaderRegular(void)
 				<< std::endl;
 			return;
 		}
-		if (type > 0 && type < 207 && Request::fctField[type] != NULL)
+		if (type > 0 && type < static_cast<int>(TAB_SIZE) && Request::fctField[type] != NULL)
 			(this->*Request::fctField[type])(token);
 		else if (type < 0)
 		{
@@ -350,7 +348,7 @@ void	Request::parseHeaderCgi(void)
 				<< std::endl;
 			return;
 		}
-		if (type > 0 && type < 207 && Request::fctField[type] != NULL)
+		if (type > 0 && type < static_cast<int>(TAB_SIZE) && Request::fctField[type] != NULL)
 			(this->*Request::fctField[type])(token);
 		else if (type < 0)
 		{

@@ -32,6 +32,7 @@ int				find_type(std::string str);
 
 const bool			KEEP_ALIVE = true;
 const bool			CLOSE = false;
+const unsigned int			TAB_SIZE = 240;
 
 class Location;
 class Server;
@@ -73,8 +74,8 @@ public:
 	Server&			_server;
 
 
-	static std::string	fields[207][3];
-	static void			(Request::*fctField[210])(std::string);
+	static std::string	fields[TAB_SIZE][3];
+	static void			(Request::*fctField[TAB_SIZE])(std::string);
 	static void				initFields();
 
 	void					resetRequest();

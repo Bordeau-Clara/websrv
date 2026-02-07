@@ -197,28 +197,39 @@ int	Request::getField(std::string *field, int *type)
 	return 1;
 }
 
-std::string Request::fields[207][3] = {};
-void (Request::*Request::fctField[210])(std::string) = {NULL};
+std::string Request::fields[TAB_SIZE][3] = {};
+void (Request::*Request::fctField[TAB_SIZE])(std::string) = {NULL};
 
 void Request::initFields()
 {
+	Request::fields[26][0] = "date";
 	Request::fields[40][0] = "range";
 	Request::fields[42][0] = "accept";
+	Request::fields[48][0] = "from";
+	Request::fields[50][0] = "pragma";
+	Request::fields[52][0] = "cookie";
 	Request::fields[58][0] = "host";
 	Request::fields[66][0] = "origin";
 	Request::fields[67][0] = "expect";
-	Request::fields[52][0] = "cookie";
 	Request::fields[76][0] = "trailer";
+	Request::fields[98][0] = "if-match";
+	Request::fields[98][1] = "if-range";
 	Request::fields[102][0] = "connection";
+	Request::fields[146][0] = "user-agent";
 	Request::fields[147][0] = "accept-language";
 	Request::fields[150][0] = "accept-encoding";
 	Request::fields[150][1] = "cache-control";
-	Request::fields[164][0] = "authorization";
+	Request::fields[154][0] = "accept-charset";
+	// Request::fields[164][0] = "authorization";
+	Request::fields[169][0] = "content-range";
 	Request::fields[187][0] = "if-none-match";
 	Request::fields[189][0] = "content-length";
+	Request::fields[189][1] = "content-language";
 	Request::fields[191][0] = "content-type";
 	Request::fields[201][0] = "transfer-encoding";
 	Request::fields[205][0] = "if-modified-since";
+	Request::fields[210][0] = "content-location";
+	Request::fields[238][0] = "if-unmodified-since";
 
 	Request::fctField[58] = &Request::parseHost;
 	Request::fctField[67] = &Request::parseExpect;
