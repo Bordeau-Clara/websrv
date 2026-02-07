@@ -152,4 +152,4 @@ siege_stress_empty:
 	siege -c 10 -t 10S http://$(SIEGE_IP):$(SIEGE_PORT)/$(SIEGE_LOCATION)
 
 siege_stress_404:
-	siege -c 10 -t 10S http://$(SIEGE_IP):$(SIEGE_PORT)/kk
+	siege -c 10 -t 5S http://$(SIEGE_IP):$(SIEGE_PORT)/kk

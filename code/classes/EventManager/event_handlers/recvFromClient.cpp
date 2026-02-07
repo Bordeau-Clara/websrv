@@ -21,7 +21,18 @@ bool	EventManager::recvBuffer(Request &client)
 
 	ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
 	if (count == -1)
+	{
+		std::cerr << "Erreur recv: " << strerror(errno) << " (code: " << errno << ")"<< std::endl;
+		if (errno == 104)
+		{
+			Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (client disconnected)"  + RESET);
+			EventDelete(client.fd);
+			delete (Request *)getPtr();
+			this->requests.remove((Request *)getPtr());
+			return (false);
+		}
 		throw (std::runtime_error("RECV KO"));
+	}
 	if (count == 0) // client has closed connection
 	{
 		Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (client disconnected)"  + RESET);
@@ -44,6 +55,8 @@ void	EventManager::recvFromClient(void)
 	client.parseBuffer();
 	if (!client.isState(EXEC))// if parsing is not finished
 		return ;
+	/**/streams.get(LOG_EVENT) << "end of the parsing" << std::endl
+		/**/<< std::endl;
 	if (client.isState(CGI) && !client.isState(ERROR))
 	{
 		/**/streams.get(LOG_EVENT) << "{IN STATE CGI/ IN IF DANS RECVFROMCLIENT}" << std::endl
