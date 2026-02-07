@@ -12,6 +12,7 @@
 
 #include "EventManager.hpp"
 #include "Request.hpp"
+#include "colors.hpp"
 #include "helpers.hpp"
 #include <sstream>
 
@@ -28,7 +29,7 @@ void	EventManager::monitorNewEvent(ssize_t nEvent)
 
 void	EventManager::monitorEventRecv(ssize_t count, String recv, Request &client)
 {
-	Monitor.printNewLine("FROM "+client.ip_str+": "+nbrToString(count)+" bytes recv");
+	Monitor.printNewLine(VIVID_MAGENTA + "FROM " + client.ip_str + ": "+nbrToString(count) + " bytes recv" + RESET);
 	streams.get(LOG_EVENT) << " " << count << " bytes recv" << std::endl
 	<< recv << std::endl; 
 }

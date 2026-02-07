@@ -20,12 +20,13 @@
 #include "Server.hpp"
 #include "Request.hpp"
 #include "Cgi.hpp"
+#include "colors.hpp"
 #include "string.hpp"
 #include "helpers.hpp"
 
 void	EventManager::handlePipe()
 {
-	Monitor.printNewLine(RED + "Handling A PIPE ..."  + RESET);
+	Monitor.printNewLine(VIVID_YELLOW + "Handling A PIPE ..."  + RESET);
 	Cgi &cgi = *(Cgi *)getPtr();
 	static char buffer[BUFFER_SIZE] = {0};
 	ssize_t count = read(cgi._responsePipe[0], buffer, sizeof(buffer));
@@ -34,13 +35,13 @@ void	EventManager::handlePipe()
 	if (count)
 	{
 		cgi._buffer.append(buffer, count);
-		Monitor.printNewLine("RECV FROM PIPE" + nbrToString(count) + "BYTES !");
+		Monitor.printNewLine(BRIGHT_YELLOW + "RECV FROM PIPE " + nbrToString(count) + " BYTES !" + RESET);
 		/**/streams.get(LOG_EVENT) << "RECEIVED:" +cgi._buffer << std::endl
 			/**/<< std::endl;
 		return ;
 	}
 	// else -> eof
-	Monitor.printNewLine(RED + "ENDOF PIPE"  + RESET);
+	Monitor.printNewLine(ORANGE + "ENDOF PIPE"  + RESET);
 	//treat info and put into cgi.request.response
 	cgi.parseBuffer();
 	//DEL event cgi

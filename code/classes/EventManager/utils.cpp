@@ -24,6 +24,7 @@
 #include <stdexcept>
 
 #include "Request.hpp"
+#include "colors.hpp"
 #include "statusCodes.hpp"
 
 void	EventManager::getNewEvent(void)
@@ -121,7 +122,7 @@ void	EventManager::zombieCheck(void)
 			continue ;
 		if (!req.timeOut(5))
 			continue;
-		Monitor.printNewLine("client Timeout !");
+		Monitor.printNewLine(VIVID_RED + "client Timeout !" + RESET);
 		if (req.isState(CGI) && req.getCgi() != NULL)
 		{
 			pid_t &pid = req.getCgi()->_pid;

@@ -20,7 +20,6 @@ void	EventManager::handleStdin(void)
 	static char	buffer[BUFFER_SIZE + 1];
 
 	ssize_t	rbytes = read(0, buffer, BUFFER_SIZE);
-	Monitor.printNewLine(RED + nbrToString(rbytes)  + RESET);
 	if (!rbytes || rbytes == -1)
 	{
 	/**/streams.get(LOG_EVENT) << "[ENDING WEBSERV]" << std::endl

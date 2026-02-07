@@ -32,7 +32,7 @@ static const String	MONITOR_START = "Starting Webserv...";
 EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START), _alive(true), lastZombieCheck(std::time(NULL))
 {
     // 2. Créer une instance epoll
-	Monitor.popStatus("Creating an epoll instance");
+	Monitor.popStatus("Creating an epoll instance ");
     _fd = epoll_create1(0);
     if (_fd == -1)
 	{

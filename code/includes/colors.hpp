@@ -17,9 +17,11 @@ static const std::string RED     = "\033[31m";
 static const std::string GREEN   = "\033[32m";
 static const std::string YELLOW  = "\033[33m";
 static const std::string BLUE    = "\033[34m";
-static const std::string MAGENTA = "\033[35m";
+static const std::string PURPLE = "\033[35m";
+static const std::string MAGENTA = "\033[38;5;201m";
 static const std::string CYAN    = "\033[36m";
 static const std::string WHITE   = "\033[37m";
+static const std::string ORANGE = "\033[38;5;208m";
 
 static const std::string BRIGHT_BLACK   = "\033[90m";
 static const std::string BRIGHT_RED     = "\033[91m";
@@ -29,5 +31,13 @@ static const std::string BRIGHT_BLUE    = "\033[94m";
 static const std::string BRIGHT_MAGENTA = "\033[95m";
 static const std::string BRIGHT_CYAN    = "\033[96m";
 static const std::string BRIGHT_WHITE   = "\033[97m";
+static const std::string MAGENTA_SOFT = "\033[38;5;200m";
+static const std::string MAGENTA_PINK = "\033[38;5;205m";
+static const std::string VIVID_RED = "\033[38;5;196m";
+static const std::string VIVID_YELLOW = "\033[38;5;226m";
+static const std::string VIVID_GREEN = "\033[38;5;46m";
+static const std::string VIVID_BLUE = "\033[38;5;27m";
+static const std::string VIVID_CYAN = "\033[38;5;51m";
+static const std::string VIVID_MAGENTA = "\033[38;5;201m";
 
 static const std::string RESET = "\033[0m";

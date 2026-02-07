@@ -12,6 +12,7 @@
 #include "EventManager.hpp"
 #include "Request.hpp"
 #include "Cgi.hpp"
+#include "colors.hpp"
 #include "helpers.hpp"
 
 bool	EventManager::sendBuffer(Request &client)
@@ -20,12 +21,12 @@ bool	EventManager::sendBuffer(Request &client)
 
 	if (send(client.fd, toSend.data(), toSend.size(), 0) == -1)
 	{
-		Monitor.printNewLine(RED + "FROM "+client.ip_str+" connection:CLOSE (client ended connection while sending)"  + WHITE);
+		Monitor.printNewLine(VIVID_RED + "FROM "+client.ip_str+" connection:CLOSE (client ended connection while sending)"  + WHITE);
 		EventDelete(client.fd);
 		this->requests.remove((Request *)getPtr());
 		delete (Request *)getPtr();
 	}
-	Monitor.printNewLine("SEND TO "+client.ip_str+ ": " + nbrToString(toSend.size())+" bytes");
+	Monitor.printNewLine(VIVID_BLUE + "SEND TO " + client.ip_str + ": " + nbrToString(toSend.size()) + " bytes" + RESET);
 	return (client._response.transmissionComplete());
 }
 
@@ -40,13 +41,13 @@ void	EventManager::sendToClient(void)
 
 	if (client.getConnection() == KEEP_ALIVE)
 	{
-		Monitor.printNewLine(RED + "FROM "+client.ip_str+" connection:KEEPALIVE (end of the request)"  + WHITE);
+		Monitor.printNewLine(VIVID_CYAN + "FROM "+client.ip_str+" connection:KEEPALIVE (end of the request)"  + WHITE);
 		client.resetRequest();
 		EventModify(client.fd, EPOLLIN, &client);
 	}
 	else
 	{
-		Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (end of the request)"  + WHITE);
+		Monitor.printNewLine(VIVID_CYAN + "END FROM "+client.ip_str+" connection:CLOSE (end of the request)"  + WHITE);
 		EventDelete(client.fd);
 		this->requests.remove((Request *)getPtr());
 		delete (Request *)getPtr();
