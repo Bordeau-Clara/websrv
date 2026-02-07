@@ -20,11 +20,9 @@ struct EventStats
     u_int64_t down;      // Trafic entrant
     u_int32_t sent;      // Paquets/Messages envoyés
     u_int32_t received;  // Paquets/Messages reçus
-    u_int32_t ok;        // Requêtes 2xx/3xx
-    u_int32_t ko;        // Requêtes 4xx/5xx
 
     // Initialisation à zéro
-    EventStats() : up(0), down(0), sent(0), received(0), ok(0), ko(0) {}
+    EventStats() : up(0), down(0), sent(0), received(0) {}
 
     // Génère la ligne de statut formatée
 	std::string format() const
@@ -32,10 +30,9 @@ struct EventStats
         std::stringstream ss;
         
         // Exemple de formatage propre avec des couleurs (si ton colors.hpp le permet)
-        ss << "[" << VIVID_GREEN << "OK: " << ok << RESET << " | " 
-           << VIVID_RED << "KO: " << ko << RESET << "] "
-           << "↑" << up << "B ↓" << down << "B | "
-           << "S:" << sent << " R:" << received;
+        ss
+			<< "↑" << up << "B ↓" << down << "B | "
+			<< "S:" << sent << " R:" << received;
         
         return ss.str();
     }
@@ -45,7 +42,7 @@ class ServerMonitor
 {
 	public:
 		// On peut passer un ostream spécifique au logger interne
-		ServerMonitor(void): _logger("BASE MSG") {}
+		ServerMonitor(void): _logger("BASE MSG") {this->_update();}
 
 		// Méthodes pour mettre à jour les stats facilement
 		void addRBytes(u_int64_t bytes)
@@ -58,16 +55,6 @@ class ServerMonitor
 		{
 			_stats.up += bytes;
 			_stats.sent++;
-			_update();
-		}
-		void requestSuccess()
-		{
-			_stats.ok++;
-			_update();
-		}
-		void requestError()
-		{
-			_stats.ko++;
 			_update();
 		}
 		// Pour logger un événement réel (ex: "New client connected")

@@ -30,6 +30,7 @@ void	EventManager::monitorNewEvent(ssize_t nEvent)
 
 void	EventManager::monitorEventRecv(ssize_t count, String recv, Request &client)
 {
+	DashBoard.addRBytes(count);
 	DashBoard.log(VIVID_MAGENTA + "FROM " + client.ip_str + ": "+nbrToString(count) + " bytes recv" + RESET);
 	streams.get(LOG_EVENT) << " " << count << " bytes recv" << std::endl
 	<< recv << std::endl; 

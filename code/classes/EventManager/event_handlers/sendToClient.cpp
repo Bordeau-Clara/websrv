@@ -27,7 +27,9 @@ bool	EventManager::sendBuffer(Request &client)
 		delete (Request *)getPtr();
 		return (false);
 	}
-	DashBoard.log(VIVID_BLUE + "SEND TO " + client.ip_str + ": " + nbrToString(toSend.size()) + " bytes" + RESET);
+	ssize_t count = toSend.size();
+	DashBoard.addTBytes(count);
+	DashBoard.log(VIVID_BLUE + "SEND TO " + client.ip_str + ": " + nbrToString(count) + " bytes" + RESET);
 	return (client._response.transmissionComplete());
 }
 
