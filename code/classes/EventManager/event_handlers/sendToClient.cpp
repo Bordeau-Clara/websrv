@@ -21,10 +21,11 @@ bool	EventManager::sendBuffer(Request &client)
 
 	if (send(client.fd, toSend.data(), toSend.size(), 0) == -1)
 	{
-		Monitor.printNewLine(VIVID_RED + "FROM "+client.ip_str+" connection:CLOSE (client ended connection while sending)"  + WHITE);
+		Monitor.printNewLine(VIVID_RED + "Unexpected connection end from " + client.ip_str +  " send: "+ strerror(errno) + RESET);
 		EventDelete(client.fd);
 		this->requests.remove((Request *)getPtr());
 		delete (Request *)getPtr();
+		return (false);
 	}
 	Monitor.printNewLine(VIVID_BLUE + "SEND TO " + client.ip_str + ": " + nbrToString(toSend.size()) + " bytes" + RESET);
 	return (client._response.transmissionComplete());
