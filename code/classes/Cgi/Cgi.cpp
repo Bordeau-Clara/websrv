@@ -55,6 +55,8 @@ void	Cgi::addFields(std::string field, std::string token)
 
 
 	variable.assign(httpToCgiHeader(field));
+	if (!variable.compare("HTTP_TRANSFER_ENCODING="))
+		return;
 	variable.append(token);
 	this->_env.push_back(variable);
 }
