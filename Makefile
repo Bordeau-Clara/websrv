@@ -11,20 +11,19 @@
 
 PROJECT_DIR = code
 BIN = WebServ
-CONFIG = configs/default.conf
-CONFIG_TEST = configs/test.conf
-CONFIG_CHRIS = configs/defaultChris.conf
+CONFIG = configs/multipleServers.conf
+CONFIG_TEST = configs/42CGI.conf
 TESTER_DIR = request_builder
 
 build:
 	$(MAKE) -j -C $(PROJECT_DIR)
 .PHONY: build
 
-run:
+run_multipleServers:
 	$(PROJECT_DIR)/$(BIN) $(CONFIG)
 .PHONY: run
 
-# betardite aigue
+# deprecated
 request:
 	$(MAKE) -C RequestGenerator
 .PHONY: request
@@ -34,13 +33,9 @@ test:
 .PHONY: test
 #fin
 
-corr:
+run_42cgi:
 	$(PROJECT_DIR)/$(BIN) $(CONFIG_TEST)
-.PHONY: run
-
-chris:
-	$(PROJECT_DIR)/$(BIN) $(CONFIG_CHRIS)
-.PHONY: run
+.PHONY: run_42cgi
 
 post:
 	curl -v \
@@ -68,17 +63,17 @@ debugLeaks:
 	valgrind --trace-children=yes --track-fds=yes --leak-check=full --show-leak-kinds=all $(PROJECT_DIR)/$(BIN) $(CONFIG)
 .PHONY: debug
 
-corrval:
+val_42CGI:
 	valgrind $(PROJECT_DIR)/$(BIN) $(CONFIG_TEST)
-.PHONY: corrval
+.PHONY: val_42CGI
 
-corrpost:
+post_42CGI:
 	curl -v \
 		-X POST http://localhost:8002/put_test/test.bla \
 		-H "Content-Type: text/plain" \
 		-H "Connection: close" \
 		--data-ascii "C'est un TOUPPER ou juste ca inverse ??????"
-.PHONY: corrpost
+.PHONY: post_42CGI
 
 # Liste des navigateurs par ordre de préférence
 BROWSERS := firefox firefox-esr google-chrome brave-browser chromium
@@ -138,10 +133,6 @@ chunked:
 pretty:
 	code/WebServ configs/pretty.conf
 .PHONY: pretty
-
-multiple:
-	code/WebServ configs/multipleServers.conf
-.PHONY: multiple
 
 # SIEGE
 SIEGE_PORT = 4000
