@@ -51,6 +51,7 @@ void	Request::parseBuffer(void)
 			this->setError(Status(BAD_REQUEST, 400));
 		}
 	}
+	//if EXEC ->checkFullExecHeader
 	printRequest(this);
 }
 
