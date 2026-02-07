@@ -82,6 +82,8 @@ void	Request::fillChunkedBody()
 	}
 }
 
+#include "helpers.hpp"
+
 unsigned long	Request::getChunkLength(std::string::size_type cursor)
 {
 	std::string				line;
@@ -99,6 +101,10 @@ unsigned long	Request::getChunkLength(std::string::size_type cursor)
 		this->_buffer.erase(0, 2);
 		this->setState(EXEC);
 		this->_contentLength = this->_body.size();
+		if (isState(CGI))
+		{
+			this->_cgi->addFields("Content-Length:", nbrToString(this->_contentLength));
+		}
 		return chunk_size;
 	}
 	else
@@ -165,4 +171,8 @@ void	Request::setTrailers(std::string::size_type cursor)
 	this->_buffer.erase(0, cursor + 3);
 	this->setState(EXEC);
 	this->_contentLength = this->_body.size();
+	if (isState(CGI))
+	{
+		this->_cgi->addFields("Content-Length:", nbrToString(this->_contentLength));
+	}
 }
