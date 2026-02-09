@@ -31,7 +31,6 @@ SRC_FILES = \
 
 # Classes files listing
 CLASS_FILES = \
-	ArgChecker/ArgChecker.cpp \
 	ConfigParser/ConfigParser.cpp \
 		ConfigParser/tokenize.cpp \
 		ConfigParser/run.cpp \

@@ -12,11 +12,21 @@
 #pragma once
 
 #include <iostream>
-#include "ArgChecker.hpp"
 #include "ConfigParser.hpp"
 #include "FileStream.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
 #include "Request.hpp"
+#include "errors.hpp"
 
-const std::string					MIMES_PATH = "mime.types";
+const std::string	MIMES_PATH = "mime.types";
+const std::string	DEFAULT_CONF_PATH = "configs/default.conf";
+
+class TooMuchArgs : public std::exception
+{
+	public:
+		virtual const char	*what() const throw()
+		{
+			return (ARG_TOO_MUCH);
+		}
+};

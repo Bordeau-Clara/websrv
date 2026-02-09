@@ -11,5 +11,5 @@
 
 #pragma once
 
-static const char ARG_TOO_MUCH[] = "Too much arguments.";
 static const char ARG_TOO_FEW[] = "Too few arguments.";
+static const char ARG_TOO_MUCH[] = "Too much arguments.";
