@@ -9,13 +9,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <dirent.h>
-#include <string>
-#include <sys/stat.h>
-#include <string>
 #include "Request.hpp"
-#include "Server.hpp"
 #include "Location.hpp"
 #include "helpers.hpp"
 

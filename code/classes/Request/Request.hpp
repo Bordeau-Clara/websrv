@@ -36,6 +36,7 @@ const unsigned int			TAB_SIZE = 240;
 
 class Location;
 class Server;
+struct FileEntry;
 #include "Cgi.hpp"
 
 struct Response
@@ -133,6 +134,10 @@ public:
 public:
 	struct Response	_response;
 public:
+	// void					collectEntries(std::string, std::vector<FileEntry>&, std::string);
+	// void					generateTreeHTML(std::string, int, std::string&);
+	void					generateAllFoldersContent(std::string, std::string&);
+	void					generateSidebarHTML(std::string, int, std::string&);
 	bool					recursiveReaddir(std::string);
 	void					generateResponse();
 	void					buildErrorResponse();
