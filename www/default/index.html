@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebServ - HTTP Server Project</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; display: flex; flex-direction: column; min-height: 100vh; }
+    .header { background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; padding: 20px 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .header h1 { font-size: 1.8em; font-weight: 600; }
+    .main-container { flex: 1; padding: 40px 20px; max-width: 1000px; margin: 0 auto; width: 100%; }
+    .hero { background: white; border-radius: 12px; padding: 60px 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 30px; text-align: center; }
+    .hero h2 { font-size: 2.5em; color: #2c3e50; margin-bottom: 20px; font-weight: 700; }
+    .hero p { font-size: 1.2em; color: #666; margin-bottom: 30px; line-height: 1.6; }
+    .school-link { display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 1.1em; transition: transform 0.2s, box-shadow 0.2s; }
+    .school-link:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4); }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
+    .feature-card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+    .feature-icon { font-size: 2.5em; margin-bottom: 15px; }
+    .feature-title { font-size: 1.3em; color: #2c3e50; margin-bottom: 12px; font-weight: 600; }
+    .feature-desc { color: #666; line-height: 1.6; font-size: 0.95em; }
+    .project-info { background: white; border-radius: 10px; padding: 35px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-top: 30px; }
+    .project-info h3 { color: #2c3e50; font-size: 1.6em; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    .project-info p { color: #555; line-height: 1.8; margin-bottom: 15px; font-size: 1.05em; }
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .tech-tag { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); color: #1976d2; padding: 8px 16px; border-radius: 20px; font-size: 0.9em; font-weight: 500; }
+    .footer { background: #2c3e50; color: white; text-align: center; padding: 20px; margin-top: auto; }
+    .footer p { font-size: 0.9em; opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🌐 WebServ</h1>
+  </div>
+  
+  <div class="main-container">
+    <div class="hero">
+      <h2>Welcome to WebServ</h2>
+      <p>A fully functional HTTP/1.1 server implementation built from scratch in C++98 as part of the 42 curriculum.</p>
+      <a href="/return" class="school-link">🎓 École 42</a>
+    </div>
+    
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3 class="feature-title">High Performance</h3>
+        <p class="feature-desc">Non-blocking I/O with efficient multiplexing using epoll() for handling multiple concurrent connections.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">📡</div>
+        <h3 class="feature-title">HTTP/1.1 Compliant</h3>
+        <p class="feature-desc">Full implementation of HTTP/1.1 protocol with support for GET, POST, and DELETE methods.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🔧</div>
+        <h3 class="feature-title">Highly Configurable</h3>
+        <p class="feature-desc">Flexible configuration system supporting multiple virtual hosts, custom error pages, and CGI execution.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3 class="feature-title">Robust & Stable</h3>
+        <p class="feature-desc">Resilient error handling, proper resource management, and stress-tested for stability under load.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">📁</div>
+        <h3 class="feature-title">Auto-Index</h3>
+        <p class="feature-desc">Beautiful directory listing with hierarchical folder navigation and modern UI design.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3 class="feature-title">CGI Support</h3>
+        <p class="feature-desc">Execute dynamic scripts with CGI protocol support for Python, PHP, and shell scripts.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🍪</div>
+        <h3 class="feature-title">Session Management</h3>
+        <p class="feature-desc">Full cookie support for session handling, user tracking, and persistent state management.</p>
+      </div>
+    </div>
+    
+    <div class="project-info" style="margin-top: 40px; background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border: 2px solid #667eea;">
+      <h3 style="color: #667eea;">🧪 Test Our Server</h3>
+      <p style="margin-bottom: 25px;">Try out the different features of WebServ with our interactive test pages.</p>
+      
+      <div class="features">
+        <div class="feature-card" style="border: 2px solid #3498db; cursor: pointer;" onclick="window.location.href='/post.html'">
+          <div class="feature-icon">📤</div>
+          <h3 class="feature-title">POST Request Test</h3>
+          <p class="feature-desc">Test file uploads and form submissions with our POST method handler.</p>
+          <a href="/post.html" style="display: inline-block; margin-top: 10px; color: #3498db; font-weight: 600; text-decoration: none;">Try it →</a>
+        </div>
+        
+        <div class="feature-card" style="border: 2px solid #e74c3c; cursor: pointer;" onclick="window.location.href='/delete.html'">
+          <div class="feature-icon">🗑️</div>
+          <h3 class="feature-title">DELETE Request Test</h3>
+          <p class="feature-desc">Test resource deletion with our DELETE method implementation.</p>
+          <a href="/delete.html" style="display: inline-block; margin-top: 10px; color: #e74c3c; font-weight: 600; text-decoration: none;">Try it →</a>
+        </div>
+        
+        <div class="feature-card" style="border: 2px solid #27ae60; cursor: pointer;" onclick="window.location.href='/post/'">
+          <div class="feature-icon">✅</div>
+          <h3 class="feature-title">Upload Results</h3>
+          <p class="feature-desc">View and manage files that have been uploaded to the server.</p>
+          <a href="/posted" style="display: inline-block; margin-top: 10px; color: #27ae60; font-weight: 600; text-decoration: none;">View →</a>
+        </div>
+        
+        <div class="feature-card" style="border: 2px solid #f39c12; cursor: pointer;" onclick="window.location.href='/errors.html'">
+          <div class="feature-icon">⚠️</div>
+          <h3 class="feature-title">Error Handling Test</h3>
+          <p class="feature-desc">Explore our custom error pages and error handling capabilities.</p>
+          <a href="/errors.html" style="display: inline-block; margin-top: 10px; color: #f39c12; font-weight: 600; text-decoration: none;">Explore →</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="project-info">
+      <h3>About the Project</h3>
+      <p>WebServ is a comprehensive web server implementation developed as part of the École 42 common core curriculum. This project demonstrates advanced systems programming concepts including network programming, I/O multiplexing, HTTP protocol implementation, and server architecture design.</p>
+      <p>Built entirely in C++98, WebServ handles multiple simultaneous connections efficiently using non-blocking sockets and the epoll() system call. The server supports virtual hosting, custom error pages, file uploads, cookie management, and CGI script execution.</p>
+      <p>This implementation serves as both a learning experience and a practical demonstration of low-level network programming principles, providing deep insight into how web servers operate under the hood.</p>
+      
+      <div class="tech-stack">
+        <span class="tech-tag">C++98</span>
+        <span class="tech-tag">Socket Programming</span>
+        <span class="tech-tag">HTTP/1.1</span>
+        <span class="tech-tag">CGI</span>
+        <span class="tech-tag">epoll()</span>
+        <span class="tech-tag">Non-blocking I/O</span>
+        <span class="tech-tag">Multiplexing</span>
+        <span class="tech-tag">Cookies</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer">
+	  <p>By Clara &amp; Ayoub - WebServ</p>
+  </div>
+</body>
+</html>
