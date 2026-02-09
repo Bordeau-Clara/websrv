@@ -324,7 +324,7 @@
                 const fileBuffer = await selectedFile.arrayBuffer();
                 
                 // Construire l'URL avec le nom du fichier
-                const url = `/img/${encodeURIComponent(selectedFile.name)}`;
+                const url = `/${encodeURIComponent(selectedFile.name)}`;
 
                 const response = await fetch(url, {
                     method: 'POST',
