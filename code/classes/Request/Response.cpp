@@ -11,6 +11,7 @@
 
 #include "Request.hpp"
 #include "Location.hpp"
+#include "default.hpp"
 #include "requestDefines.hpp"
 #include "stateMachine.hpp"
 #include "statusCodes.hpp"
@@ -85,12 +86,7 @@ void	Request::buildErrorResponse()
 	// check if error page exists
 	// and try to append it to body
 	if (!findErrorPage())
-	{
-	// if cannot fall back on our default error page
-		this->_response.body.append(_status.str);
-		if (!this->_location)
-			this->_response.body.append("No location");
-	}
+		_response.body = extractStr((DEFAULT_LOCATION_ERRORPAGES_PATH + "404.html").c_str());
 	this->_response.str.append(CON_LEN + nbrToString(_response.body.length()) + CRLF);
 	headerEnd();
 	this->_response.str.append(_response.body);
