@@ -140,11 +140,11 @@ SIEGE_LOCATION = /siege.html
 SIEGE_CONFIG = configs/siege.conf
 SIEGE_IP = localhost
 
-siege_server_run:
+siege_run:
 	$(PROJECT_DIR)/$(BIN) $(SIEGE_CONFIG)
 
-siege_stress_empty:
+siege_test:
 	siege -c 10 -t 10S http://$(SIEGE_IP):$(SIEGE_PORT)/$(SIEGE_LOCATION)
 
-siege_stress_404:
+siege_test_404:
 	siege -c 10 -t 5S http://$(SIEGE_IP):$(SIEGE_PORT)/kk
