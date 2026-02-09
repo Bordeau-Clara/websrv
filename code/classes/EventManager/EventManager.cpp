@@ -12,6 +12,7 @@
 #include "EventManager.hpp"
 
 #include <cerrno>
+#include <csignal>
 #include <ctime>
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,6 +73,7 @@ EventManager::~EventManager(void)
 
 void	EventManager::run(void)
 {
+	std::signal(SIGPIPE, SIG_IGN);
 	DashBoard.log("STARTING ..");
 	while (_alive)
 	{

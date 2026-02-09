@@ -14,6 +14,7 @@
 #include "define_cgi.hpp"
 #include "requestDefines.hpp"
 #include "statusCodes.hpp"
+#include <csignal>
 #include <cstdlib>
 #include <exception>
 #include <stdexcept>
@@ -109,6 +110,7 @@ int	Cgi::start(EventManager &webServ)
 	//child process;
 	if (_pid == 0)
 	{
+		std::signal(SIGPIPE, SIG_DFL);
 		close(_bodyPipe[1]);
 		close(_responsePipe[0]);
 
