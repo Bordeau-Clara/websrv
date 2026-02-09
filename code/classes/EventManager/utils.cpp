@@ -50,8 +50,6 @@ void	*EventManager::getPtr(void)
 void	EventManager::eventNext(void)
 {
 	_it++;
-	if (getPtr())
-		DashBoard.log("next event");
 }
 
 bool	EventManager::eventIs(uint32_t mode)
