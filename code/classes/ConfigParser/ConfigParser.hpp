@@ -24,7 +24,7 @@ class	Location;
 class	ConfigParser
 {
 	public:
-		ConfigParser(char *);
+		ConfigParser(const char *);
 		~ConfigParser(){}
 		std::vector<Server>	run(void);
 

@@ -48,8 +48,18 @@ int	main(int argc, char **argv)
 	std::vector<Server>	servers;
 	try// to fill server vector with config file
 	{
-		ArgChecker::checkargs(argc);
-		ConfigParser	parser(argv[1]);
+		std::string	config;
+	
+		if (argc == 1)
+		{
+			config = DEFAULT_CONF_PATH;
+			std::cerr << "warning: no config file.. falling back on " + DEFAULT_CONF_PATH << std::endl;
+		}
+		else if (argc >= 3)
+			throw (TooMuchArgs());
+		else
+			config = argv[1];
+		ConfigParser	parser(config.c_str());
 		servers = parser.run();
 	}
 	catch (std::exception	&e)// parse error exception

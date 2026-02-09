@@ -16,7 +16,7 @@
 
 std::string	extractStr(const char *file);
 
-ConfigParser::ConfigParser(char *file): _last_directive(NONE)
+ConfigParser::ConfigParser(const char *file): _last_directive(NONE)
 {
 	this->_str = extractStr(file);
 }
