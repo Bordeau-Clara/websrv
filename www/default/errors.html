@@ -297,33 +297,6 @@
                 <p class="error-desc">POST method not allowed at root location.</p>
                 <div class="error-path">/test.txt</div>
             </div>
-
-            <!-- Duplicate Host Header -->
-            <div class="error-card" onclick="showBrowserLimitation('Duplicate Host Header', 'curl -H \\\'Host: localhost\\\' -H \\\'Host: example.com\\\' http://localhost:8080/')">
-                <div class="error-icon">👥</div>
-                <h3 class="error-title">Duplicate Host Header</h3>
-                <span class="error-method">GET</span>
-                <p class="error-desc">Request with two Host headers (invalid HTTP).</p>
-                <div class="error-path">Browser limitation - See instructions</div>
-            </div>
-
-            <!-- Missing Host Header -->
-            <div class="error-card" onclick="showBrowserLimitation('Missing Host Header', 'telnet localhost 8080\\nGET / HTTP/1.1\\n\\n')">
-                <div class="error-icon">🔍</div>
-                <h3 class="error-title">Missing Host Header</h3>
-                <span class="error-method">GET</span>
-                <p class="error-desc">Request without Host header (required in HTTP/1.1).</p>
-                <div class="error-path">Browser limitation - See instructions</div>
-            </div>
-
-            <!-- Conflicting Content Headers -->
-            <div class="error-card" onclick="showBrowserLimitation('Conflicting Headers', 'curl -X POST -H \\\'Content-Length: 10\\\' -H \\\'Transfer-Encoding: chunked\\\' -d \\\'test\\\' http://localhost:8080/test.txt')">
-                <div class="error-icon">⚔️</div>
-                <h3 class="error-title">Conflicting Headers</h3>
-                <span class="error-method">POST</span>
-                <p class="error-desc">Request with both Content-Length and Transfer-Encoding: chunked.</p>
-                <div class="error-path">Browser limitation - See instructions</div>
-            </div>
         </div>
     </div>
 
