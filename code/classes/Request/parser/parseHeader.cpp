@@ -290,7 +290,13 @@ void	Request::parseHeaderRegular(void)
 	std::string				token;
 
 	if (this->getHeader().empty())
+	{
+		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "empty header"
+			<< std::endl;
+		this->setError(Status(BAD_REQUEST, 400));
 		return;
+	}
 
 	int type;
 	while (1)
@@ -318,7 +324,7 @@ void	Request::parseHeaderRegular(void)
 			this->setError(Status(BAD_REQUEST, 400));
 		}
 	}
-	checkFullHeader();
+	this->checkFullHeader();
 	//if POST ->Content Length obligatoire ->411 ??
 }
 
@@ -329,7 +335,13 @@ void	Request::parseHeaderCgi(void)
 	int			type;
 
 	if (this->getHeader().empty())
+	{
+		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "empty header"
+			<< std::endl;
+		this->setError(Status(BAD_REQUEST, 400));
 		return;
+	}
 	
 	while (1)
 	{
@@ -357,13 +369,18 @@ void	Request::parseHeaderCgi(void)
 		if (!field.empty())
 			this->_cgi->addFields(field, token);
 	}
-	checkFullHeader();
+	this->checkFullHeader();
 }
 
 void	Request::checkFullHeader()
 {
+	streams.get(LOG_REQUEST) << "[CHECKING HEADER]" << std::endl
+		<< std::endl;
 	if (this->_host.empty())
 	{
+		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "No Host"
+			<< std::endl;
 		this->setError(Status(BAD_REQUEST, 400));
 	}
 }

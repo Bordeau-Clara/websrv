@@ -1,4 +1,0 @@
-POST /chunk.txt HTTP/1.1
-Host: localhost:8002
-Connection: close
-Transfer-Encoding: chunked

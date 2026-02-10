@@ -90,6 +90,11 @@ void	Request::parseConnection(std::string str)
 
 void	Request::parseContentType(std::string str)
 {
+	if (!this->_host.empty())
+	{
+		setError(Status("400 Bad Request: Multiple Content-Type Header", 400));
+		return ;
+	}
 	this->_contentType.assign(str);
 }
 
@@ -103,6 +108,11 @@ void	Request::parseContentLength(std::string str)
 			<< "Cannot have Content-Length and Transfer-encoding at the same time"
 			<< std::endl;
 		return;
+	}
+	if (this->_length == 1)
+	{
+		setError(Status("400 Bad Request: Multiple Content-Length Header", 400));
+		return ;
 	}
 	this->_length = 1;
 	this->_contentLength = std::strtol(str.c_str(), NULL, 10);
@@ -137,6 +147,11 @@ void	Request::parseTransferEncoding(std::string str)
 			<< "Cannot have Content-Length and Transfer-encoding at the same time"
 			<< std::endl;
 		return;
+	}
+	if (isState(CHUNKED))
+	{
+		setError(Status("400 Bad Request: Multiple Transfer-encoding Header", 400));
+		return ;
 	}
 	if (str.find("chunked") != std::string::npos)
 	{
