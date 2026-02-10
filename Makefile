@@ -50,4 +50,4 @@ siege_test:
 	siege -c 10 -t 10S http://$(SIEGE_IP):$(SIEGE_PORT)/$(SIEGE_LOCATION)
 
 siege_test_404:
-	siege -c 10 -t 5S http://$(SIEGE_IP):$(SIEGE_PORT)/kk
+	siege -c 10 -t 5S http://$(SIEGE_IP):$(SIEGE_PORT)/ok
