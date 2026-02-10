@@ -37,14 +37,10 @@ sinon
 	lastSlash = str.find_last_of("/");
 	if (lastSlash == std::string::npos)
 	{
-		streams.get(LOG_REQUEST) << "[GET PARENT DIR]" << std::endl
-			<< "no slash" << std::endl
-			<< std::endl;
 		return ("");
 	}
 	if (lastSlash != str.size() - 1) // something else behind / ie parentDir = str[0 to lastslash]
 		return (str.substr(0, lastSlash));
-	streams.get(LOG_REQUEST) << "slash a la fin" << std::endl;
 
 	size_t	cursor = lastSlash;
 	while (str.at(cursor) == '/' && cursor != 0)//ca skip pas du tous au dossier d'avant, ca skip juste si il y a plusiuers / a la fin
@@ -53,9 +49,6 @@ sinon
 	if (lastSlash != std::string::npos)
 		return (str.substr(0, lastSlash));
 
-	streams.get(LOG_REQUEST) << "[GET PARENT DIR]" << std::endl
-		<< "no directory" << std::endl
-		<< std::endl;
 	return ("");
 }
 
@@ -86,9 +79,6 @@ return TRUE
 	std::string	parentDir;
 
 	parentDir = getParentDir(str);
-	streams.get(LOG_REQUEST) << "[CAN BUILD ON DIR]" << std::endl
-		<< parentDir << std::endl
-		<< std::endl;
 	if (parentDir.empty())
 		return (false);
 	struct stat	statbuf;

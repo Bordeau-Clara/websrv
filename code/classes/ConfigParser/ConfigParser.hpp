@@ -15,9 +15,6 @@
 #include <vector>
 #include <map>
 
-#include "FileStream.hpp"
-extern FileStream	streams;
-
 class	Server;
 class	Location;
 

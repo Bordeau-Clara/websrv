@@ -30,19 +30,3 @@ int	moveCursor(std::string::size_type *cursor, std::string str, int start, std::
 	else
 		return 0;
 }
-
-void	printRequest(Request *request)
-{
-	streams.get(LOG_REQUEST) << "[HEADER AFTER PARSING]" << std::endl
-		<< request->getHeader() << std::endl
-		<< std::endl
-		<< "[BODY AFTER PARSING]" << std::endl
-		<< request->getBody() << std::endl
-		<< std::endl
-		<< "[BUFFER AFTER PARSING]" << std::endl
-		<< request->getBuffer() << std::endl
-		<< std::endl
-		<< "[REQUEST IS]" << std::endl
-		<< *request
-		<< std::endl;
-}

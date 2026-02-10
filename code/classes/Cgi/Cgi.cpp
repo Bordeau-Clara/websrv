@@ -64,7 +64,6 @@ void	Cgi::addFields(std::string field, std::string token)
 
 void	Cgi::getFieldFromUri()
 {
-	streams.get(LOG_EVENT) << "[getFieldFromUri]" << std::endl;
 	std::string	token;
 	token.assign(METHOD);
 	if (_client->getMethod() == GET)
@@ -123,7 +122,6 @@ int	Cgi::start(EventManager &webServ)
 		std::vector<char*> arg = strToArray(_arg);
 		std::vector<char*> env = strToArray(_env);
 		execve(_exec.c_str(), arg.data(), env.data());
-		/**/streams.get(LOG_EVENT) << "(1)[EXECVE FAIL]" << this->_header << std::endl;
 		deleteVector(arg);
 		deleteVector(env);
 		return 0;
@@ -137,7 +135,6 @@ int	Cgi::start(EventManager &webServ)
 
 		std::string body = _client->getBody();
 		write(_bodyPipe[1], body.data(), body.size());
-		(streams.get(LOG_EVENT) << "body:").write(body.data(), body.size()) << std::endl;
 		close(_bodyPipe[1]);
 		return 1;
 	}
@@ -148,11 +145,9 @@ std::vector<char*>	Cgi::strToArray(std::vector<std::string> vect_str)
 	std::vector<char*> array;
 
 	array.reserve(vect_str.size() + 1); // Optionnel mais optimisé
-	streams.get(LOG_EVENT) << "[ENV in std::vector<string>]" << std::endl;
 	for (std::vector<std::string>::iterator it = vect_str.begin();
 		it != vect_str.end(); it++)
 	{
-	streams.get(LOG_EVENT) << *it << std::endl;
 		char	*copy = new char[it->size() + 1];
 		std::strcpy(copy, it->c_str());
 		array.push_back(copy);
@@ -163,7 +158,6 @@ std::vector<char*>	Cgi::strToArray(std::vector<std::string> vect_str)
 
 void	Cgi::parseBuffer()
 {
-	/**/streams.get(LOG_EVENT) << "[CGI buffer]" << std::endl <<this->_buffer << std::endl;
 	//can a \r or \n be alone in header???
 	std::string::size_type cursor = 0;
 	this->_headerLimiter = findLimiter();
@@ -173,28 +167,20 @@ void	Cgi::parseBuffer()
 	}
 	else
 	{
-		/**/streams.get(LOG_EVENT) << "(1)[error no end of header]" << this->_header << std::endl;
 		this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 		this->_client->buildErrorResponse();
 		return;
 	}
-	streams.get(LOG_EVENT) << "[PARSING HEADER]" << std::endl
-		<< std::endl;
 	this->parseHeader();
 
 	if (this->_length != this->_buffer.size())
 	{
-		/**/streams.get(LOG_EVENT) << "(1)[size body differz]" << this->_header << std::endl;
 		this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 		this->_client->buildErrorResponse();
 		return;
 	}
 	// buffer is now body
 	this->_client->_response.str.append(this->_buffer.data(), this->_buffer.size());
-	/**/streams.get(LOG_EVENT) << "[in cgi]" << this->_client->_response.cursor << std::endl
-	/**/<< "[in cgi]" << this->_client->_response.str.size() << std::endl
-	/**/<< "[in cgi]" << this->_client->_response.str << std::endl
-		/**/<< std::endl;
 }
 
 std::string	Cgi::findLimiter()
@@ -218,7 +204,6 @@ void	Cgi::fillHeader(std::string::size_type cursor)
 #include "helpers.hpp"
 void	Cgi::parseHeader()
 {
-	/**/streams.get(LOG_EVENT) << "[CGI header]" << std::endl <<this->_header << std::endl;
 	appendStatus();
 	appendContentLen();
 	setConnection();
@@ -231,12 +216,10 @@ void	Cgi::parseHeader()
 	{
 		if (!moveCursor(&cursorStart, this->_header, _headerLimiter))
 		{
-			/**/streams.get(LOG_EVENT) << "(3)[error no limiter]" << this->_header << std::endl;
 			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 			this->_client->buildErrorResponse();
 			return;
 		}
-		/**/streams.get(LOG_EVENT) << "[1 header has been append]" << std::endl << std::endl;
 		this->_client->_response.str.append(this->_header, 0, cursorStart);
 		this->_client->_response.str.append(CRLF);
 		this->_header.erase(0, cursorStart + _headerLimiter.size());
@@ -257,7 +240,6 @@ void	Cgi::appendStatus()
 	{
 		if (!moveCursor(&cursorEnd, this->_header, cursorStart, this->_headerLimiter))
 		{
-			/**/streams.get(LOG_EVENT) << "(1)[error no limiter]" << this->_header << std::endl;
 			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 			this->_client->buildErrorResponse();
 			return;
@@ -265,11 +247,9 @@ void	Cgi::appendStatus()
 		this->_client->_response.str.append("HTTP/1.1");
 		this->_client->_response.str.append(this->_header.substr(cursorStart + STATUS.size(), cursorEnd - (cursorStart + STATUS.size())) + CRLF);
 		this->_header.erase(cursorStart, cursorEnd + _headerLimiter.size() - (cursorStart + STATUS.size()));
-	/**/streams.get(LOG_EVENT) << "[status has been found and append]" << std::endl << std::endl;
 	}
 	else
 	{
-	/**/streams.get(LOG_EVENT) << "[status has been append]" << std::endl << std::endl;
 		this->_client->_response.str.append("HTTP/1.1 200 OK" + CRLF);
 	}
 }
@@ -280,7 +260,6 @@ void	Cgi::appendContentLen()
 	std::string::size_type cursorEnd = 0;
 	if (!moveCursor(&cursorStart, this->_header, CON_LEN))
 	{
-	/**/streams.get(LOG_EVENT) << "[content len has been filled]" << std::endl << std::endl;
 		this->_length = this->_buffer.size();//what about binaries
 		this->_client->_response.str.append(CON_LEN);
 		this->_client->_response.str.append(nbrToString(this->_length));
@@ -290,12 +269,10 @@ void	Cgi::appendContentLen()
 	{
 		if (!moveCursor(&cursorEnd, this->_header, cursorStart, this->_headerLimiter))
 		{
-			/**/streams.get(LOG_EVENT) << "(2)[error no limiter]" << this->_header << std::endl;
 			this->_client->setError(Status(INTERNAL_SERVER_ERROR, 500));
 			this->_client->buildErrorResponse();
 			return;
 		}
-	/**/streams.get(LOG_EVENT) << "[content len has been found and filled]" << std::endl << std::endl;
 		this->_length = strtol(this->_header.substr(cursorStart + CON_LEN.size(), cursorEnd).c_str(), NULL, 10);
 	}
 }

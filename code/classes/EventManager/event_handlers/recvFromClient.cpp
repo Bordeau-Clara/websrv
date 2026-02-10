@@ -15,6 +15,7 @@
 #include "Cgi.hpp"
 #include "colors.hpp"
 #include "stateMachine.hpp"
+#include <cerrno>
 
 bool	EventManager::recvBuffer(Request &client)
 {
@@ -32,7 +33,7 @@ bool	EventManager::recvBuffer(Request &client)
 		this->requests.remove((Request *)getPtr());
 		return (false);
 	}
-	monitorEventRecv(count, String(buffer).substr(0, count), client);
+	monitorEventRecv(count, client);
 	client.appendBuffer(buffer, count);
 	return (true);
 }
@@ -46,12 +47,8 @@ void	EventManager::recvFromClient(void)
 	client.parseBuffer();
 	if (!client.isState(EXEC))// if parsing is not finished
 		return ;
-	/**/streams.get(LOG_EVENT) << "end of the parsing" << std::endl
-		/**/<< std::endl;
 	if (client.isState(CGI) && !client.isState(ERROR))
 	{
-		/**/streams.get(LOG_EVENT) << "{IN STATE CGI/ IN IF DANS RECVFROMCLIENT}" << std::endl
-			/**/<< std::endl;
 		client.setState(READ);
 		Cgi	*cgi = client.getCgi();
 		//pipe

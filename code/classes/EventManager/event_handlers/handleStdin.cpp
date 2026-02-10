@@ -23,8 +23,6 @@ void	EventManager::handleStdin(void)
 	if (!rbytes || rbytes == -1)
 	{
 		DashBoard.log(GREEN + "Stopping webserv"  + RESET);
-	/**/streams.get(LOG_EVENT) << "[ENDING WEBSERV]" << std::endl
-		/**/<< std::endl;
 		_alive = false;
 	}
 }

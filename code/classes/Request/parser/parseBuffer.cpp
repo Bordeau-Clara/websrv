@@ -18,9 +18,6 @@
 
 void	Request::parseBuffer(void)
 {
-	streams.get(LOG_REQUEST) << "[BUFFER BEFORE PARSING]" << std::endl
-		<< this->getBuffer()
-		<< std::endl;
 	std::string::size_type cursor = 0;
 	//skip CRLF that can be at the beginning of the request
 	if (isState(HEADER))
@@ -28,8 +25,6 @@ void	Request::parseBuffer(void)
 	//header is full in buffer
 	if (isState(HEADER) && moveCursor(&cursor, this->getBuffer(), DCRLF))
 	{
-		streams.get(LOG_REQUEST) << "[PARSING HEADER]" << std::endl
-			<< std::endl;
 		this->fillHeader(cursor);
 		parseHeader();
 		setEndOfHeaderState();
@@ -39,8 +34,6 @@ void	Request::parseBuffer(void)
 
 	if (this->isState(BODY))
 	{
-		streams.get(LOG_REQUEST) << "[PARSING BODY]" << std::endl
-			<< std::endl;
 		if (this->isState(CHUNKED))
 			this->fillChunkedBody();
 		else
@@ -52,7 +45,6 @@ void	Request::parseBuffer(void)
 		}
 	}
 	//if EXEC ->checkFullExecHeader
-	printRequest(this);
 }
 
 void	Request::skipCrlf()

@@ -13,27 +13,12 @@
 #include <iostream>
 #include <string>
 #include "helpers.hpp"
-#include "logfiles.hpp"
 #include "webserv.hpp"
 
-FileStream	streams;
 std::map<std::string,std::string>	mimes;
 
 int	main(int argc, char **argv)
 {
-	// streams init
-	try// to open stream log file
-	{
-		streams.add(LOG_SERVER);
-		streams.add(LOG_EVENT);
-		streams.add(LOG_REQUEST);
-	}
-	catch (std::exception	&e)// open issue
-	{
-		std::cerr << "stream initialisation issue :"<< e.what() << std::endl;
-		return (1);
-	}
-
 	// mimes parser
 	try// init mimes
 	{
@@ -67,7 +52,6 @@ int	main(int argc, char **argv)
 		std::cerr << "configParser Exception caught :"<< e.what() << std::endl;
 		return (1);
 	}
-	printServerInfo(servers);
 	Request::initFields();
 	try// init epoll loop then run webserv
 	{

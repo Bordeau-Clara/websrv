@@ -23,11 +23,8 @@
 #include "stateMachine.hpp"
 #include "statusCodes.hpp"
 
-#include "FileStream.hpp"
-#include "logfiles.hpp"
 #include "Status.hpp"
 
-extern FileStream	streams;
 int				find_type(std::string str);
 
 const bool			KEEP_ALIVE = true;
@@ -209,4 +206,3 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs);
 
 int		moveCursor(std::string::size_type *cursor, std::string str, std::string toFind);
 int		moveCursor(std::string::size_type *cursor, std::string str, int start, std::string toFind);
-void	printRequest(Request *request);

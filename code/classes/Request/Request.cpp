@@ -37,14 +37,10 @@ Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in))
 #include <unistd.h>
 Request::~Request(void)
 {
-	/**/streams.get(LOG_EVENT) << "[REQUEST DESTRUCTOR CALLED]" << std::endl
-		/**/<< std::endl;
 	if (this->fd != -1)
 		close(this->fd);
 	if (this->_cgi)
 	{
-	/**/streams.get(LOG_EVENT) << "[CGI DELETED]" << std::endl
-		/**/<< std::endl;
 		delete _cgi;
 		_cgi = NULL;
 	}
@@ -84,13 +80,10 @@ void	Request::resetRequest()
 void	Request::appendBuffer(char * str, int size)
 {
 	this->_buffer.append(str, size);
-	streams.get(LOG_REQUEST) << "Request Buffer SIZE:"<< this->_buffer.size() << std::endl;
-	streams.get(LOG_REQUEST) << "while we read:"<< size << std::endl;
 }
 
 void	Request::setStatus(const Status &status)
 {
-	streams.get(LOG_REQUEST) << "STATUS: " << status.code << std::endl;
 	if (this->_status.code == 200)
 		this->_status = status;
 }
@@ -118,9 +111,6 @@ int	Request::getToken(std::string *token)
 
 	if (!moveCursor(&cursor, this->_header, CRLF))
 	{
-		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-			<< "CRLF has not been find to complete token"
-			<< std::endl;
 		return 0;
 	}
 	token->assign(this->_header, Ows, cursor - Ows);
@@ -135,9 +125,6 @@ int	Request::getStatusLine(std::string *token)
 
 	if (!moveCursor(&cursor, this->_header, CRLF))
 	{
-		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-			<< "CRLF has not been find to complete token"
-			<< std::endl;
 		return 0;
 	}
 	token->assign(this->_header, 0, cursor);
@@ -152,20 +139,11 @@ int	Request::getField(int *type)
 	std::string::size_type	cursor = 0;
 	if (!moveCursor(&cursor, this->_header, ":"))
 	{
-		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-			<< "':' has not been find to complete field"
-			<< std::endl;
 		return 0;
 	}
 	cursor += 1;
 	field.assign(this->_header.substr(0, cursor));
-	streams.get(LOG_REQUEST) << "[FIELD]" << std::endl
-		<< field
-		<< std::endl;
 	*type = find_type(field);
-	streams.get(LOG_REQUEST) << "[TYPE]" << std::endl
-		<< *type
-		<< std::endl;
 	this->_header.erase(0, cursor);
 	if (*type == 0)
 		return 1;
@@ -180,20 +158,11 @@ int	Request::getField(std::string *field, int *type)
 	std::string::size_type	cursor = 0;
 	if (!moveCursor(&cursor, this->_header, ":"))
 	{
-		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-			<< "':' has not been find to complete field"
-			<< std::endl;
 		return 0;
 	}
 	cursor += 1;
 	field->assign(this->_header.substr(0, cursor));
-	streams.get(LOG_REQUEST) << "[FIELD]" << std::endl
-		<< *field
-		<< std::endl;
 	*type = find_type(*field);
-	streams.get(LOG_REQUEST) << "[TYPE]" << std::endl
-		<< *type
-		<< std::endl;
 	if (*type == -1)
 		return 0;
 	if (*type == 0)

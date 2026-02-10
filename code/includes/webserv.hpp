@@ -13,7 +13,6 @@
 
 #include <iostream>
 #include "ConfigParser.hpp"
-#include "FileStream.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
 #include "Request.hpp"

@@ -14,6 +14,7 @@
 #include "Cgi.hpp"
 #include "colors.hpp"
 #include "helpers.hpp"
+#include <cerrno>
 
 bool	EventManager::sendBuffer(Request &client)
 {
@@ -39,8 +40,6 @@ void	EventManager::sendToClient(void)
 
 	if (!sendBuffer(client))
 		return;
-	/**/streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl
-		/**/<< std::endl;
 
 	if (client.getConnection() == KEEP_ALIVE)
 	{

@@ -13,11 +13,7 @@
 #include "Location.hpp"
 #include <cstdio>
 #include <stdexcept>
-#include "FileStream.hpp"
 #include "helpers.hpp"
-#include "logfiles.hpp"
-
-extern FileStream	streams;
 
 static const unsigned int				DEFAULT_SERVER_INTERFACE = 0;
 static const unsigned short				DEFAULT_SERVER_PORT = 8080;
@@ -195,7 +191,6 @@ void	Server::startListen(void)
 
 	// Configurer le socket server en non-bloquant
 	fcntl(this->_fd, F_SETFL, O_NONBLOCK);
-	streams.get(LOG_SERVER) << *this << SEPARATOR << std::endl;
 }
 
 std::ostream	&operator<<(std::ostream &lhs, const Server &rhs)
@@ -222,15 +217,6 @@ std::ostream	&operator<<(std::ostream &lhs, const Server &rhs)
 	return (lhs);
 }
 
-void	printServerInfo(const std::vector<Server> &servers)
-{
-	int	i = 0;
-	for (std::vector<Server>::const_iterator it = servers.begin(); it != servers.end(); it++)
-	{
-		streams.get(LOG_SERVER) << "SERVER " << i << ":" << std::endl << *it << std::endl;
-	}
-}
-
 // reverse iterate on locations of this server from longer to shorter
 // return the first location that own url AND url is equal location or remainder starts with '/'
 // trunc location key from url
@@ -241,16 +227,13 @@ const Location	*Server::urlSolver(std::string &url)
 	for (std::map<std::string, Location>::const_reverse_iterator it = locations.rbegin();
 	it != locations.rend(); it++)
 	{
-		streams.get(LOG_REQUEST) << url << " =? " << it->first << std::endl;
 		if (url.find(it->first) == 0)
 		if (url.length() == it->first.length() || url[it->first.length()] == '/' || url[it->first.length() - 1])
 		{
 			url.erase(0, it->first.length());
-			streams.get(LOG_REQUEST) << "location<"<< it->second._name <<">match, remainder: <" << url << ">" << std::endl;
 			return (&it->second);
 		}
 	}
 
-	streams.get(LOG_REQUEST) << "No Locations match 404 !" << std::endl;
 	return (NULL);
 }

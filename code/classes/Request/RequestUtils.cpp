@@ -19,9 +19,6 @@ int	find_type(std::string str)
 	{
 		if (str[i] != '-' && !(str[i] >= 'A' && str[i] <= 'Z') && !(str[i] >= 'a' && str[i] <= 'z'))
 		{
-			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-				<< "Wrong character in field :" << str[i]
-				<< std::endl;
 			return -1;
 		}
 		if (str[i] >= 'A' && str[i] <= 'Z')
@@ -35,9 +32,6 @@ int	find_type(std::string str)
 	}
 	if (!str.empty())
 		str.resize(str.size() - 1);
-	streams.get(LOG_REQUEST) << "[TYPE VALUE]" << std::endl
-		<< index
-		<< std::endl;
 	if (index <= 0)
 		return -1;
 	if (index > static_cast<int>(TAB_SIZE))
@@ -49,8 +43,5 @@ int	find_type(std::string str)
 		if (!Request::fields[index][i].empty() && !Request::fields[index][i].compare(str))
 			return index + i;
 	}
-	streams.get(LOG_REQUEST) << "[TYPE NOT FOUND]" << std::endl
-		<< index
-		<< std::endl;
 	return 0;
 }

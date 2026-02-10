@@ -17,7 +17,6 @@
 #include "ConfigParser.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
-#include "logfiles.hpp"
 #include "tokens.hpp"
 
 static const int LOCALHOST = 0x7F000001;

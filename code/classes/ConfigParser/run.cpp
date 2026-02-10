@@ -12,7 +12,6 @@
 #include "ConfigParser.hpp"
 #include "Server.hpp"
 #include "Location.hpp"
-#include "logfiles.hpp"
 #include "tokens.hpp"
 
 Location	ConfigParser::parseLocationLoop(Location &current)

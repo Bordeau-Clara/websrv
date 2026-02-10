@@ -62,8 +62,6 @@ EventManager::EventManager(std::vector<Server> &servers): _alive(true), lastZomb
 
 EventManager::~EventManager(void)
 {
-	/**/streams.get(LOG_EVENT) << "[EVENT MANAGER DETRUCTOR CALLED]" << std::endl
-		/**/<< std::endl;
 	close (this->_fd);
 	for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); it++)
 	{

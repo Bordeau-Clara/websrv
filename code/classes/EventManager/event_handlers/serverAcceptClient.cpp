@@ -36,7 +36,5 @@ void	EventManager::serverAcceptClient(void)
 
 	// Ajouter le socket client à epoll
 	EventAdd(client.fd, EPOLLIN, &client);
-	streams.get(LOG_EVENT) << "Nouvelle connexion acceptée: " << client.fd
-		<< std::endl;
 	client.editTime();
 }

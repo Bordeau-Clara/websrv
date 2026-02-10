@@ -21,9 +21,6 @@
 #define MAX_EVENTS 10
 #include <sys/epoll.h>
 
-#include "FileStream.hpp"
-extern FileStream	streams;
-
 class	Logger;
 class	Server;
 class	Request;
@@ -65,7 +62,7 @@ class EventManager
 		// Logger
 		ServerMonitor	DashBoard;
 		void			monitorNewEvent(ssize_t);
-		void			monitorEventRecv(ssize_t, String, Request&);
+		void			monitorEventRecv(ssize_t, Request&);
 
 		// utils
 		void				getNewEvent(void);

@@ -35,8 +35,6 @@ void	EventManager::handlePipe()
 	{
 		cgi._buffer.append(buffer, count);
 		DashBoard.log(BRIGHT_YELLOW + "READ from cgi " + nbrToString(count) + " BYTES !" + RESET);
-		/**/streams.get(LOG_EVENT) << "RECEIVED:" +cgi._buffer << std::endl
-			/**/<< std::endl;
 		return ;
 	}
 	if (count == -1) // read error : cgi broken ?
@@ -50,8 +48,6 @@ void	EventManager::handlePipe()
 		DashBoard.log(ORANGE + "CGI successfully ended"  + RESET);
 		//treat info and put into cgi.request.response
 		cgi.parseBuffer();
-		/**/streams.get(LOG_EVENT) << "{FD}" << cgi._client->fd << std::endl
-			/**/<< std::endl;
 		cgi._client->setState(EXEC);
 	}
 	//DEL event cgi

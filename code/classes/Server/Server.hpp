@@ -85,4 +85,3 @@ class	Server: public Event
 };
 
 std::ostream	&operator<<(std::ostream &lhs, const Server &rhs);
-void			printServerInfo(const std::vector<Server> &servers);

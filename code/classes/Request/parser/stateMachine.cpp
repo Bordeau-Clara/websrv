@@ -101,7 +101,6 @@ void	Request::setEndOfHeaderState()
 {
 	if (isState(ERROR))
 	{
-		printRequest(this);
 		return;
 	}
 	//requete sans body
@@ -109,7 +108,6 @@ void	Request::setEndOfHeaderState()
 	if (this->getContentLength() == 0 && this->_length == 0 && !this->isState(CHUNKED))
 	{
 		this->setState(EXEC);
-		printRequest(this);
 		return;
 	}
 	this->setState(BODY);

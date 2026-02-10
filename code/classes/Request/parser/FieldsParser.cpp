@@ -66,31 +66,24 @@ void Request::parseCookies(std::string str)
 		if (key == SID)
 			this->_cookies = value;
 	}
-	streams.get(LOG_REQUEST) << "[cookies]" << std::endl << this->_cookies
-		<< std::endl;
 }
 
 //keep-alive ou close
 void	Request::parseConnection(std::string str)
 {
-	streams.get(LOG_REQUEST) << "parseConnection<" + str + ">" << std::endl;
 	if (!str.compare("keep-alive"))
 	{
-		streams.get(LOG_REQUEST) << "[connection is keep alive]" << std::endl
-			<< std::endl;
 		this->_connection = KEEP_ALIVE;
 	}
 	if (!str.compare("close"))
 	{
-		streams.get(LOG_REQUEST) << "[connection is close]" << std::endl
-			<< std::endl;
 		this->_connection = CLOSE;
 	}
 }
 
 void	Request::parseContentType(std::string str)
 {
-	if (!this->_host.empty())
+	if (!this->_contentType.empty())
 	{
 		setError(Status("400 Bad Request: Multiple Content-Type Header", 400));
 		return ;
@@ -104,9 +97,6 @@ void	Request::parseContentLength(std::string str)
 	if (isState(CHUNKED))
 	{
 		this->setError(Status(BAD_REQUEST, 400));
-		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-			<< "Cannot have Content-Length and Transfer-encoding at the same time"
-			<< std::endl;
 		return;
 	}
 	if (this->_length == 1)
@@ -143,9 +133,6 @@ void	Request::parseTransferEncoding(std::string str)
 	if (this->_length == 1)
 	{
 		this->setError(Status(BAD_REQUEST, 400));
-		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-			<< "Cannot have Content-Length and Transfer-encoding at the same time"
-			<< std::endl;
 		return;
 	}
 	if (isState(CHUNKED))
@@ -160,9 +147,6 @@ void	Request::parseTransferEncoding(std::string str)
 	else
 	{
 		this->setError(Status(NOT_IMPLEMENTED, 501));
-		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-			<< "Only accept chunked encoding"
-			<< std::endl;
 	}
 }
 

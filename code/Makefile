@@ -20,7 +20,6 @@ SRC_FILES = \
 	utils/buildIpPortStr.cpp \
 	utils/canBuildOnDir.cpp \
 	utils/extractStr.cpp \
-	utils/hexToLong.cpp \
 	utils/mimeTypesMapFill.cpp \
 	utils/nbrToString.cpp \
 	utils/strNext.cpp \
@@ -36,7 +35,6 @@ CLASS_FILES = \
 		ConfigParser/run.cpp \
 		ConfigParser/parseDirective.cpp \
 		ConfigParser/helpers.cpp \
-	FileStream/FileStream.cpp \
 	Location/Location.cpp \
 	Server/Server.cpp \
 	Request/Request.cpp \
@@ -71,7 +69,6 @@ INC_DIR = \
 	includes \
 		$(CLASS_DIR)/ArgChecker \
 		$(CLASS_DIR)/ConfigParser \
-		$(CLASS_DIR)/FileStream \
 		$(CLASS_DIR)/Location \
 		$(CLASS_DIR)/Server \
 		$(CLASS_DIR)/Request \
