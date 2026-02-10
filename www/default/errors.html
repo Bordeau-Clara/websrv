@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Handling Test - WebServ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5em;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .main-container {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h2 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .page-title p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .error-tests {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .error-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-color: #3498db;
+        }
+
+        .error-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .error-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .error-desc {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+
+        .error-method {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #1976d2;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .error-path {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        .error-card.loading .loading-spinner {
+            display: block;
+        }
+
+        .error-card.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        .footer p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .info-box {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #f39c12;
+        }
+
+        .info-box h3 {
+            color: #f39c12;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .info-box p {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <a href="/" class="back-link" title="Back to Home">←</a>
+            <h1>⚠️ Error Handling Test</h1>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="page-title">
+            <h2>Test Error Handling</h2>
+            <p>Click on each card to test different error scenarios and see how WebServ handles them.</p>
+        </div>
+
+        <div class="info-box">
+            <h3>ℹ️ How to Use</h3>
+            <p>Each card represents a different error condition. Click on a card to send the request and see the server's response. The card will display the HTTP status code and error message returned by the server.</p>
+        </div>
+
+        <div class="error-tests">
+            <!-- 404 Not Found -->
+            <div class="error-card" onclick="openRequest('GET', '/fileThatDoesNotExist')">
+                <div class="error-icon">🔍</div>
+                <h3 class="error-title">File Not Found</h3>
+                <span class="error-method">GET</span>
+                <p class="error-desc">Request a file that doesn't exist on the server.</p>
+                <div class="error-path">/fileThatDoesNotExist</div>
+            </div>
+
+            <!-- CGI Timeout -->
+            <div class="error-card" onclick="openRequest('GET', '/cgi-bin/infiniteLoop.sh')">
+                <div class="error-icon">⏱️</div>
+                <h3 class="error-title">CGI Timeout</h3>
+                <span class="error-method">GET</span>
+                <p class="error-desc">CGI script that runs in an infinite loop to test timeout handling.</p>
+                <div class="error-path">/cgi-bin/infiniteLoop.sh</div>
+            </div>
+
+            <!-- CGI Permission Denied -->
+            <div class="error-card" onclick="openRequest('GET', '/cgi-bin/cannot.sh')">
+                <div class="error-icon">🔒</div>
+                <h3 class="error-title">CGI Permission Denied</h3>
+                <span class="error-method">GET</span>
+                <p class="error-desc">CGI script without execute permissions.</p>
+                <div class="error-path">/cgi-bin/cannot.sh</div>
+            </div>
+
+            <!-- Header Size Limit -->
+            <div class="error-card" onclick="testWithLargeHeaders('/smallHeader/test.html')">
+                <div class="error-icon">📏</div>
+                <h3 class="error-title">Header Size Exceeded</h3>
+                <span class="error-method">GET</span>
+                <p class="error-desc">Location with a small max_header_size limit.</p>
+                <div class="error-path">/smallHeader/test.html</div>
+            </div>
+
+            <!-- Body Size Limit -->
+            <div class="error-card" onclick="testWithLargeBody('/smallBody/test.sh')">
+                <div class="error-icon">📦</div>
+                <h3 class="error-title">Body Size Exceeded</h3>
+                <span class="error-method">POST</span>
+                <p class="error-desc">Location with a small max_body_size limit (sending 100 chars).</p>
+                <div class="error-path">/smallBody/test.sh</div>
+            </div>
+
+            <!-- POST on Directory -->
+            <div class="error-card" onclick="testMethod('POST', '/postDir/')">
+                <div class="error-icon">📁</div>
+                <h3 class="error-title">POST on Directory</h3>
+                <span class="error-method">POST</span>
+                <p class="error-desc">Attempting to POST to a directory (not allowed).</p>
+                <div class="error-path">/postDir/</div>
+            </div>
+
+            <!-- DELETE on Directory -->
+            <div class="error-card" onclick="testMethod('DELETE', '/postDir/')">
+                <div class="error-icon">🗑️</div>
+                <h3 class="error-title">DELETE on Directory</h3>
+                <span class="error-method">DELETE</span>
+                <p class="error-desc">Attempting to DELETE a directory (forbidden).</p>
+                <div class="error-path">/postDir/</div>
+            </div>
+
+            <!-- Method Not Allowed -->
+            <div class="error-card" onclick="testMethod('POST', '/test.txt')">
+                <div class="error-icon">🚫</div>
+                <h3 class="error-title">Method Not Allowed</h3>
+                <span class="error-method">POST</span>
+                <p class="error-desc">POST method not allowed at root location.</p>
+                <div class="error-path">/test.txt</div>
+            </div>
+
+            <!-- Unsupported Method -->
+            <div class="error-card" onclick="testMethod('PUT', '/index.html')">
+                <div class="error-icon">❌</div>
+                <h3 class="error-title">Unsupported Method</h3>
+                <span class="error-method">PUT</span>
+                <p class="error-desc">PUT method is not supported by the server.</p>
+                <div class="error-path">/index.html</div>
+            </div>
+
+            <!-- Duplicate Host Header -->
+            <div class="error-card" onclick="showBrowserLimitation('Duplicate Host Header', 'curl -H \\\'Host: localhost\\\' -H \\\'Host: example.com\\\' http://localhost:8080/')">
+                <div class="error-icon">👥</div>
+                <h3 class="error-title">Duplicate Host Header</h3>
+                <span class="error-method">GET</span>
+                <p class="error-desc">Request with two Host headers (invalid HTTP).</p>
+                <div class="error-path">Browser limitation - See instructions</div>
+            </div>
+
+            <!-- Missing Host Header -->
+            <div class="error-card" onclick="showBrowserLimitation('Missing Host Header', 'telnet localhost 8080\\nGET / HTTP/1.1\\n\\n')">
+                <div class="error-icon">🔍</div>
+                <h3 class="error-title">Missing Host Header</h3>
+                <span class="error-method">GET</span>
+                <p class="error-desc">Request without Host header (required in HTTP/1.1).</p>
+                <div class="error-path">Browser limitation - See instructions</div>
+            </div>
+
+            <!-- Conflicting Content Headers -->
+            <div class="error-card" onclick="showBrowserLimitation('Conflicting Headers', 'curl -X POST -H \\\'Content-Length: 10\\\' -H \\\'Transfer-Encoding: chunked\\\' -d \\\'test\\\' http://localhost:8080/test.txt')">
+                <div class="error-icon">⚔️</div>
+                <h3 class="error-title">Conflicting Headers</h3>
+                <span class="error-method">POST</span>
+                <p class="error-desc">Request with both Content-Length and Transfer-Encoding: chunked.</p>
+                <div class="error-path">Browser limitation - See instructions</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>By Clara &amp; Ayoub - WebServ</p>
+    </div>
+
+    <script>
+        // Simple GET request - navigate to the page
+        function openRequest(method, path) {
+            window.location.href = path;
+        }
+
+        // Test with large headers
+        async function testWithLargeHeaders(path) {
+            // Create a form to submit with large headers via fetch, then redirect
+            try {
+                const headers = {};
+                const largeValue = 'X'.repeat(500);
+                headers['X-Custom-Header-1'] = largeValue;
+                headers['X-Custom-Header-2'] = largeValue;
+                headers['X-Custom-Header-3'] = largeValue;
+                headers['X-Custom-Header-4'] = largeValue;
+                headers['X-Custom-Header-5'] = largeValue;
+
+                const response = await fetch(path, {
+                    method: 'GET',
+                    headers: headers
+                });
+
+                const html = await response.text();
+                
+                // Replace current page with the response
+                document.open();
+                document.write(html);
+                document.close();
+            } catch (error) {
+                document.body.innerHTML = `<h1>Error</h1><p>${error.message}</p>`;
+            }
+        }
+
+        // Test with large body (POST)
+        async function testWithLargeBody(path) {
+            try {
+                const body = 'X'.repeat(100);
+
+                const response = await fetch(path, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    },
+                    body: body
+                });
+
+                const html = await response.text();
+                
+                // Replace current page with the response
+                document.open();
+                document.write(html);
+                document.close();
+            } catch (error) {
+                document.body.innerHTML = `<h1>Error</h1><p>${error.message}</p>`;
+            }
+        }
+
+        // Test with specific method (POST, DELETE, PUT)
+        async function testMethod(method, path) {
+            try {
+                const response = await fetch(path, {
+                    method: method
+                });
+
+                const html = await response.text();
+                
+                // Replace current page with the response
+                document.open();
+                document.write(html);
+                document.close();
+            } catch (error) {
+                document.body.innerHTML = `<h1>Error</h1><p>${error.message}</p>`;
+            }
+        }
+
+        // Show browser limitation with instructions
+        function showBrowserLimitation(title, command) {
+            const html = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Browser Limitation - ${title}</title>
+                    <style>
+                        body {
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            background: #f8f9fa;
+                            margin: 0;
+                            padding: 40px 20px;
+                        }
+                        .container {
+                            max-width: 900px;
+                            margin: 0 auto;
+                            background: white;
+                            border-radius: 12px;
+                            padding: 40px;
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                        }
+                        h1 {
+                            color: #f39c12;
+                            margin-bottom: 20px;
+                        }
+                        h2 {
+                            color: #2c3e50;
+                            margin-bottom: 20px;
+                        }
+                        p {
+                            color: #666;
+                            font-size: 1.1em;
+                            line-height: 1.6;
+                            margin-bottom: 30px;
+                        }
+                        h3 {
+                            color: #3498db;
+                            margin-bottom: 15px;
+                        }
+                        .command {
+                            background: #2c3e50;
+                            color: #2ecc71;
+                            padding: 20px;
+                            border-radius: 8px;
+                            font-family: 'Courier New', monospace;
+                            overflow-x: auto;
+                            margin-bottom: 20px;
+                            word-wrap: break-word;
+                        }
+                        .note {
+                            color: #666;
+                            font-size: 0.95em;
+                            margin-top: 20px;
+                        }
+                        .back-btn {
+                            display: inline-block;
+                            margin-top: 30px;
+                            padding: 12px 30px;
+                            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 8px;
+                            font-weight: 600;
+                            transition: transform 0.2s;
+                        }
+                        .back-btn:hover {
+                            transform: translateY(-2px);
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h1>⚠️ Browser Limitation</h1>
+                        <h2>${title}</h2>
+                        <p>
+                            Modern browsers automatically control certain HTTP headers and prevent manual manipulation 
+                            for security reasons. To test this error condition, you need to use command-line tools.
+                        </p>
+                        <h3>Test with this command:</h3>
+                        <div class="command">${command}</div>
+                        <p class="note">
+                            <strong>Note:</strong> Replace <code>localhost:8080</code> with your server's address and port.
+                        </p>
+                        <a href="/errors.html" class="back-btn">← Back to Error Tests</a>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            document.open();
+            document.write(html);
+            document.close();
+        }
+    </script>
+</body>
+</html>
