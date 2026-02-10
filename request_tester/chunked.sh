@@ -1,0 +1,13 @@
+(printf "POST /chunk.txt HTTP/1.1\r\n";
+printf "Host: localhost:8002\r\n";
+printf "Connection:close\r\n";
+printf "Transfer-Encoding:chunked\r\n";
+printf "\r\n";
+printf "7\r\n";
+printf "Mozilla\r\n";
+printf "9\r\n";
+printf "Developer\r\n";
+printf "7\r\n";
+printf "Network\r\n";
+printf "0\r\n";
+printf "\r\n") | nc localhost 8080;
