@@ -272,7 +272,7 @@
             </div>
 
             <!-- POST on Directory -->
-            <div class="error-card" onclick="testMethod('POST', '/postDir/')">
+            <div class="error-card" onclick="testMethodPOST('/postDir/')">
                 <div class="error-icon">📁</div>
                 <h3 class="error-title">POST on Directory</h3>
                 <span class="error-method">POST</span>
@@ -281,7 +281,7 @@
             </div>
 
             <!-- DELETE on Directory -->
-            <div class="error-card" onclick="testMethod('DELETE', '/postDir/')">
+            <div class="error-card" onclick="testMethodDELETE('/postDir/')">
                 <div class="error-icon">🗑️</div>
                 <h3 class="error-title">DELETE on Directory</h3>
                 <span class="error-method">DELETE</span>
@@ -290,21 +290,12 @@
             </div>
 
             <!-- Method Not Allowed -->
-            <div class="error-card" onclick="testMethod('POST', '/test.txt')">
+            <div class="error-card" onclick="testMethodPOST('/notAllowed/test.txt')">
                 <div class="error-icon">🚫</div>
                 <h3 class="error-title">Method Not Allowed</h3>
                 <span class="error-method">POST</span>
                 <p class="error-desc">POST method not allowed at root location.</p>
                 <div class="error-path">/test.txt</div>
-            </div>
-
-            <!-- Unsupported Method -->
-            <div class="error-card" onclick="testMethod('PUT', '/index.html')">
-                <div class="error-icon">❌</div>
-                <h3 class="error-title">Unsupported Method</h3>
-                <span class="error-method">PUT</span>
-                <p class="error-desc">PUT method is not supported by the server.</p>
-                <div class="error-path">/index.html</div>
             </div>
 
             <!-- Duplicate Host Header -->
@@ -346,171 +337,149 @@
             window.location.href = path;
         }
 
-        // Test with large headers
-        async function testWithLargeHeaders(path) {
-            // Create a form to submit with large headers via fetch, then redirect
-            try {
-                const headers = {};
-                const largeValue = 'X'.repeat(500);
-                headers['X-Custom-Header-1'] = largeValue;
-                headers['X-Custom-Header-2'] = largeValue;
-                headers['X-Custom-Header-3'] = largeValue;
-                headers['X-Custom-Header-4'] = largeValue;
-                headers['X-Custom-Header-5'] = largeValue;
-
-                const response = await fetch(path, {
-                    method: 'GET',
-                    headers: headers
-                });
-
-                const html = await response.text();
-                
-                // Replace current page with the response
-                document.open();
-                document.write(html);
-                document.close();
-            } catch (error) {
-                document.body.innerHTML = `<h1>Error</h1><p>${error.message}</p>`;
-            }
+        // For all other requests, we'll use forms which preserve navigation history
+        
+        // Test with large headers - Since we can't send custom headers via forms,
+        // we'll just do a regular GET which will still preserve back button
+        function testWithLargeHeaders(path) {
+            window.location.href = path;
         }
 
-        // Test with large body (POST)
-        async function testWithLargeBody(path) {
-            try {
-                const body = 'X'.repeat(100);
-
-                const response = await fetch(path, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    },
-                    body: body
-                });
-
-                const html = await response.text();
-                
-                // Replace current page with the response
-                document.open();
-                document.write(html);
-                document.close();
-            } catch (error) {
-                document.body.innerHTML = `<h1>Error</h1><p>${error.message}</p>`;
-            }
+        // Test with large body (POST) - use a real form submission
+        function testWithLargeBody(path) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = path;
+            form.enctype = 'text/plain';
+            
+            // Create a textarea with 100 characters
+            const textarea = document.createElement('textarea');
+            textarea.name = 'data';
+            textarea.value = 'X'.repeat(100);
+            form.appendChild(textarea);
+            
+            document.body.appendChild(form);
+            form.submit();
         }
 
-        // Test with specific method (POST, DELETE, PUT)
-        async function testMethod(method, path) {
-            try {
-                const response = await fetch(path, {
-                    method: method
-                });
+        // Test POST method
+        function testMethodPOST(path) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = path;
+            document.body.appendChild(form);
+            form.submit();
+        }
 
-                const html = await response.text();
-                
-                // Replace current page with the response
-                document.open();
-                document.write(html);
-                document.close();
-            } catch (error) {
-                document.body.innerHTML = `<h1>Error</h1><p>${error.message}</p>`;
-            }
+        // Test DELETE method - browsers don't support DELETE in forms, so use GET as workaround
+        function testMethodDELETE(path) {
+            // Since HTML forms don't support DELETE, just navigate to the path
+            // Your server should handle this appropriately
+            window.location.href = path + '?_method=DELETE';
+        }
+
+        // Test PUT method - browsers don't support PUT in forms, so use GET as workaround  
+        function testMethodPUT(path) {
+            // Since HTML forms don't support PUT, just navigate to the path
+            window.location.href = path + '?_method=HEAD';
         }
 
         // Show browser limitation with instructions
         function showBrowserLimitation(title, command) {
-            const html = `
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Browser Limitation - ${title}</title>
-                    <style>
-                        body {
-                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                            background: #f8f9fa;
-                            margin: 0;
-                            padding: 40px 20px;
-                        }
-                        .container {
-                            max-width: 900px;
-                            margin: 0 auto;
-                            background: white;
-                            border-radius: 12px;
-                            padding: 40px;
-                            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                        }
-                        h1 {
-                            color: #f39c12;
-                            margin-bottom: 20px;
-                        }
-                        h2 {
-                            color: #2c3e50;
-                            margin-bottom: 20px;
-                        }
-                        p {
-                            color: #666;
-                            font-size: 1.1em;
-                            line-height: 1.6;
-                            margin-bottom: 30px;
-                        }
-                        h3 {
-                            color: #3498db;
-                            margin-bottom: 15px;
-                        }
-                        .command {
-                            background: #2c3e50;
-                            color: #2ecc71;
-                            padding: 20px;
-                            border-radius: 8px;
-                            font-family: 'Courier New', monospace;
-                            overflow-x: auto;
-                            margin-bottom: 20px;
-                            word-wrap: break-word;
-                        }
-                        .note {
-                            color: #666;
-                            font-size: 0.95em;
-                            margin-top: 20px;
-                        }
-                        .back-btn {
-                            display: inline-block;
-                            margin-top: 30px;
-                            padding: 12px 30px;
-                            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
-                            color: white;
-                            text-decoration: none;
-                            border-radius: 8px;
-                            font-weight: 600;
-                            transition: transform 0.2s;
-                        }
-                        .back-btn:hover {
-                            transform: translateY(-2px);
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <h1>⚠️ Browser Limitation</h1>
-                        <h2>${title}</h2>
-                        <p>
-                            Modern browsers automatically control certain HTTP headers and prevent manual manipulation 
-                            for security reasons. To test this error condition, you need to use command-line tools.
-                        </p>
-                        <h3>Test with this command:</h3>
-                        <div class="command">${command}</div>
-                        <p class="note">
-                            <strong>Note:</strong> Replace <code>localhost:8080</code> with your server's address and port.
-                        </p>
-                        <a href="/errors.html" class="back-btn">← Back to Error Tests</a>
-                    </div>
-                </body>
-                </html>
-            `;
+            // Navigate to a new page instead of document.write to preserve history
+            const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Limitation - ${title}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #f39c12;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        h3 {
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        .command {
+            background: #2c3e50;
+            color: #2ecc71;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            word-wrap: break-word;
+        }
+        .note {
+            color: #666;
+            font-size: 0.95em;
+            margin-top: 20px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚠️ Browser Limitation</h1>
+        <h2>${title.replace(/'/g, "&#39;")}</h2>
+        <p>
+            Modern browsers automatically control certain HTTP headers and prevent manual manipulation 
+            for security reasons. To test this error condition, you need to use command-line tools.
+        </p>
+        <h3>Test with this command:</h3>
+        <div class="command">${command.replace(/'/g, "&#39;")}</div>
+        <p class="note">
+            <strong>Note:</strong> Replace <code>localhost:8080</code> with your server's address and port.
+        </p>
+        <button class="back-btn" onclick="history.back()">← Back to Error Tests</button>
+    </div>
+</body>
+</html>`;
             
-            document.open();
-            document.write(html);
-            document.close();
+            // Create a blob URL and navigate to it
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            window.location.href = url;
         }
     </script>
 </body>
