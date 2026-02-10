@@ -32,7 +32,7 @@
 
 std::string intToIPv4(uint32_t);
 static const String	MONITOR_START = "Starting Webserv...";
-EventManager::EventManager(std::vector<Server> &servers): _alive(true), lastZombieCheck(std::time(NULL))
+EventManager::EventManager(std::vector<Server> &servers): _alive(true), lastZombieCheck(std::time(NULL)), _servers(servers)
 {
     // 2. Créer une instance epoll
 	DashBoard.log("Creating an epoll instance ");

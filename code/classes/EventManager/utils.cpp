@@ -22,8 +22,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdexcept>
+#include <vector>
 
 #include "Request.hpp"
+#include "Server.hpp"
 #include "colors.hpp"
 #include "statusCodes.hpp"
 
@@ -106,11 +108,12 @@ void	EventManager::EventDelete(int event_fd)
 		}
 }
 
-#include "helpers.hpp"
+const unsigned int	MAX_SESSION = 10000;
+const unsigned int	REFRESH_COOLDOWN = 2;
 
 void	EventManager::zombieCheck(void)
 {
-	if (std::time(NULL) <= lastZombieCheck)
+	if (std::time(NULL) <= lastZombieCheck + REFRESH_COOLDOWN)
 		return ;
 	lastZombieCheck = std::time(NULL);
 	for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); it++)
@@ -137,6 +140,8 @@ void	EventManager::zombieCheck(void)
 		req.setError(Status(REQUEST_TIMEOUT, 408));
 		req.buildErrorResponse();
 		EventModify(req.fd, EPOLLOUT, &req);
-			
 	}
+	for (std::vector<Server>::iterator it = this->_servers.begin(); it != this->_servers.end(); it++)
+		if (it->sessions.size() >= MAX_SESSION)
+			it->sessions.clear();
 }

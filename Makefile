@@ -19,6 +19,10 @@ build:
 	$(MAKE) -j -C $(PROJECT_DIR)
 .PHONY: build
 
+run:
+	$(PROJECT_DIR)/$(BIN)
+.PHONY: run
+
 run_multipleServers:
 	$(PROJECT_DIR)/$(BIN) $(CONFIG)
 .PHONY: run

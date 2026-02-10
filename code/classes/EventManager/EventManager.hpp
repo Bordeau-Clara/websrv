@@ -89,6 +89,9 @@ class EventManager
 
 		void				zombieCheck(void);
 		time_t				lastZombieCheck;
+
+		std::vector<Server>	&_servers;
+		
 };
 
 static const int	BUFFER_SIZE = 1024;
