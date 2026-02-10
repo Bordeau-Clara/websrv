@@ -144,7 +144,7 @@ void	Request::parseTransferEncoding(std::string str)
 	}
 	else
 	{
-		this->setError(Status(BAD_REQUEST, 400));
+		this->setError(Status(NOT_IMPLEMENTED, 501));
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Only accept chunked encoding"
 			<< std::endl;
